@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs": "swagger-jsdoc -d swaggerfile.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,10 @@
   },
   "homepage": "https://github.com/agilie/electrum-proxy-middleware#readme",
   "dependencies": {
-    "express-async-router": "^0.1.15"
+    "express-async-router": "^0.1.15",
+    "swagger-ui-express": "^4.0.2"
+  },
+  "devDependencies": {
+    "swagger-jsdoc": "^3.2.6"
   }
 }

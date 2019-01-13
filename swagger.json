@@ -1,0 +1,18 @@
+{
+  "info": {
+    "title": "Electrum proxy middleware",
+    "version": "1.0.0",
+    "description": "API documentations"
+  },
+  "basePath": "/",
+  "apis": [
+    "src/*.js"
+  ],
+  "swagger": "2.0",
+  "paths": {},
+  "definitions": {},
+  "responses": {},
+  "parameters": {},
+  "securityDefinitions": {},
+  "tags": []
+}
