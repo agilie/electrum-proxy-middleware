@@ -1,11 +1,6 @@
 const router = require('express-async-router').AsyncRouter();
 const electrumClient = require('./electrum-client');
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger.json');
-
-router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 router.use(defineElectrumClient);
 
 router.use('/server', require('./server'));

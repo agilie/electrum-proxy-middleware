@@ -24,8 +24,7 @@
   },
   "homepage": "https://github.com/agilie/electrum-proxy-middleware#readme",
   "dependencies": {
-    "express-async-router": "^0.1.15",
-    "swagger-ui-express": "^4.0.2"
+    "express-async-router": "^0.1.15"
   },
   "devDependencies": {
     "swagger-jsdoc": "^3.2.6"
