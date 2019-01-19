@@ -2,6 +2,12 @@ const router = require('express-async-router').AsyncRouter();
 
 // server.features
 router.get('/features', async function (req, res) {
+    if (req.query['protocol_version']) {
+        const clientName = req.query['client_name'] || 'test';
+        const protocolVersion = req.query['protocol_version'];
+        await req.locals.ecl.server_version(clientName, protocolVersion);
+    }
+
     const json = await req.locals.ecl.server_features();
     await req.locals.ecl.close();
 
