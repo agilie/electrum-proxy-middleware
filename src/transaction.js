@@ -15,8 +15,8 @@ router.post('/broadcast', async function (req, res) {
 // blockchain.transaction.get
 router.get('/get', async function (req, res) {
     const txHash = req.query['tx_hash'];
-    const verbose = req.query['verbose'] || false;
-    const merkle = req.query['merkle'] || false;
+    const verbose = req.query['verbose'] === 'true';
+    const merkle = req.query['merkle'] === 'true';
 
     const json = await req.locals.ecl.blockchainTransaction_get(txHash, verbose, merkle);
     await req.locals.ecl.close();
