@@ -12,7 +12,7 @@ router.use('/blockchain', require('./blockchain'));
 async function defineElectrumClient(req, res) {
     try {
         validateRequiredParams(req);
-        const ecl = new electrumClient(req.query.port, req.query.host, req.params.connection = 'tcp');
+        const ecl = new electrumClient(req.query.port, req.query.host, req.query.connection);
         req.locals = req.locals || {};
         req.locals.ecl = ecl;
         return await ecl.connect();

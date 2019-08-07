@@ -53,7 +53,7 @@ router.get('/id-from-pos', async function (req, res) {
     const txPos = req.query['tx_pos'];
     const merkle = req.query['merkle'] || false;
 
-    const json = await req.locals.ecl.blockchainTransaction_get(height, txPos, merkle);
+    const json = await req.locals.ecl.blockchainTransaction_getMerkle(height, txPos, merkle);
     await req.locals.ecl.close();
 
     res.json({
