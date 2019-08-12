@@ -15,8 +15,7 @@ router.get('/header', async (req, res) => {
 
 // get current
 router.get('/current', async (req, res) => {
-    const raw = req.query['raw'] === 'true';
-    const json = await req.locals.ecl.blockchainHeaders_subscribe(raw);
+    const json = await req.locals.ecl.blockchainHeaders_subscribe();
     await req.locals.ecl.close();
 
     res.json({
