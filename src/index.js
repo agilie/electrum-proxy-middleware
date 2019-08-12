@@ -8,6 +8,7 @@ router.use('/transaction', require('./transaction'));
 router.use('/address', require('./address'));
 router.use('/block', require('./block'));
 router.use('/blockchain', require('./blockchain'));
+router.use('/scripthash', require('./scripthash'));
 
 async function defineElectrumClient(req, res) {
     try {
