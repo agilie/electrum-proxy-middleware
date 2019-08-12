@@ -12,4 +12,15 @@ router.get('/estimatefee', async (req, res) => {
     });
 });
 
+// blockchain.relayfee
+router.get('/relayfee', async (req, res) => {
+    const json = await req.locals.ecl.blockchain_relayfee();
+    await req.locals.ecl.close();
+
+    res.json({
+        status: 'success',
+        result: json
+    });
+});
+
 module.exports = router;

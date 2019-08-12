@@ -1,9 +1,3 @@
-// blockchain.scripthash.get_balance
-// blockchain.scripthash.get_history
-// blockchain.scripthash.get_mempool
-// blockchain.scripthash.listunspent
-// blockchain.scripthash.subscribe
-
 const router = require('express-async-router').AsyncRouter();
 
 // 'blockchain.scripthash.get_balance'

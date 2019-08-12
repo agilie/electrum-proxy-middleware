@@ -9,6 +9,8 @@ router.use('/address', require('./address'));
 router.use('/block', require('./block'));
 router.use('/blockchain', require('./blockchain'));
 router.use('/scripthash', require('./scripthash'));
+router.use('/mempool', require('./mempool'));
+
 
 async function defineElectrumClient(req, res) {
     try {
