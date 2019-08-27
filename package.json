@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": "swagger-jsdoc -d swaggerfile.js"
+    "docs": "swagger-jsdoc -d swaggerfile.js",
+    "build-bitcore-lib": "browserify -r bitcore-lib -s bitcore-lib -o src/assets/libs/bitcore-lib.js",
+    "build-zcash-bitcore-lib": "browserify -r zcash-bitcore-lib -s zcash-bitcore-lib -o src/assets/libs/zcash-bitcore-lib.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,8 @@
     "express-async-router": "^0.1.15"
   },
   "devDependencies": {
-    "swagger-jsdoc": "^3.2.6"
+    "swagger-jsdoc": "^3.2.6",
+    "bitcore-lib": "^8.3.4",
+    "zcash-bitcore-lib": "^0.13.20-rc3"
   }
 }
