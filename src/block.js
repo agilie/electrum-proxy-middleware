@@ -26,15 +26,4 @@ router.get('/headers', async (req, res) => {
     });
 });
 
-// get current
-router.get('/current', async (req, res) => {
-    const json = await req.locals.ecl.blockchainHeaders_subscribe();
-    await req.locals.ecl.close();
-
-    res.json({
-        status: 'success',
-        result: json
-    });
-});
-
 module.exports = router;

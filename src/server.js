@@ -77,7 +77,7 @@ router.get('/add_peer', async function (req, res) {
 });
 
 // server.peers.subscribe
-router.get('/peers-subscribe', async function (req, res) {
+router.get('/get-peers-subscribe', async function (req, res) {
     const json = await req.locals.ecl.serverPeers_subscribe();
     await req.locals.ecl.close();
 
