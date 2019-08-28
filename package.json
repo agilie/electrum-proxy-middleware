@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "swagger-jsdoc -d swaggerfile.js",
     "build-bitcore-lib": "browserify -r bitcore-lib -s bitcore-lib -o src/assets/libs/bitcore-lib.js",
-    "build-zcash-bitcore-lib": "browserify -r zcash-bitcore-lib -s zcash-bitcore-lib -o src/assets/libs/zcash-bitcore-lib.js"
+    "build-zcash-bitcore-lib": "browserify -r zcash-bitcore-lib -s zcash-bitcore-lib -o src/assets/libs/zcash-bitcore-lib.js",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
