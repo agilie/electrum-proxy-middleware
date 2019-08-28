@@ -49,29 +49,4 @@ router.get('/get_mempool', async (req, res) => {
     });
 });
 
-// 'blockchain.scripthash.subscribe'
-router.get('/subscribe', async (req, res) => {
-    const scripthash = req.query['scripthash'];
-    const json = await req.locals.ecl.blockchainScripthash_subscribe(scripthash);
-    await req.locals.ecl.close();
-
-    res.json({
-        status: 'success',
-        result: json
-    });
-});
-
-// 'blockchain.scripthash.unsubscribe'
-router.get('/unsubscribe', async (req, res) => {
-    const scripthash = req.query['scripthash'];
-    const json = await req.locals.ecl.blockchainScripthash_unsubscribe(scripthash);
-    await req.locals.ecl.close();
-
-    res.json({
-        status: 'success',
-        result: json
-    });
-});
-
-
 module.exports = router;

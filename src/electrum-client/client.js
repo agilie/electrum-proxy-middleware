@@ -5,7 +5,7 @@ const initSocket = require('./init_socket')
 const connectSocket = require('./connect_socket')
 
 class Client{
-    constructor(port, host, protocol, options = void 0){
+    constructor(port, host, protocol = 'tcp', options = void 0){
         this.id = 0;
         this.port = port
         this.host = host
