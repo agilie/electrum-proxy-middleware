@@ -52,17 +52,20 @@ class ElectrumClient extends Client{
     blockchainScripthash_subscribe(scripthash){
         return this.request('blockchain.scripthash.subscribe', [scripthash])
     }
-    blockchainBlock_getHeader(height){
-        return this.request('blockchain.block.get_header', [height])
+    blockchainScripthash_unsubscribe(scripthash){
+        return this.request('blockchain.scripthash.unsubscribe', [scripthash])
+    }
+    blockchainBlock_getHeader(height, protocolVersion){
+        return this.request(protocolVersion && Number(protocolVersion) === 1.4 ? 'blockchain.block.header' : 'blockchain.block.get_header', [height]);
     }
     blockchainBlock_headers(start_height, count){
-        return this.request('blockchain.block.headeres', [start_height, count])
+        return this.request('blockchain.block.headers', [start_height, count])
     }
     blockchainEstimatefee(number){
         return this.request('blockchain.estimatefee', [number])
     }
-    blockchainHeaders_subscribe(raw){
-        return this.request('blockchain.headers.subscribe', [raw ? raw : false])
+    blockchainHeaders_subscribe(){
+        return this.request('blockchain.headers.subscribe', [])
     }
     blockchain_relayfee(){
         return this.request('blockchain.relayfee', [])
@@ -75,6 +78,10 @@ class ElectrumClient extends Client{
     }
     blockchainTransaction_getMerkle(tx_hash, height){
         return this.request('blockchain.transaction.get_merkle', [tx_hash, height])
+    }
+
+    blockchainTransaction_idFromPos(tx_hash, height, merkle){
+        return this.request('blockchain.transaction.id_from_pos', [tx_hash, height, merkle])
     }
     mempool_getFeeHistogram(){
         return this.request('mempool.get_fee_histogram', [])

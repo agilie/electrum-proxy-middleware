@@ -1,7 +1,4 @@
 // 'blockchain.block.get_chunk'
-
-// 'blockchain.address.get_mempool'
-// 'blockchain.address.subscribe'
 // 'express-async-router'
 
 const router = require('express-async-router').AsyncRouter();

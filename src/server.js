@@ -65,4 +65,36 @@ router.get('/donation-address', async function (req, res) {
     });
 });
 
+// server.add_peer
+router.get('/add_peer', async function (req, res) {
+    const json = await req.locals.ecl.server_addPeer();
+    await req.locals.ecl.close();
+
+    res.json({
+        status: 'success',
+        result: json
+    });
+});
+
+// server.peers.subscribe
+router.get('/get-peers', async function (req, res) {
+    const json = await req.locals.ecl.serverPeers_subscribe();
+    await req.locals.ecl.close();
+
+    res.json({
+        status: 'success',
+        result: json
+    });
+});
+
+// server.ping
+router.get('/ping', async function (req, res) {
+    const json = await req.locals.ecl.server_ping();
+    await req.locals.ecl.close();
+
+    res.json({
+        status: 'success',
+        result: json
+    });
+});
 module.exports = router;
