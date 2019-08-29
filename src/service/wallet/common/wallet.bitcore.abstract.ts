@@ -4,10 +4,9 @@ import {WalletCreateOptionsInterface} from "./wallet-create-options.interface";
 import {TransactionLike} from "../types/transaction.type";
 import {ElectrumConfig} from "../types/electrum.config";
 import {Address, Script, Transaction, PrivateKey} from 'bitcore-lib';
+
 import {zip} from "rxjs";
-import {electrumServersDefault} from "../../electrum-servers.default";
 import {map} from "rxjs/operators";
-import {json} from "express";
 
 
 export abstract class WalletBitcoreAbstract implements WalletLike {
@@ -22,7 +21,6 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
 
     protected constructor(options: WalletCreateOptionsInterface) {
         this._bitcore = options.bitcore;
-        ;
         this.type = options.type;
         this.isProd = options.isProd;
         const privateKey = this._getPrivateKey(options.userString);
@@ -37,30 +35,26 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
     async getHistory(page: number, pageSize: number, req: any): Promise<TransactionLike[]> {
         const transactions = await req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash);
 
-        await req.locals.ecl.close();
-
-
         const result: TransactionLike[] = [];
 
         for (let i = 0; i < transactions.length; i++) {
             const tx = transactions[i];
+            const tx_raw = await req.locals.ecl.blockchainTransaction_get(tx.tx_hash, null, null);
 
-            const txObj: ParsedTx = new this._bitcore.Transaction(tx.raw).toObject();
+            const txObj: ParsedTx = new this._bitcore.Transaction(tx_raw).toObject();
 
             const txData = await this._getTxData(txObj, req); // TODO no await => PromiseAll
 
 
             let timestamp;
             if (tx.height && tx.height > 0) {
-                // const blockHeader = req.locals.ecl.blockchainBlock_getHeader(tx.height, '1.4'); //!!!!! async
-                // req.locals.ecl.close();
-                //
-                // if (typeof blockHeader === 'string') {
-                //     timestamp = new this._bitcore.BlockHeader.fromString(blockHeader as string).timestamp;
-                // } else {
-                //     timestamp = blockHeader.timestamp;
-                // }
-                timestamp = 1;
+                const blockHeader = await req.locals.ecl.blockchainBlock_getHeader(tx.height, '');
+
+                if (typeof blockHeader === 'string') {
+                    timestamp = new this._bitcore.BlockHeader.fromString(blockHeader as string).timestamp;
+                } else {
+                    timestamp = blockHeader.timestamp;
+                }
             } else {
                 timestamp = 1;
             }
@@ -78,6 +72,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
             result.push(appTx);
         }
 
+        req.locals.ecl.close();
         return result;
     }
 
@@ -113,23 +108,19 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
     }
 
     private _parseCoreInputs(txObjext: ParsedTx, req: any): Promise<Array<{ satoshis: number; script: string }>> {
-        const result = txObjext.inputs
-            .map(input => {
-
-                const transaction = req.locals.ecl.blockchainTransaction_get(input.prevTxId);
-                req.locals.ecl.close();
-
-
-                return transaction.pipe(
-                    map(rawTx => {
+        const result: Promise<{ satoshis: number; script: string }>[] = [];
+        txObjext.inputs
+            .forEach(input => {
+                const txPromise = req.locals.ecl.blockchainTransaction_get(input.prevTxId, null).then(
+                    (rawTx: string) => {
                         const txObj: ParsedTx = new this._bitcore.Transaction(rawTx).toObject();
                         return txObj.outputs[input.outputIndex];
-                    }),
+                    }
                 );
+                result.push(txPromise);
             });
 
-        // TODO is ...spread operator required???
-        return zip(...result).toPromise() as Promise<Array<{ satoshis: number; script: string }>>;
+        return Promise.all(result);
     }
 
 
@@ -164,10 +155,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         return this._bitcore.Networks.testnet;
     }
 
-    private _getElectrumConfig(): ElectrumConfig {
-        let configs = electrumServersDefault[this.type];
-        return configs[Math.floor(Math.random() * configs.length)];
-    }
+
 }
 
 interface BitcoreNetworkLike {
