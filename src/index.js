@@ -10,6 +10,7 @@ router.use('/block', require('./block'));
 router.use('/blockchain', require('./blockchain'));
 router.use('/scripthash', require('./scripthash'));
 router.use('/mempool', require('./mempool'));
+router.use('/scripthash_history', require('./scripthash_history'));
 
 
 async function defineElectrumClient(req, res) {

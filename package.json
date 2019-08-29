@@ -2,7 +2,7 @@
   "name": "electrum-proxy-middleware",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "swagger-jsdoc -d swaggerfile.js",
@@ -27,11 +27,19 @@
   },
   "homepage": "https://github.com/agilie/electrum-proxy-middleware#readme",
   "dependencies": {
-    "express-async-router": "^0.1.15"
+    "@angular/common": "^8.2.3",
+    "@angular/core": "^8.2.3",
+    "@types/lodash": "^4.14.138",
+    "express-async-router": "^0.1.15",
+    "rxjs": "~6.5.0",
+    "service": "^0.1.4"
   },
   "devDependencies": {
-    "swagger-jsdoc": "^3.2.6",
+    "@types/express": "^4.17.1",
+    "@types/node": "^12.7.2",
     "bitcore-lib": "^8.3.4",
+    "swagger-jsdoc": "^3.4.0",
+    "typescript": "^3.5.3",
     "zcash-bitcore-lib": "^0.13.20-rc3"
   }
 }
