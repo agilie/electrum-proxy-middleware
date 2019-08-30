@@ -44,7 +44,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
 
             let timestamp;
             if (tx.height && tx.height > 0) {
-                const blockHeader = await req.locals.ecl.blockchainBlock_getHeader(tx.height);
+                const blockHeader = await req.locals.ecl.blockchainBlock_getHeader(tx.height, req.locals.ecl.version);
 
                 if (typeof blockHeader === 'string') {
                     timestamp = new this._bitcore.BlockHeader.fromString(blockHeader as string).timestamp;

@@ -21,9 +21,10 @@ async function defineElectrumClient(req: any, res: any) {
         const port = req.query.port || (defaultOptions || {}).port;
         const host = req.query.host || (defaultOptions || {}).ip;
         const protocol = req.query.connection || (defaultOptions || {}).connectionType || 'tcp';
+        const version = req.query.version || (defaultOptions || {}).version;
 
         validateRequiredParams(port, host);
-        const ecl = new ElectrumClient(port, host, protocol);
+        const ecl = new ElectrumClient(port, host, protocol, version);
         req.locals = req.locals || {};
         req.locals.ecl = ecl;
         return await ecl.connect();
