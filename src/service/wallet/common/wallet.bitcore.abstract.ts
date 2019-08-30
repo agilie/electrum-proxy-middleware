@@ -2,18 +2,13 @@ import {WalletLike} from "./wallet.interface";
 import {CoinType} from "../types/coin.type";
 import {WalletCreateOptionsInterface} from "./wallet-create-options.interface";
 import {TransactionLike} from "../types/transaction.type";
-import {ElectrumConfig} from "../types/electrum.config";
 import {Address, Script, Transaction, PrivateKey} from 'bitcore-lib';
-
-import {zip} from "rxjs";
-import {map} from "rxjs/operators";
 
 
 export abstract class WalletBitcoreAbstract implements WalletLike {
     readonly address: string;
     readonly type: CoinType;
     protected readonly isProd: boolean;
-
     private readonly _bitcore;
 
     private readonly _scriptHash: string;
