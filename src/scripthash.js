@@ -1,7 +1,5 @@
 const router = require('express-async-router').AsyncRouter();
 
-const bitcore = require('bitcore-lib');
-
 // 'blockchain.scripthash.get_balance'
 router.get('/balance', async (req, res) => {
     const scripthash = req.query['scripthash'];
