@@ -1,7 +1,6 @@
-import {CoinType} from "../types/coin.type";
-import {ElectrumService} from "../../electrum.service";
-import {PriceProviderService} from "~/service/price-provider.service";
-
+import {CoinType} from '../types/coin.type';
+import {ElectrumService} from '../../electrum.service';
+import {PriceProviderService} from '~/service/price-provider.service';
 
 export interface WalletCreateOptionsInterface {
     userString: string;

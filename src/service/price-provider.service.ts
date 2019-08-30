@@ -1,8 +1,8 @@
 
 // tslint:disable-next-line:no-var-requires
-import {Injectable} from "@angular/core";
-import {BehaviorSubject} from "rxjs";
-import {CoinMap, CoinType} from "./wallet/types/coin.type";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {CoinMap, CoinType} from './wallet/types/coin.type';
 
 const cache = require('nativescript-cache');
 // tslint:disable-next-line:no-var-requires
@@ -132,16 +132,6 @@ export class PriceProviderService {
     private _handleError(error: Event): void {
         console.log('socket error', error);
         this._closeChannel();
-    }
-
-    // for debug only
-    private _handleClose(event: CloseEvent): void {
-        // if (event.wasClean) {
-        //     console.log('Connection closed');
-        // } else {
-        //     console.log('Connection terminated');
-        // }
-        // console.log('Code:', event.code, 'Reason:', event.reason);
     }
 
     private _updateCache(): void {

@@ -1,7 +1,7 @@
 import * as bitcoreZcash from 'zcash-bitcore-lib';
-import {CoinType} from "./types/coin.type";
-import {WalletCreateOptionsInterface} from "./common/wallet-create-options.interface";
-import {WalletBitcoreAbstract} from "./common/wallet.bitcore.abstract";
+import {CoinType} from './types/coin.type';
+import {WalletCreateOptionsInterface} from './common/wallet-create-options.interface';
+import {WalletBitcoreAbstract} from './common/wallet.bitcore.abstract';
 
 export class WalletZec extends WalletBitcoreAbstract {
     constructor(options: WalletCreateOptionsInterface) {
@@ -10,10 +10,3 @@ export class WalletZec extends WalletBitcoreAbstract {
         super(options);
     }
 }
-
-/*
-tmKxZD7LMUfP3dKFnizwfk3TGJ9TjE8XCmU
-
-https://zcashfaucet.info
-
- */

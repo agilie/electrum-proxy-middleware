@@ -1,15 +1,12 @@
-import {WalletLike} from "./common/wallet.interface";
-import {CoinType} from "./types/coin.type";
-import {WalletCreateOptionsInterface} from "./common/wallet-create-options.interface";
-import {TransactionLike} from "./types/transaction.type";
-import {PriceProviderService} from "../price-provider.service";
-import {EtherscanProvider} from "ethers/providers";
+import {WalletLike} from './common/wallet.interface';
+import {CoinType} from './types/coin.type';
+import {WalletCreateOptionsInterface} from './common/wallet-create-options.interface';
+import {TransactionLike} from './types/transaction.type';
+import {PriceProviderService} from '../price-provider.service';
+import {EtherscanProvider} from 'ethers/providers';
 import { sha256 } from 'js-sha256';
-import {ethers} from "ethers";
-import {Wallet} from "ethers/wallet";
-
-
-
+import {ethers} from 'ethers';
+import {Wallet} from 'ethers/wallet';
 
 export default class WalletEth implements WalletLike {
     readonly type = CoinType.ETH;
@@ -17,7 +14,6 @@ export default class WalletEth implements WalletLike {
     readonly isProd: boolean;
     private _provider: EtherscanProvider;
     readonly priceProvider: PriceProviderService;
-
 
     constructor(options: WalletCreateOptionsInterface) {
         this.isProd = options.isProd;
@@ -27,7 +23,6 @@ export default class WalletEth implements WalletLike {
         this.address = walletConnect.address;
         this._provider = this._getProvider();
     }
-
 
     async getHistory(page: number, perPage: number): Promise<TransactionLike[]> {
         const txHistory = await this._provider.getHistory(this.address, page, perPage);
@@ -52,16 +47,12 @@ export default class WalletEth implements WalletLike {
         return transactions;
     }
 
-
-
-
     private _getProvider(): EtherscanProvider {
         if (this.isProd) {
             return new ethers.providers.EtherscanProvider('homestead'); // mainnet
         }
         return new ethers.providers.EtherscanProvider('ropsten'); // testnet
     }
-
 
     private _getWalletConnect(userStrung: string): Wallet {
         const hash = sha256(userStrung);

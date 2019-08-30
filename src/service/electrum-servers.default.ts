@@ -1,5 +1,5 @@
-import {CoinMap, CoinType} from "./wallet/types/coin.type";
-import {ElectrumConfig} from "./wallet/types/electrum.config";
+import {CoinMap, CoinType} from './wallet/types/coin.type';
+import {ElectrumConfig} from './wallet/types/electrum.config';
 
 export const electrumServersDefault: CoinMap<ElectrumConfig[]> = {
     [CoinType.BTC]: [

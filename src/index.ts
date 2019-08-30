@@ -1,5 +1,5 @@
-import {ElectrumConfig} from "./service/wallet/types/electrum.config";
-import {electrumServersDefault} from "./service/electrum-servers.default";
+import {ElectrumConfig} from './service/wallet/types/electrum.config';
+import {electrumServersDefault} from './service/electrum-servers.default';
 
 const router = require('express-async-router').AsyncRouter();
 const ElectrumClient = require('./electrum-client');
@@ -13,15 +13,14 @@ router.use('/block', require('./block'));
 router.use('/blockchain', require('./blockchain'));
 router.use('/scripthash', require('./scripthash'));
 router.use('/mempool', require('./mempool'));
-router.use('/scripthash_history', require('./scripthash_history'));
+router.use('/history', require('./history'));
 
-
-async function defineElectrumClient(req, res) {
+async function defineElectrumClient(req: any, res: any) {
     try {
-        let defaultOptions = req.query.coinType ? _getElectrumConfig(req.query.coinType) : null;
-        let port = req.query.port || (defaultOptions || {}).port;
-        let host = req.query.host || (defaultOptions || {}).ip;
-        let protocol = req.query.connection || (defaultOptions || {}).connectionType || 'tcp';
+        const defaultOptions = req.query.coinType ? _getElectrumConfig(req.query.coinType) : null;
+        const port = req.query.port || (defaultOptions || {}).port;
+        const host = req.query.host || (defaultOptions || {}).ip;
+        const protocol = req.query.connection || (defaultOptions || {}).connectionType || 'tcp';
 
         validateRequiredParams(port, host);
         const ecl = new ElectrumClient(port, host, protocol);
@@ -34,16 +33,16 @@ async function defineElectrumClient(req, res) {
 }
 
 function _getElectrumConfig(type: string): ElectrumConfig {
-    let configs = electrumServersDefault[type];
+    const configs = electrumServersDefault[type];
     return configs[Math.floor(Math.random() * configs.length)];
 }
 
-function validateRequiredParams(port, host) {
+function validateRequiredParams(port: number, host: string) {
     if (!port) {
-        throw Error('port is missing')
+        throw Error('port is missing');
     }
     if (!host) {
-        throw Error('host is missing')
+        throw Error('host is missing');
     }
 }
 

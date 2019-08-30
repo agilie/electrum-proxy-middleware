@@ -1,9 +1,8 @@
-import {WalletLike} from "./wallet.interface";
-import {CoinType} from "../types/coin.type";
-import {WalletCreateOptionsInterface} from "./wallet-create-options.interface";
-import {TransactionLike} from "../types/transaction.type";
+import {WalletLike} from './wallet.interface';
+import {CoinType} from '../types/coin.type';
+import {WalletCreateOptionsInterface} from './wallet-create-options.interface';
+import {TransactionLike} from '../types/transaction.type';
 import {Address, Script, PrivateKey} from 'bitcore-lib';
-
 
 export abstract class WalletBitcoreAbstract implements WalletLike {
     readonly address: string;
@@ -28,18 +27,20 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
     }
 
     async getHistory(page: number, pageSize: number, req: any): Promise<TransactionLike[]> {
-        const transactions = await req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash);
+        let transactions = await req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash);
 
-        let result: TransactionLike[] = [];
+        if (page && pageSize && Number(page) && page > 0) {
+            transactions = transactions.slice(Number(page - 1) * pageSize, (page * pageSize));
+        }
+
+        const result: TransactionLike[] = [];
 
         for (let i = 0; i < transactions.length; i++) {
             const tx = transactions[i];
-            const tx_raw = await req.locals.ecl.blockchainTransaction_get(tx.tx_hash, null, null);
+            const txRaw = await req.locals.ecl.blockchainTransaction_get(tx.tx_hash, null, null);
 
-            const txObj: ParsedTx = new this._bitcore.Transaction(tx_raw).toObject();
-
-            const txData = await this._getTxData(txObj, req); // TODO no await => PromiseAll
-
+            const txObj: ParsedTx = new this._bitcore.Transaction(txRaw).toObject();
+            const txData = await this._getTxData(txObj, req);
 
             let timestamp;
             if (tx.height && tx.height > 0) {
@@ -54,12 +55,10 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
                 timestamp = 1;
             }
 
-
             const appTx: TransactionLike = {
                 hash: tx.txid,
                 value: +txData.value / 1e8 + '',
                 timestamp: timestamp * 1000,
-                // timestamp: null,
                 fee: +txData.fee / 1e8 + '',
                 status: tx.height > 0 ? 'completed' : 'incompleted',
             };
@@ -67,15 +66,9 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
             result.push(appTx);
         }
 
-
-        if (page && pageSize && Number(page) && page > 0) {
-            result = result.slice(Number(page - 1) * pageSize, (page * pageSize));
-        }
-
         req.locals.ecl.close();
         return result;
     }
-
 
     // prettier-ignore
     private async _getTxData(txObjext: ParsedTx, req: any): Promise<{ value: string, fee: string }> {
@@ -123,7 +116,6 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         return Promise.all(result);
     }
 
-
     private _getScript(address: Address): Script {
         return this._bitcore.Script.buildPublicKeyHashOut(address);
     }
@@ -134,8 +126,8 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         const scriptBuffer = script.toBuffer();
         const scriptHash = bitcore.crypto.Hash.sha256(scriptBuffer);
         const reversedHash = Buffer.from(scriptHash.reverse());
-        const result = reversedHash.toString('hex');
-        return result;
+
+        return reversedHash.toString('hex');
     }
 
     private _getPrivateKey(userString: string): PrivateKey {
@@ -154,7 +146,6 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         }
         return this._bitcore.Networks.testnet;
     }
-
 
 }
 
