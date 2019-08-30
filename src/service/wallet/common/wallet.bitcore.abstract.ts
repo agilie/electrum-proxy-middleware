@@ -23,7 +23,6 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         const script = this._getScript(privateKey.toAddress());
         this._scriptHEX = script.toHex();
         this._scriptHash = this._getScriptHash(script);
-
     }
 
     async getHistory(page: number, pageSize: number, req: any): Promise<TransactionLike[]> {
@@ -37,14 +36,15 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
 
         for (let i = 0; i < transactions.length; i++) {
             const tx = transactions[i];
-            const txRaw = await req.locals.ecl.blockchainTransaction_get(tx.tx_hash, null, null);
+            const txRaw = await req.locals.ecl.blockchainTransaction_get(tx.tx_hash,
+                req.query.verbose && req.query.verbose === 'true' ? true : null, null);
 
             const txObj: ParsedTx = new this._bitcore.Transaction(txRaw).toObject();
             const txData = await this._getTxData(txObj, req);
 
             let timestamp;
             if (tx.height && tx.height > 0) {
-                const blockHeader = await req.locals.ecl.blockchainBlock_getHeader(tx.height, '');
+                const blockHeader = await req.locals.ecl.blockchainBlock_getHeader(tx.height);
 
                 if (typeof blockHeader === 'string') {
                     timestamp = new this._bitcore.BlockHeader.fromString(blockHeader as string).timestamp;
