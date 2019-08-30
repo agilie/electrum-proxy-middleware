@@ -2,14 +2,14 @@ import {WalletLike} from "./wallet.interface";
 import {CoinType} from "../types/coin.type";
 import {WalletCreateOptionsInterface} from "./wallet-create-options.interface";
 import {TransactionLike} from "../types/transaction.type";
-import {Address, Script, Transaction, PrivateKey} from 'bitcore-lib';
+import {Address, Script, PrivateKey} from 'bitcore-lib';
 
 
 export abstract class WalletBitcoreAbstract implements WalletLike {
     readonly address: string;
     readonly type: CoinType;
     protected readonly isProd: boolean;
-    private readonly _bitcore;
+    private readonly _bitcore: any;
 
     private readonly _scriptHash: string;
     private readonly _scriptHEX: string;
@@ -30,7 +30,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
     async getHistory(page: number, pageSize: number, req: any): Promise<TransactionLike[]> {
         const transactions = await req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash);
 
-        const result: TransactionLike[] = [];
+        let result: TransactionLike[] = [];
 
         for (let i = 0; i < transactions.length; i++) {
             const tx = transactions[i];
@@ -65,6 +65,11 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
             };
 
             result.push(appTx);
+        }
+
+
+        if (page && pageSize && Number(page) && page > 0) {
+            result = result.slice(Number(page - 1) * pageSize, (page * pageSize));
         }
 
         req.locals.ecl.close();
@@ -106,7 +111,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         const result: Promise<{ satoshis: number; script: string }>[] = [];
         txObjext.inputs
             .forEach(input => {
-                const txPromise = req.locals.ecl.blockchainTransaction_get(input.prevTxId, null).then(
+                const txPromise = req.locals.ecl.blockchainTransaction_get(input.prevTxId, null, null).then(
                     (rawTx: string) => {
                         const txObj: ParsedTx = new this._bitcore.Transaction(rawTx).toObject();
                         return txObj.outputs[input.outputIndex];

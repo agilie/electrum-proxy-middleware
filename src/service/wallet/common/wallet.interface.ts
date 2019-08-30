@@ -6,5 +6,5 @@ export interface WalletLike {
     readonly address: string;
     readonly type: CoinType;
 
-    getHistory(page: number, perPage: number): Promise<TransactionLike[]>;
+    getHistory(page: number, perPage: number, req: any): Promise<TransactionLike[]>;
 }

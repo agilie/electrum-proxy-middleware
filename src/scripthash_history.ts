@@ -10,6 +10,8 @@ const router = require('express-async-router').AsyncRouter();
 
 router.get('/get_history', async (req, res) => {
     const coin_type = req.query['coin_type'];
+    const page = req.query['page'] || 1;
+    const pageSize = req.query['pageSize'] || 10;
 
     const options: WalletCreateOptionsInterface = {
         userString: '',
@@ -47,7 +49,7 @@ router.get('/get_history', async (req, res) => {
     }
 
     if (wallet) {
-        var result = await wallet.getHistory(1, 1, req);
+        var result = await wallet.getHistory(page, pageSize, req);
 
         res.json({
             status: 'success',

@@ -24,7 +24,7 @@ router.get('/get', async function (req, res) {
         await req.locals.ecl.server_version(clientName, protocolVersion);
     }
 
-    const json = await req.locals.ecl.blockchainTransaction_get(txHash, verbose, merkle);
+    const json = await req.locals.ecl.blockchainTransaction_get(txHash, verbose, null);
     await req.locals.ecl.close();
 
     res.json({
