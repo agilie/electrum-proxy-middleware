@@ -8,8 +8,8 @@ import WalletEth from "./service/wallet/wallet.eth";
 
 const router = require('express-async-router').AsyncRouter();
 
-router.get('/get_history', async (req, res) => {
-    const coin_type = req.query['coin_type'];
+router.get('/get_history', async (req: any, res: any) => {
+    const coinType = req.query['coinType'];
     const page = req.query['page'] || 1;
     const pageSize = req.query['pageSize'] || 10;
 
@@ -20,8 +20,8 @@ router.get('/get_history', async (req, res) => {
         bitcore: null
     };
 
-    var wallet = null;
-    switch (coin_type) {
+    let wallet = null;
+    switch (coinType) {
         case 'btc': {
             wallet = new WalletBtc(options);
             break;
@@ -49,7 +49,7 @@ router.get('/get_history', async (req, res) => {
     }
 
     if (wallet) {
-        var result = await wallet.getHistory(page, pageSize, req);
+        let result = await wallet.getHistory(page, pageSize, req);
 
         res.json({
             status: 'success',
@@ -64,9 +64,5 @@ router.get('/get_history', async (req, res) => {
 
 });
 
-// function _getElectrumConfig(type: string): ElectrumConfig {
-//     let configs = electrumServersDefault[type];
-//     return configs[Math.floor(Math.random() * configs.length)];
-// }
 
 module.exports = router;

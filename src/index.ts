@@ -1,3 +1,6 @@
+import {ElectrumConfig} from "./service/wallet/types/electrum.config";
+import {electrumServersDefault} from "./service/electrum-servers.default";
+
 const router = require('express-async-router').AsyncRouter();
 const ElectrumClient = require('./electrum-client');
 
@@ -15,8 +18,13 @@ router.use('/scripthash_history', require('./scripthash_history'));
 
 async function defineElectrumClient(req, res) {
     try {
-        validateRequiredParams(req);
-        const ecl = new ElectrumClient(req.query.port, req.query.host, req.query.connection || 'tcp');
+        let defaultOptions = req.query.coinType ? _getElectrumConfig(req.query.coinType) : null;
+        let port = req.query.port || (defaultOptions || {}).port;
+        let host = req.query.host || (defaultOptions || {}).ip;
+        let protocol = req.query.connection || (defaultOptions || {}).connectionType || 'tcp';
+
+        validateRequiredParams(port, host);
+        const ecl = new ElectrumClient(port, host, protocol);
         req.locals = req.locals || {};
         req.locals.ecl = ecl;
         return await ecl.connect();
@@ -25,11 +33,16 @@ async function defineElectrumClient(req, res) {
     }
 }
 
-function validateRequiredParams(req) {
-    if (!req.query.port) {
+function _getElectrumConfig(type: string): ElectrumConfig {
+    let configs = electrumServersDefault[type];
+    return configs[Math.floor(Math.random() * configs.length)];
+}
+
+function validateRequiredParams(port, host) {
+    if (!port) {
         throw Error('port is missing')
     }
-    if (!req.query.host) {
+    if (!host) {
         throw Error('host is missing')
     }
 }
