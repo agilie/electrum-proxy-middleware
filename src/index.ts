@@ -1,5 +1,6 @@
 import {ElectrumConfig} from './service/wallet/types/electrum.config';
 import {electrumServersDefault} from './service/electrum-servers.default';
+import {CoinType} from "./service/wallet/types/coin.type";
 
 const router = require('express-async-router').AsyncRouter();
 const ElectrumClient = require('./electrum-client');
@@ -33,7 +34,7 @@ async function defineElectrumClient(req: any, res: any) {
     }
 }
 
-function _getElectrumConfig(type: string): ElectrumConfig {
+function _getElectrumConfig(type: CoinType): ElectrumConfig {
     const configs = electrumServersDefault[type];
     return configs[Math.floor(Math.random() * configs.length)];
 }

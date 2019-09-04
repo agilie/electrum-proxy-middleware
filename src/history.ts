@@ -1,5 +1,4 @@
 import {WalletBtc} from './service/wallet/wallet.btc';
-import {config} from './app/app.config';
 import {WalletCreateOptionsInterface} from './service/wallet/common/wallet-create-options.interface';
 import {WalletLtc} from './service/wallet/wallet.ltc';
 import {WalletDash} from './service/wallet/wallet.dash';
@@ -13,8 +12,16 @@ router.get('/get_history', async (req: any, res: any) => {
     const coinType = req.query['coinType'];
     const page = req.query['page'] || 1;
     const pageSize = req.query['pageSize'] || 10;
+    const isProd = req.query['isProd'] || false;
 
-    const wallet = getWallet(coinType);
+    const options: WalletCreateOptionsInterface = {
+        userString: '',
+        isProd: isProd,
+        type: null,
+        bitcore: null,
+    };
+
+    const wallet = getWallet(coinType, options);
 
     if (wallet) {
         const perf = require('execution-time')();
@@ -35,13 +42,7 @@ router.get('/get_history', async (req: any, res: any) => {
     }
 });
 
-function getWallet(coinType: string): WalletLike {
-    const options: WalletCreateOptionsInterface = {
-        userString: '',
-        isProd: config.wallet.isProd,
-        type: null,
-        bitcore: null,
-    };
+function getWallet(coinType: string, options: WalletCreateOptionsInterface) : WalletLike {
 
     let wallet: WalletLike = null;
     switch (coinType) {

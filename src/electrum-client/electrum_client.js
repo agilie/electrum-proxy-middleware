@@ -74,7 +74,7 @@ class ElectrumClient extends Client{
         return this.request('blockchain.transaction.broadcast', [rawtx])
     }
 
-    blockchainTransaction_get(tx_hash, verbose, p){
+    blockchainTransaction_get(tx_hash, verbose){
         return this.request('blockchain.transaction.get', [tx_hash, verbose ? verbose : false])
     }
     blockchainTransaction_getMerkle(tx_hash, height){
