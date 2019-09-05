@@ -3,7 +3,6 @@ import {WalletCreateOptionsInterface} from './service/wallet/common/wallet-creat
 import {WalletLtc} from './service/wallet/wallet.ltc';
 import {WalletDash} from './service/wallet/wallet.dash';
 import {WalletZec} from './service/wallet/wallet.zec';
-import WalletEth from './service/wallet/wallet.eth';
 import {WalletLike} from './service/wallet/common/wallet.interface';
 
 const router = require('express-async-router').AsyncRouter();
@@ -60,10 +59,6 @@ function getWallet(coinType: string, options: WalletCreateOptionsInterface) : Wa
         }
         case 'zec': {
             wallet = new WalletZec(options);
-            break;
-        }
-        case 'eth': {
-            wallet = new WalletEth(options);
             break;
         }
         default: {
