@@ -16,13 +16,6 @@ router.post('/broadcast', async function (req, res) {
 router.get('/get', async function (req, res) {
     const txHash = req.query['tx_hash'];
     const verbose = req.query['verbose'] === 'true';
-    const merkle = req.query['merkle'] === 'true';
-
-    if (req.query['protocol_version']) {
-        const clientName = req.query['client_name'] || 'test';
-        const protocolVersion = req.query['protocol_version'];
-        await req.locals.ecl.server_version(clientName, protocolVersion);
-    }
 
     const json = await req.locals.ecl.blockchainTransaction_get(txHash, verbose, null);
     await req.locals.ecl.close();
