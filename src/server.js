@@ -26,19 +26,6 @@ router.get('/banner', async function (req, res) {
 });
 
 // server.version
-router.post('/version', async function (req, res) {
-    const clientName = req.locals.ecl.host;
-    const protocolVersion = req.locals.ecl.protocol;
-    const json = await req.locals.ecl.server_version(clientName, protocolVersion);
-    await req.locals.ecl.close();
-
-    res.json({
-        status: 'success',
-        result: json
-    });
-});
-
-// server.version
 router.get('/version', async function (req, res) {
     if (req.query['protocol_version']) {
         const clientName = req.locals.ecl.host;
@@ -97,4 +84,5 @@ router.get('/ping', async function (req, res) {
         result: json
     });
 });
+
 module.exports = router;

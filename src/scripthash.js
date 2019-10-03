@@ -12,19 +12,6 @@ router.get('/balance', async (req, res) => {
     });
 });
 
-// 'blockchain.scripthash.get_history'
-// TODO: Add pagination here
-router.get('/history', async (req, res) => {
-    const scripthash = req.query['scripthash'];
-    const json = await req.locals.ecl.blockchainScripthash_getHistory(scripthash);
-    await req.locals.ecl.close();
-
-    res.json({
-        status: 'success',
-        result: json
-    });
-});
-
 // 'blockchain.scripthash.listunspent'
 router.get('/listunspent', async (req, res) => {
     const scripthash = req.query['scripthash'];
