@@ -4,6 +4,7 @@ import {WalletLtc} from './service/wallet/wallet.ltc';
 import {WalletDash} from './service/wallet/wallet.dash';
 import {WalletZec} from './service/wallet/wallet.zec';
 import {WalletLike} from './service/wallet/common/wallet.interface';
+import {CoinType} from './service/wallet/types/coin.type';
 
 const router = require('express-async-router').AsyncRouter();
 
@@ -16,7 +17,7 @@ router.get('/get_history', async (req: any, res: any) => {
     const options: WalletCreateOptionsInterface = {
         userString: '',
         isProd: isProd,
-        type: null,
+        type: CoinType.BTC,
         bitcore: null,
     };
 
@@ -42,8 +43,7 @@ router.get('/get_history', async (req: any, res: any) => {
 });
 
 function getWallet(coinType: string, options: WalletCreateOptionsInterface) : WalletLike {
-
-    let wallet: WalletLike = null;
+    let wallet: WalletLike =  new WalletBtc(options);
     switch (coinType) {
         case 'btc': {
             wallet = new WalletBtc(options);

@@ -42,7 +42,7 @@ export const electrumServersDefault: CoinMap<ElectrumConfig[]> = {
             version: 1.4,
         },
     ],
-    [CoinType.ETH]: [],
+//    [CoinType.ETH]: [],
     [CoinType.ZEC]: [
         {
             ip: 'electrum1.cipig.net',
@@ -99,7 +99,7 @@ export const electrumServersDefaultTestnet: CoinMap<ElectrumConfig[]> = {
             version: 1.4,
         },
     ],
-    [CoinType.ETH]: [],
+//    [CoinType.ETH]: [],
     [CoinType.ZEC]: [
         // {
         //     // TODO find testnet for ZEC
