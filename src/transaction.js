@@ -2,7 +2,7 @@ const router = require('express-async-router').AsyncRouter();
 
 // blockchain.transaction.broadcast
 router.post('/broadcast', async function (req, res) {
-    const rawTx = req.query['raw_tx'];
+    const rawTx = req.body['raw_tx'];
     const json = await req.locals.ecl.blockchainTransaction_broadcast(rawTx);
     await req.locals.ecl.close();
 
