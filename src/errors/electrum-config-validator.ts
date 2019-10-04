@@ -22,14 +22,14 @@ export class ElectrumConfigValidator {
         }
     }
 
-    validateCoinType() {
+    private validateCoinType() {
         const coinType = this.params.coinType;
         if (!Object.values(CoinType).includes(coinType)) {
             this.errors.push('Coin Type is not supported');
         }
     }
 
-    validateRequiredServerParams() {
+    private validateRequiredServerParams() {
         if (!this.params.port) {
             this.errors.push('port is missing');
         }
@@ -44,14 +44,14 @@ export class ElectrumConfigValidator {
         }
     }
 
-    someServerParamPresent() {
+    private someServerParamPresent() {
         return [this.params.port,
             this.params.host,
             this.params.protocol,
             this.params.version].some(elem => elem);
     }
 
-    allParamsMissing(): boolean {
+    private allParamsMissing(): boolean {
         return [this.params.port,
             this.params.host,
             this.params.protocol,
