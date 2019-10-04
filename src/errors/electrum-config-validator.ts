@@ -45,11 +45,18 @@ export class ElectrumConfigValidator {
     }
 
     someServerParamPresent() {
-        return (this.params.port || this.params.host || this.params.protocol || this.params.version);
+        return [this.params.port,
+            this.params.host,
+            this.params.protocol,
+            this.params.version].some(elem => elem);
     }
 
-    allParamsMissing() {
-        return (!this.params.port && !this.params.host && !this.params.protocol && !this.params.version && !this.params.coinType);
+    allParamsMissing(): boolean {
+        return [this.params.port,
+            this.params.host,
+            this.params.protocol,
+            this.params.version,
+            this.params.coinType].every(elem => !elem);
     }
 }
 

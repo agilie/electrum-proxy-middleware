@@ -23,18 +23,22 @@ router.get('/get_history', async (req: any, res: any) => {
     };
 
     const wallet = getWallet(coinType, options);
-
-    const perf = require('execution-time')();
-    perf.start();
-    const result = await wallet.getHistory(page, pageSize, req);
-    const timeResult = perf.stop();
+    const {result, executionTime} = await getHistory(wallet, page, pageSize, req);
 
     return res.json({
         status: 'success',
         result: result,
-        time: timeResult.time,
+        time: executionTime.time,
     });
 });
+
+async function getHistory(wallet: WalletLike, page: number, pageSize: number, req: any) {
+    const perf = require('execution-time')();
+    perf.start();
+    const result = await wallet.getHistory(page, pageSize, req);
+    const timeResult = perf.stop();
+    return {result, executionTime: timeResult};
+}
 
 function getWallet(coinType: string, options: WalletCreateOptionsInterface): WalletLike {
     let wallet: WalletLike;
@@ -59,7 +63,7 @@ function getWallet(coinType: string, options: WalletCreateOptionsInterface): Wal
     return wallet;
 }
 
-function validateCoinType(coinType: CoinType, res: any): WalletLike {
+function validateCoinType(coinType: CoinType, res: any) {
     if(!coinType) {
         return res.json({
             status: 'error',
