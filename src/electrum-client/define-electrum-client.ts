@@ -8,7 +8,7 @@ const ElectrumClient = require('./index');
 
 async function defineElectrumClient(req: any, res: any) {
     try {
-        validateInitRequiredParams(req.query);
+        validateRequiredParams(req.query);
 
         const coinType = req.query.coinType;
         const defaultOptions = coinType ? _getElectrumConfig(req.query.coinType) : null;
@@ -27,7 +27,7 @@ async function defineElectrumClient(req: any, res: any) {
     }
 }
 
-function validateInitRequiredParams(query: any) {
+function validateRequiredParams(query: any) {
     let validator = new ElectrumConfigValidator(query);
     validator.validateInitRequiredParams();
     if(validator.errors.length > 0){
