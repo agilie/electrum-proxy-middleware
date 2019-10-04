@@ -9,8 +9,10 @@ const ElectrumClient = require('./index');
 async function defineElectrumClient(req: any, res: any) {
     try {
         validateInitRequiredParams(req.query);
+
         const coinType = req.query.coinType;
         const defaultOptions = coinType ? _getElectrumConfig(req.query.coinType) : null;
+
         const port = req.query.port || (defaultOptions || {}).port;
         const host = req.query.host || (defaultOptions || {}).ip;
         const protocol = req.query.protocol || (defaultOptions || {}).connectionType || 'tcp';
