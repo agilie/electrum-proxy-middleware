@@ -26,9 +26,6 @@
   },
   "homepage": "https://github.com/agilie/electrum-proxy-middleware#readme",
   "dependencies": {
-    "@angular/common": "^8.2.4",
-    "@angular/compiler": "^8.2.4",
-    "@angular/core": "^8.2.4",
     "@dashevo/dashcore-lib": "^0.17.9",
     "@types/lodash": "^4.14.138",
     "bitcore-lib": "^8.3.4",
