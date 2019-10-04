@@ -1,9 +1,5 @@
-import {ElectrumConfig} from './service/wallet/types/electrum.config';
-import {electrumServersDefault} from './service/electrum-servers.default';
-import {CoinType} from "./service/wallet/types/coin.type";
-
 const router = require('express-async-router').AsyncRouter();
-const ElectrumClient = require('./electrum-client');
+const defineElectrumClient = require('./electrum-client/define-electrum-client');
 
 router.use(defineElectrumClient);
 
@@ -15,37 +11,5 @@ router.use('/blockchain', require('./blockchain'));
 router.use('/scripthash', require('./scripthash'));
 router.use('/mempool', require('./mempool'));
 router.use('/history', require('./history'));
-
-async function defineElectrumClient(req: any, res: any) {
-    try {
-        const defaultOptions = req.query.coinType ? _getElectrumConfig(req.query.coinType) : null;
-        const port = req.query.port || (defaultOptions || {}).port;
-        const host = req.query.host || (defaultOptions || {}).ip;
-        const protocol = req.query.connection || (defaultOptions || {}).connectionType || 'tcp';
-        const version = req.query.version || (defaultOptions || {}).version;
-
-        validateRequiredParams(port, host);
-        const ecl = new ElectrumClient(port, host, protocol, version);
-        req.locals = req.locals || {};
-        req.locals.ecl = ecl;
-        return await ecl.connect();
-    } catch (e) {
-        res.json({error: e.message}).status(409);
-    }
-}
-
-function _getElectrumConfig(type: CoinType): ElectrumConfig {
-    const configs = electrumServersDefault[type];
-    return configs[Math.floor(Math.random() * configs.length)];
-}
-
-function validateRequiredParams(port: number, host: string) {
-    if (!port) {
-        throw Error('port is missing');
-    }
-    if (!host) {
-        throw Error('host is missing');
-    }
-}
 
 module.exports = router;

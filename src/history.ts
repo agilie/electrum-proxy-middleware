@@ -10,6 +10,7 @@ const router = require('express-async-router').AsyncRouter();
 
 router.get('/get_history', async (req: any, res: any) => {
     const coinType = req.query['coinType'];
+    validateCoinType(coinType, res);
     const page = req.query['page'] || 1;
     const pageSize = req.query['pageSize'] || 10;
     const isProd = req.query['isProd'] || false;
@@ -23,49 +24,48 @@ router.get('/get_history', async (req: any, res: any) => {
 
     const wallet = getWallet(coinType, options);
 
-    if (wallet) {
-        const perf = require('execution-time')();
-        perf.start();
-        const result = await wallet.getHistory(page, pageSize, req);
-        const timeResult = perf.stop();
+    const perf = require('execution-time')();
+    perf.start();
+    const result = await wallet.getHistory(page, pageSize, req);
+    const timeResult = perf.stop();
 
-        return res.json({
-            status: 'success',
-            result: result,
-            time: timeResult.time,
-        });
-    } else {
-        return res.json({
-            status: 'error',
-            result: [],
-        });
-    }
+    return res.json({
+        status: 'success',
+        result: result,
+        time: timeResult.time,
+    });
 });
 
-function getWallet(coinType: string, options: WalletCreateOptionsInterface) : WalletLike {
-    let wallet: WalletLike =  new WalletBtc(options);
+function getWallet(coinType: string, options: WalletCreateOptionsInterface): WalletLike {
+    let wallet: WalletLike;
     switch (coinType) {
-        case 'btc': {
+        case CoinType.BTC: {
             wallet = new WalletBtc(options);
             break;
         }
-        case 'ltc': {
+        case CoinType.LTC: {
             wallet = new WalletLtc(options);
             break;
         }
-        case 'dash': {
+        case CoinType.DASH: {
             wallet = new WalletDash(options);
             break;
         }
-        case 'zec': {
+        case CoinType.ZEC: {
             wallet = new WalletZec(options);
-            break;
-        }
-        default: {
             break;
         }
     }
     return wallet;
+}
+
+function validateCoinType(coinType: CoinType, res: any): WalletLike {
+    if(!coinType) {
+        return res.json({
+            status: 'error',
+            result: 'Coin type is missing'
+        });
+    }
 }
 
 module.exports = router;
