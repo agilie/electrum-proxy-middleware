@@ -36,7 +36,10 @@
     "rxjs": "^6.5.3",
     "service": "^0.1.4",
     "tslint": "^5.19.0",
-    "zcash-bitcore-lib": "^0.13.20-rc3"
+    "zcash-bitcore-lib": "^0.13.20-rc3",
+    "reflect-metadata": "^0.1.13",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.10.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.1",

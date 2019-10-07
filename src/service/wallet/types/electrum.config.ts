@@ -1,6 +1,8 @@
+import {ProtocolTypeEnum} from '../../../electrum-client/types/protocol.type.enum';
+
 export interface ElectrumConfig {
-    ip: string;
+    host: string;
     port: number;
-    connectionType: 'tcp' | 'ssl';
+    connectionType: ProtocolTypeEnum;
     version: number;
 }

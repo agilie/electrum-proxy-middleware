@@ -1,22 +1,22 @@
 import {electrumServersDefault} from '../service/electrum-servers.default';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
-import {ElectrumConfigValidator} from '../errors/electrum-config-validator';
 import {CoinType} from '../service/wallet/types/coin.type';
-
+import {validate, validateOrReject} from 'class-validator';
+import {ConfigurationReqDTO} from './types/configuration-req-dto';
+import {Request, Response} from 'express';
+import {CoinTypeReqDTO} from './types/coin-type-req-dto';
+import {ProtocolTypeEnum} from './types/protocol.type.enum';
+import {plainToClass} from 'class-transformer';
 
 const ElectrumClient = require('./index');
 
-async function defineElectrumClient(req: any, res: any) {
+async function defineElectrumClient(req: any, res: Response) {
     try {
-        validateRequiredParams(req.query);
-
-        const coinType = req.query.coinType;
-        const defaultOptions = coinType ? _getElectrumConfig(req.query.coinType) : null;
-
-        const port = req.query.port || (defaultOptions || {}).port;
-        const host = req.query.host || (defaultOptions || {}).ip;
-        const protocol = req.query.protocol || (defaultOptions || {}).connectionType || 'tcp';
-        const version = req.query.version || (defaultOptions || {}).version;
+        const defaultOptions: ElectrumConfig = await getOptions(req.query);
+        const port = defaultOptions.port;
+        const host = defaultOptions.host;
+        const protocol = defaultOptions.connectionType;
+        const version = defaultOptions.version;
 
         const ecl = new ElectrumClient(port, host, protocol, version);
         req.locals = req.locals || {};
@@ -27,18 +27,31 @@ async function defineElectrumClient(req: any, res: any) {
     }
 }
 
-function validateRequiredParams(query: any) {
-    let validator = new ElectrumConfigValidator(query);
-    validator.validateInitRequiredParams();
-    if(validator.errors.length > 0){
-        throw Error(validator.errors.toString());
+async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<ElectrumConfig> {
+    if ((query as CoinTypeReqDTO).coinType) {
+        const coinTypeDTO : CoinTypeReqDTO = plainToClass(CoinTypeReqDTO, query);
+        await validateRequiredFields(coinTypeDTO);
+        return _getElectrumConfig(coinTypeDTO.coinType);
+    } else {
+        const configurationDTO : ConfigurationReqDTO = plainToClass(ConfigurationReqDTO, query);
+        await validateRequiredFields(configurationDTO);
+        return configurationDTO;
     }
+}
+
+async function validateRequiredFields(object: ConfigurationReqDTO | CoinTypeReqDTO) {
+    await validateOrReject(object).catch(errors => {
+        let err = '';
+        for(let error of errors){
+            err += Object.values(error['constraints']).join(', ');
+        }
+        throw new Error("Promise rejected (validation failed). Errors: " + err);
+    });
 }
 
 function _getElectrumConfig(type: CoinType): ElectrumConfig {
     const configs = electrumServersDefault[type];
     return configs[Math.floor(Math.random() * configs.length)];
 }
-
 
 module.exports = defineElectrumClient;

@@ -1,15 +1,19 @@
-const router = require('express-async-router').AsyncRouter();
+import 'reflect-metadata';
+import {AsyncRouter} from 'express-async-router';
+
 const defineElectrumClient = require('./electrum-client/define-electrum-client');
 
-router.use(defineElectrumClient);
+const asyncRouter = AsyncRouter();
 
-router.use('/server', require('./server'));
-router.use('/transaction', require('./transaction'));
-router.use('/address', require('./address'));
-router.use('/block', require('./block'));
-router.use('/blockchain', require('./blockchain'));
-router.use('/scripthash', require('./scripthash'));
-router.use('/mempool', require('./mempool'));
-router.use('/history', require('./history'));
+asyncRouter.use(defineElectrumClient);
 
-module.exports = router;
+asyncRouter.use('/server', require('./server'));
+asyncRouter.use('/transaction', require('./transaction'));
+asyncRouter.use('/address', require('./address'));
+asyncRouter.use('/block', require('./block'));
+asyncRouter.use('/blockchain', require('./blockchain'));
+asyncRouter.use('/scripthash', require('./scripthash'));
+asyncRouter.use('/mempool', require('./mempool'));
+asyncRouter.use('/history', require('./history'));
+
+export const router = asyncRouter;
