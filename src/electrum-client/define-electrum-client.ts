@@ -1,11 +1,10 @@
 import {electrumServersDefault} from '../service/electrum-servers.default';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
 import {CoinType} from '../service/wallet/types/coin.type';
-import {validate, validateOrReject} from 'class-validator';
+import {validateOrReject} from 'class-validator';
 import {ConfigurationReqDTO} from './types/configuration-req-dto';
-import {Request, Response} from 'express';
+import {Response} from 'express';
 import {CoinTypeReqDTO} from './types/coin-type-req-dto';
-import {ProtocolTypeEnum} from './types/protocol.type.enum';
 import {plainToClass} from 'class-transformer';
 
 const ElectrumClient = require('./index');
@@ -41,11 +40,13 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
 
 async function validateRequiredFields(object: ConfigurationReqDTO | CoinTypeReqDTO) {
     await validateOrReject(object).catch(errors => {
-        let err = '';
-        for(let error of errors){
-            err += Object.values(error['constraints']).join(', ');
+        let err = [];
+        for(let validationError of errors){
+            for(let error of Object.values(validationError['constraints'])){
+                err.push(error);
+            }
         }
-        throw new Error("Promise rejected (validation failed). Errors: " + err);
+        throw new Error("Promise rejected (validation failed). Errors: " + err.join(', '));
     });
 }
 
