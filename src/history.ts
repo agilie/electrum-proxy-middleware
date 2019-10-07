@@ -6,9 +6,10 @@ import {WalletZec} from './service/wallet/wallet.zec';
 import {WalletLike} from './service/wallet/common/wallet.interface';
 import {CoinType} from './service/wallet/types/coin.type';
 
-const router = require('express-async-router').AsyncRouter();
+import {AsyncRouter} from 'express-async-router';
+const asyncRouter = AsyncRouter();
 
-router.get('/get_history', async (req: any, res: any) => {
+asyncRouter.get('/get_history', async (req: any, res: any) => {
     const coinType = req.query['coinType'];
     validateCoinType(coinType, res);
     const page = req.query['page'] || 1;
@@ -72,4 +73,4 @@ function validateCoinType(coinType: CoinType, res: any) {
     }
 }
 
-module.exports = router;
+export const router = asyncRouter;

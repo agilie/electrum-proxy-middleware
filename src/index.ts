@@ -14,6 +14,6 @@ asyncRouter.use('/block', require('./block'));
 asyncRouter.use('/blockchain', require('./blockchain'));
 asyncRouter.use('/scripthash', require('./scripthash'));
 asyncRouter.use('/mempool', require('./mempool'));
-asyncRouter.use('/history', require('./history'));
+asyncRouter.use('/history', require('./history').router);
 
 export const router = asyncRouter;
