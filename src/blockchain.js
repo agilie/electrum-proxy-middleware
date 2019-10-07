@@ -1,6 +1,6 @@
 const router = require('express-async-router').AsyncRouter();
 
-// blockchain.block.header
+// blockchain.estimatefee
 router.get('/estimatefee', async (req, res) => {
     const blocks = req.query['blocks'];
     const json = await req.locals.ecl.blockchainEstimatefee(blocks);

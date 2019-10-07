@@ -2,7 +2,7 @@ const router = require('express-async-router').AsyncRouter();
 
 // blockchain.transaction.broadcast
 router.post('/broadcast', async function (req, res) {
-    const rawTx = req.params['raw_tx'];
+    const rawTx = req.body['raw_tx'];
     const json = await req.locals.ecl.blockchainTransaction_broadcast(rawTx);
     await req.locals.ecl.close();
 
@@ -16,15 +16,8 @@ router.post('/broadcast', async function (req, res) {
 router.get('/get', async function (req, res) {
     const txHash = req.query['tx_hash'];
     const verbose = req.query['verbose'] === 'true';
-    const merkle = req.query['merkle'] === 'true';
 
-    if (req.query['protocol_version']) {
-        const clientName = req.query['client_name'] || 'test';
-        const protocolVersion = req.query['protocol_version'];
-        await req.locals.ecl.server_version(clientName, protocolVersion);
-    }
-
-    const json = await req.locals.ecl.blockchainTransaction_get(txHash, verbose, merkle);
+    const json = await req.locals.ecl.blockchainTransaction_get(txHash, verbose, null);
     await req.locals.ecl.close();
 
     res.json({

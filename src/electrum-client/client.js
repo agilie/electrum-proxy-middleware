@@ -5,16 +5,17 @@ const initSocket = require('./init_socket')
 const connectSocket = require('./connect_socket')
 
 class Client{
-    constructor(port, host, protocol = 'tcp', options = void 0){
+    constructor(port, host, protocol = 'tcp', version, options = void 0){
         this.id = 0;
-        this.port = port
-        this.host = host
-        this.callback_message_queue = {}
-        this.subscribe = new EventEmitter()
-        this.conn = initSocket(this, protocol, options)
+        this.port = port;
+        this.host = host;
+        this.version = version;
+        this.callback_message_queue = {};
+        this.subscribe = new EventEmitter();
+        this.conn = initSocket(this, protocol, options);
         this.mp = new util.MessageParser((body, n) => {
             this.onMessage(body, n)
-        })
+        });
         this.status = 0
     }
 
@@ -22,7 +23,7 @@ class Client{
         if(this.status) {
             return Promise.resolve()
         }
-        this.status = 1
+        this.status = 1;
         return connectSocket(this.conn, this.port, this.host)
     }
 
@@ -30,8 +31,8 @@ class Client{
         if(!this.status) {
             return
         }
-        this.conn.end()
-        this.conn.destroy()
+        this.conn.end();
+        this.conn.destroy();
         this.status = 0
     }
 
@@ -48,9 +49,9 @@ class Client{
     }
 
     response(msg){
-        const callback = this.callback_message_queue[msg.id]
+        const callback = this.callback_message_queue[msg.id];
         if(callback){
-            delete this.callback_message_queue[msg.id]
+            delete this.callback_message_queue[msg.id];
             if(msg.error){
                 callback(msg.error)
             }else{

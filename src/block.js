@@ -3,7 +3,7 @@ const router = require('express-async-router').AsyncRouter();
 // blockchain.block.header
 router.get('/header', async (req, res) => {
     const height = req.query['height'];
-    const protocolVersion = req.query['protocol'];
+    const protocolVersion = req.locals.ecl['version'];
     const json = await req.locals.ecl.blockchainBlock_getHeader(height, protocolVersion);
     await req.locals.ecl.close();
 
