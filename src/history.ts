@@ -10,6 +10,10 @@ import {AsyncRouter} from 'express-async-router';
 const asyncRouter = AsyncRouter();
 
 asyncRouter.get('/get_history', async (req: any, res: any) => {
+    return await getHistoryHandler(res);
+});
+
+async function getHistoryHandler(res: any) {
     const coinType = req.query['coinType'];
     validateCoinType(coinType, res);
     const page = req.query['page'] || 1;
@@ -31,7 +35,7 @@ asyncRouter.get('/get_history', async (req: any, res: any) => {
         result: result,
         time: executionTime.time,
     });
-});
+}
 
 async function getHistory(wallet: WalletLike, page: number, pageSize: number, req: any) {
     const perf = require('execution-time')();

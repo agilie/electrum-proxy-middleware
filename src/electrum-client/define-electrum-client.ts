@@ -22,32 +22,20 @@ async function defineElectrumClient(req: any, res: Response) {
         req.locals.ecl = ecl;
         return await ecl.connect();
     } catch (e) {
-        res.json({error: e.message}).status(409);
+        res.json({error: e.message || e}).status(409);
     }
 }
 
 async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<ElectrumConfig> {
     if ((query as CoinTypeReqDTO).coinType) {
-        const coinTypeDTO : CoinTypeReqDTO = plainToClass(CoinTypeReqDTO, query);
-        await validateRequiredFields(coinTypeDTO);
+        const coinTypeDTO: CoinTypeReqDTO = plainToClass(CoinTypeReqDTO, query);
+        await validateOrReject(coinTypeDTO);
         return _getElectrumConfig(coinTypeDTO.coinType);
     } else {
-        const configurationDTO : ConfigurationReqDTO = plainToClass(ConfigurationReqDTO, query);
-        await validateRequiredFields(configurationDTO);
+        const configurationDTO: ConfigurationReqDTO = plainToClass(ConfigurationReqDTO, query);
+        await validateOrReject(configurationDTO);
         return configurationDTO;
     }
-}
-
-async function validateRequiredFields(object: ConfigurationReqDTO | CoinTypeReqDTO) {
-    await validateOrReject(object).catch(errors => {
-        let err = [];
-        for(let validationError of errors){
-            for(let error of Object.values(validationError['constraints'])){
-                err.push(error);
-            }
-        }
-        throw new Error("Promise rejected (validation failed). Errors: " + err.join(', '));
-    });
 }
 
 function _getElectrumConfig(type: CoinType): ElectrumConfig {
@@ -55,4 +43,9 @@ function _getElectrumConfig(type: CoinType): ElectrumConfig {
     return configs[Math.floor(Math.random() * configs.length)];
 }
 
-module.exports = defineElectrumClient;
+if (process.env.NODE_ENV === 'test') {
+    module.exports = getOptions;
+} else {
+    module.exports = defineElectrumClient;
+}
+
