@@ -43,9 +43,5 @@ function _getElectrumConfig(type: CoinType): ElectrumConfig {
     return configs[Math.floor(Math.random() * configs.length)];
 }
 
-if (process.env.NODE_ENV === 'test') {
-    module.exports = getOptions;
-} else {
-    module.exports = defineElectrumClient;
-}
-
+module.exports.defineElectrumClient = defineElectrumClient;
+module.exports.getOptions = getOptions;

@@ -1,4 +1,5 @@
-import getOptions from '../../../src/electrum-client/define-electrum-client';
+let electrumClient = require('../../../src/electrum-client/define-electrum-client');
+
 import {ProtocolTypeEnum} from '../../../src/electrum-client/types/protocol.type.enum';
 
 describe('getOptions method', function() {
@@ -12,7 +13,7 @@ describe('getOptions method', function() {
                     connectionType: 'ssl',
                     version: '1.4'
                 };
-                const options = await getOptions(query);
+                const options = await electrumClient.getOptions(query);
 
                 expect(options).toHaveProperty('host');
                 expect(options).toHaveProperty('port');
@@ -36,7 +37,7 @@ describe('getOptions method', function() {
                             version: '1.4'
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('isDefined');
@@ -56,7 +57,7 @@ describe('getOptions method', function() {
                             version: '1.4'
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('isNotEmpty');
@@ -75,7 +76,7 @@ describe('getOptions method', function() {
                             connectionType: 'ssl'
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('isDefined');
@@ -95,7 +96,7 @@ describe('getOptions method', function() {
                             version: ''
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('isNotEmpty');
@@ -114,7 +115,7 @@ describe('getOptions method', function() {
                         version: '1.4'
                     };
                     try {
-                        await getOptions(query);
+                        await electrumClient.getOptions(query);
                     } catch (error) {
                         const warning = error[0].constraints;
                         expect(warning).toHaveProperty('isEnum');
@@ -132,7 +133,7 @@ describe('getOptions method', function() {
                             version: '1.4'
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('isDefined');
@@ -152,7 +153,7 @@ describe('getOptions method', function() {
                             version: '1.4'
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('isNotEmpty');
@@ -170,7 +171,7 @@ describe('getOptions method', function() {
                             version: '1.4'
                         };
                         try {
-                            await getOptions(query);
+                            await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
                             expect(warning).toHaveProperty('maxLength');
