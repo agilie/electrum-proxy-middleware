@@ -10,10 +10,10 @@ import {AsyncRouter} from 'express-async-router';
 const asyncRouter = AsyncRouter();
 
 asyncRouter.get('/get_history', async (req: any, res: any) => {
-    return await getHistoryHandler(res, req);
+    return await getHistoryHandler(req, res);
 });
 
-async function getHistoryHandler(res: any, req: any) {
+async function getHistoryHandler(req: any, res: any) {
     const coinType = req.query['coinType'];
     validateCoinType(coinType, res);
     const page = req.query['page'] || 1;
@@ -77,4 +77,6 @@ function validateCoinType(coinType: CoinType, res: any) {
     }
 }
 
-export const router = asyncRouter;
+const router = asyncRouter;
+export {router, getHistoryHandler}
+
