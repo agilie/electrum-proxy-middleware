@@ -1,6 +1,6 @@
 let electrumClient = require('../../../src/electrum-client/define-electrum-client');
-
 import {ProtocolTypeEnum} from '../../../src/electrum-client/types/protocol.type.enum';
+import {ConfigurationReqDTO} from '../../../src/electrum-client/types/configuration-req-dto';
 
 describe('getOptions method', function() {
     describe('with configurations params', function() {
@@ -8,22 +8,21 @@ describe('getOptions method', function() {
         describe('with valid configuration params', function() {
             it('return valid ElectrumConfig data', async function() {
                 const query = {
-                    port: '55002',
+                    port: 55002,
                     host: 'tn.not.fyi',
-                    connectionType: 'ssl',
-                    version: '1.4'
+                    connectionType: ProtocolTypeEnum.SSL,
+                    version: 1.4
                 };
                 const options = await electrumClient.getOptions(query);
 
-                expect(options).toHaveProperty('host');
-                expect(options).toHaveProperty('port');
-                expect(options).toHaveProperty('connectionType');
-                expect(options).toHaveProperty('version');
+                const expected: ConfigurationReqDTO = {
+                    port: 55002,
+                    host: 'tn.not.fyi',
+                    connectionType: ProtocolTypeEnum.SSL,
+                    version: 1.4
+                };
 
-                expect(options.host).toEqual(expect.stringContaining('tn.not.fyi'));
-                expect(options.port).toEqual(expect.stringContaining('55002'));
-                expect(options.connectionType).toEqual(expect.stringContaining(ProtocolTypeEnum.SSL));
-                expect(options.version).toEqual(expect.stringContaining('1.4'));
+                expect(options).toEqual(expected);
             });
         });
 
@@ -33,17 +32,18 @@ describe('getOptions method', function() {
                     it('return warning about port', async function() {
                         const query = {
                             host: 'tn.not.fyi',
-                            connectionType: 'ssl',
-                            version: '1.4'
+                            connectionType: ProtocolTypeEnum.SSL,
+                            version: 1.4
                         };
                         try {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('isDefined');
-                            expect(warning.isDefined).toEqual(expect.stringContaining('port should not be null or undefined'));
-                            expect(warning).toHaveProperty('isNotEmpty');
-                            expect(warning.isNotEmpty).toEqual(expect.stringContaining('port should not be empty'));
+                            const expected: any = {
+                                isDefined: 'port should not be null or undefined',
+                                isNotEmpty: 'port should not be empty'
+                            };
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
@@ -53,15 +53,15 @@ describe('getOptions method', function() {
                         const query = {
                             port: '',
                             host: 'tn.not.fyi',
-                            connectionType: 'ssl',
-                            version: '1.4'
+                            connectionType: ProtocolTypeEnum.SSL,
+                            version: 1.4
                         };
                         try {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('isNotEmpty');
-                            expect(warning.isNotEmpty).toEqual(expect.stringContaining('port should not be empty'));
+                            const expected: any = {isNotEmpty: 'port should not be empty'};
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
@@ -71,18 +71,19 @@ describe('getOptions method', function() {
                 describe('without version', function() {
                     it('return warning about version', async function() {
                         const query = {
-                            port: '55002',
+                            port: 55002,
                             host: 'tn.not.fyi',
-                            connectionType: 'ssl'
+                            connectionType: ProtocolTypeEnum.SSL
                         };
                         try {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('isDefined');
-                            expect(warning.isDefined).toEqual(expect.stringContaining('version should not be null or undefined'));
-                            expect(warning).toHaveProperty('isNotEmpty');
-                            expect(warning.isNotEmpty).toEqual(expect.stringContaining('version should not be empty'));
+                            const expected: any = {
+                                isDefined: 'version should not be null or undefined',
+                                isNotEmpty: 'version should not be empty'
+                            };
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
@@ -90,17 +91,17 @@ describe('getOptions method', function() {
                 describe('with empty version', function() {
                     it('return warning about version', async function() {
                         const query = {
-                            port: '55002',
+                            port: 55002,
                             host: 'tn.not.fyi',
-                            connectionType: 'ssl',
+                            connectionType: ProtocolTypeEnum.SSL,
                             version: ''
                         };
                         try {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('isNotEmpty');
-                            expect(warning.isNotEmpty).toEqual(expect.stringContaining('version should not be empty'));
+                            const expected: any = {isNotEmpty: 'version should not be empty'};
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
@@ -118,8 +119,8 @@ describe('getOptions method', function() {
                         await electrumClient.getOptions(query);
                     } catch (error) {
                         const warning = error[0].constraints;
-                        expect(warning).toHaveProperty('isEnum');
-                        expect(warning.isEnum).toEqual(expect.stringContaining('connectionType must be a valid enum value'));
+                        const expected: any = {isEnum: 'connectionType must be a valid enum value'};
+                        expect(warning).toEqual(expected);
                     }
                 });
             });
@@ -136,10 +137,14 @@ describe('getOptions method', function() {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('isDefined');
-                            expect(warning.isDefined).toEqual(expect.stringContaining('host should not be null or undefined'));
-                            expect(warning).toHaveProperty('isNotEmpty');
-                            expect(warning.isNotEmpty).toEqual(expect.stringContaining('host should not be empty'));
+                            const expected: any = {
+                                isDefined: 'host should not be null or undefined',
+                                maxLength: 'host must be shorter than or equal to 20 characters',
+                                minLength: 'host must be longer than or equal to 0 characters',
+                                isString: 'host must be a string',
+                                isNotEmpty: 'host should not be empty'
+                            };
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
@@ -156,8 +161,8 @@ describe('getOptions method', function() {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('isNotEmpty');
-                            expect(warning.isNotEmpty).toEqual(expect.stringContaining('host should not be empty'));
+                            const expected: any = {isNotEmpty: 'host should not be empty'};
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
@@ -174,8 +179,8 @@ describe('getOptions method', function() {
                             await electrumClient.getOptions(query);
                         } catch (error) {
                             const warning = error[0].constraints;
-                            expect(warning).toHaveProperty('maxLength');
-                            expect(warning.maxLength).toEqual(expect.stringContaining('host must be shorter than or equal to 20 characters'));
+                            const expected: any = {maxLength: 'host must be shorter than or equal to 20 characters'};
+                            expect(warning).toEqual(expected);
                         }
                     });
                 });
