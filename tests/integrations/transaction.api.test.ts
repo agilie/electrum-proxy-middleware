@@ -13,13 +13,6 @@ describe('Transaction methods', function() {
     function options(params = {}) {
         return {
             coinType: 'btc',
-            raw_tx: '010000000156fb6e22304b6d542e5d8ca5ad40352f00b66' +
-                '4b7142e2cfbdbcb16b4e4b300b2000000006b483045022100975e587' +
-                '256f91d50f719364024a978d3df0248374061c97bfe4560ec1beab67402206cd1b' +
-                '231430a613392c13bff9e996285577a68d48fa94c769bb6df7c021f3e6b012103e4182a3' +
-                '6fb4efa245069e1e68d2492d6acd33c7583eacbde863e91af08d16029ffffffff0200451a0' +
-                '0000000001976a9144a7eb59b84666dad56622a8519e2c22d0ecb824888ac10270000000000' +
-                '001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac00000000',
             ...params
         };
     }
