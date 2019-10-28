@@ -6,8 +6,7 @@ import {ConfigurationReqDTO} from './types/configuration-req-dto';
 import {Response} from 'express';
 import {CoinTypeReqDTO} from './types/coin-type-req-dto';
 import {plainToClass} from 'class-transformer';
-
-const ElectrumClient = require('./index');
+import {ElectrumClient} from './index'
 
 async function defineElectrumClient(req: any, res: Response) {
     try {

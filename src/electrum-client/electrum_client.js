@@ -1,5 +1,5 @@
 const Client = require("./client")
-class ElectrumClient extends Client{
+class _ElectrumClient extends Client{
     constructor(port, host, protocol, options){
         super(port, host, protocol, options)
     }
@@ -10,7 +10,7 @@ class ElectrumClient extends Client{
             'blockchain.numblocks.subscribe',
             'blockchain.headers.subscribe',
             'blockchain.address.subscribe'
-        ]
+        ];
         list.forEach(event => this.subscribe.removeAllListeners(event))
     }
     server_version(client_name, protocol_version){
@@ -119,4 +119,14 @@ class ElectrumClient extends Client{
     }
 }
 
-module.exports = ElectrumClient
+//module.exports = _ElectrumClient;
+
+let client = _ElectrumClient;
+module.exports = {
+    get ElectrumClient() {
+        return client;
+    },
+    overrideClient(override) {
+        client = override;
+    }
+};
