@@ -60,24 +60,26 @@ describe('Transaction methods', function() {
     }
 
     it('return a histogram of the fee rates paid by transactions in the memory pool, weighted by transaction size', async function() {
+        const expected: any = {
+            'status': 'success',
+            'result': '0100000001a64a43a90cc604a09f2b82fbaa' +
+                '7792c9d747063f21c56d924c43ec13e07e69ca05000000' +
+                '6b483045022100955b61c1731a1e996558462124f9da29c6c' +
+                'e1ab6d71f73e872524e783ef6e9402207b0ecc9130bc385d2e88f29' +
+                'b1095135ae76e581a2e855de763455797f8e483480121039fe71e7c19502' +
+                '5b193f0255f5c5555be7eab8c6dac66dbfb3c2dff90bbe6565dffffffff0550c' +
+                '30000000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac50c3' +
+                '0000000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac50c30000' +
+                '000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac50c30000000000001' +
+                '976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac40c84c00000000001976a9142d' +
+                '37ceaf73a2d831a550d06d03ffa4f5c53fade188ac00000000'
+        };
+
         await request(app)
             .get('/transaction/get')
             .query(options())
             .expect(200)
-            .expect({
-                'status': 'success',
-                'result': '0100000001a64a43a90cc604a09f2b82fbaa' +
-                    '7792c9d747063f21c56d924c43ec13e07e69ca05000000' +
-                    '6b483045022100955b61c1731a1e996558462124f9da29c6c' +
-                    'e1ab6d71f73e872524e783ef6e9402207b0ecc9130bc385d2e88f29' +
-                    'b1095135ae76e581a2e855de763455797f8e483480121039fe71e7c19502' +
-                    '5b193f0255f5c5555be7eab8c6dac66dbfb3c2dff90bbe6565dffffffff0550c' +
-                    '30000000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac50c3' +
-                    '0000000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac50c30000' +
-                    '000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac50c30000000000001' +
-                    '976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac40c84c00000000001976a9142d' +
-                    '37ceaf73a2d831a550d06d03ffa4f5c53fade188ac00000000'
-            });
+            .expect(expected);
 
     });
 

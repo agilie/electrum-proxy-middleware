@@ -74,54 +74,60 @@ describe('Scripthash methods', function() {
     }
 
     it('return the confirmed and unconfirmed balances of a script hash', async function() {
+        const expected: any = {
+            'status': 'success', 'result': {
+                'confirmed': '1.03873966',
+                'unconfirmed': '0.236844'
+            }
+        };
+
         await request(app)
             .get('/scripthash/balance')
             .query(options())
             .expect(200)
-            .expect({
-                'status': 'success', 'result': {
-                    'confirmed': '1.03873966',
-                    'unconfirmed': '0.236844'
-                }
-            });
+            .expect(expected);
     });
 
     it('return an ordered list of UTXOs sent to a script hash', async function() {
+        const expected: any = {
+            status: 'success', result: [
+                {
+                    'tx_pos': 0,
+                    'value': 45318048,
+                    'tx_hash': '9f2c45a12db0144909b5db269415f7319179105982ac70ed80d76ea79d923ebf',
+                    'height': 437146
+                },
+                {
+                    'tx_pos': 0,
+                    'value': 919195,
+                    'tx_hash': '3d2290c93436a3e964cfc2f0950174d8847b1fbe3946432c4784e168da0f019f',
+                    'height': 441696
+                }
+            ]
+        };
+
         await request(app)
             .get('/scripthash/listunspent')
             .query(options())
             .expect(200)
-            .expect({
-                status: 'success', result: [
-                    {
-                        'tx_pos': 0,
-                        'value': 45318048,
-                        'tx_hash': '9f2c45a12db0144909b5db269415f7319179105982ac70ed80d76ea79d923ebf',
-                        'height': 437146
-                    },
-                    {
-                        'tx_pos': 0,
-                        'value': 919195,
-                        'tx_hash': '3d2290c93436a3e964cfc2f0950174d8847b1fbe3946432c4784e168da0f019f',
-                        'height': 441696
-                    }
-                ]
-            });
+            .expect(expected);
     });
 
     it('return the unconfirmed transactions of a script hash.', async function() {
+        const expected: any = {
+            status: 'success', result: [
+                {
+                    'tx_hash': '45381031132c57b2ff1cbe8d8d3920cf9ed25efd9a0beb764bdb2f24c7d1c7e3',
+                    'height': 0,
+                    'fee': 24310
+                }
+            ]
+        };
+
         await request(app)
             .get('/scripthash/get_mempool')
             .query(options())
             .expect(200)
-            .expect({
-                status: 'success', result: [
-                    {
-                        'tx_hash': '45381031132c57b2ff1cbe8d8d3920cf9ed25efd9a0beb764bdb2f24c7d1c7e3',
-                        'height': 0,
-                        'fee': 24310
-                    }
-                ]
-            });
+            .expect(expected);
     });
 });
