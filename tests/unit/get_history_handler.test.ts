@@ -1,4 +1,4 @@
-let historyHandler = require('../../src/history');
+const historyHandler = require('../../src/history');
 
 describe('getHistoryHandler method', function() {
     it('return valid ', async function() {

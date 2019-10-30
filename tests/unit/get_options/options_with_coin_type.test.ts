@@ -1,4 +1,4 @@
-let electrumClient = require('../../../src/electrum-client/define-electrum-client');
+const electrumClient = require('../../../src/electrum-client/define-electrum-client');
 
 describe('getOptions method', function() {
     describe('with CoinType param', function() {

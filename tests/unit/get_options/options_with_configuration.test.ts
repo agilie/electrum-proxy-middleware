@@ -1,4 +1,4 @@
-let electrumClient = require('../../../src/electrum-client/define-electrum-client');
+const electrumClient = require('../../../src/electrum-client/define-electrum-client');
 import {ProtocolTypeEnum} from '../../../src/electrum-client/types/protocol.type.enum';
 import {ConfigurationReqDTO} from '../../../src/electrum-client/types/configuration-req-dto';
 
