@@ -4,7 +4,7 @@ import {router} from '../../src';
 
 const app: any = express();
 const {ElectrumClient, overrideClient} = require('../../src/electrum-client/electrum_client');
-let originalElectrumClient = ElectrumClient;
+const originalElectrumClient = ElectrumClient;
 
 class MockElectrumClient {
 
