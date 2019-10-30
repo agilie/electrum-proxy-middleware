@@ -5,7 +5,7 @@ const defineElectrumClient = require('./electrum-client/define-electrum-client')
 
 const asyncRouter = AsyncRouter();
 
-asyncRouter.use(defineElectrumClient);
+asyncRouter.use(defineElectrumClient.defineElectrumClient);
 
 asyncRouter.use('/server', require('./server'));
 asyncRouter.use('/transaction', require('./transaction'));
