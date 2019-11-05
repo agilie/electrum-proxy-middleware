@@ -7,6 +7,7 @@ import {Response} from 'express';
 import {CoinTypeReqDTO} from './types/coin-type-req-dto';
 import {plainToClass} from 'class-transformer';
 import {ElectrumClient} from './index'
+import {NetmodeTypeEnum} from './types/netmode.type.enum';
 
 async function defineElectrumClient(req: any, res: Response) {
     try {
@@ -38,7 +39,7 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
 }
 
 function _getElectrumConfig(type: CoinType, netMode: string): ElectrumConfig {
-    const configs = netMode ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
+    const configs = netMode == NetmodeTypeEnum.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
     return configs[Math.floor(Math.random() * configs.length)];
 }
 

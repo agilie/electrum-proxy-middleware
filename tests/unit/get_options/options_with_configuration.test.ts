@@ -19,7 +19,8 @@ describe('getOptions method', function() {
                     port: 55002,
                     host: 'tn.not.fyi',
                     connectionType: ProtocolTypeEnum.SSL,
-                    version: 1.4
+                    version: 1.4,
+                    netMode: 'mainnet'
                 };
 
                 expect(options).toEqual(expected);
