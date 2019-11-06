@@ -17,9 +17,6 @@ asyncRouter.get('/get_history', async (req: any, res: any) => {
 });
 
 async function getHistoryHandler(req: any, res: any) {
-    req.query['page'] = parseInt(req.query['page'] || 1);
-    req.query['pageSize'] = parseInt(req.query['pageSize'] || 10);
-
     const historyReqDTO: HistoryReqDTO = plainToClass(HistoryReqDTO, req.query);
     await validateOrReject(historyReqDTO);
 

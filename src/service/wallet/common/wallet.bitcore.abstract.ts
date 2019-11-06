@@ -142,7 +142,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
     }
 
     private _getNetConfig(): BitcoreNetworkLike {
-        if (this.netMode == Netmode.TESTNET) {
+        if (this.netMode === Netmode.TESTNET) {
             return this._bitcore.Networks.testnet;
         }
         return this._bitcore.Networks.mainnet;

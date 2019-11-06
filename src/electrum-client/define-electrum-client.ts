@@ -38,7 +38,7 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
     }
 }
 
-function _getElectrumConfig(type: CoinType, netMode: string): ElectrumConfig {
+function _getElectrumConfig(type: CoinType, netMode: Netmode): ElectrumConfig {
     const configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
     return configs[Math.floor(Math.random() * configs.length)];
 }
