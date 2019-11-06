@@ -3,12 +3,12 @@ import {CoinType} from '../types/coin.type';
 import {WalletCreateOptionsInterface} from './wallet-create-options.interface';
 import {TransactionLike} from '../types/transaction.type';
 import {Address, PrivateKey, Script} from 'bitcore-lib';
-import {NetmodeTypeEnum} from '../../../electrum-client/types/netmode.type.enum';
+import {Netmode} from '../../../electrum-client/types/netmode';
 
 export abstract class WalletBitcoreAbstract implements WalletLike {
     readonly address: string;
     readonly type: CoinType;
-    protected readonly netMode: NetmodeTypeEnum;
+    protected readonly netMode: Netmode;
     private readonly _bitcore: any;
 
     private readonly _scriptHash: string;
@@ -142,7 +142,7 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
     }
 
     private _getNetConfig(): BitcoreNetworkLike {
-        if (this.netMode == NetmodeTypeEnum.TESTNET) {
+        if (this.netMode == Netmode.TESTNET) {
             return this._bitcore.Networks.testnet;
         }
         return this._bitcore.Networks.mainnet;

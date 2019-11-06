@@ -1,9 +1,9 @@
 import {CoinType} from '../types/coin.type';
-import {NetmodeTypeEnum} from '../../../electrum-client/types/netmode.type.enum';
+import {Netmode} from '../../../electrum-client/types/netmode';
 
 export interface WalletCreateOptionsInterface {
     userString: string;
-    netMode: NetmodeTypeEnum;
+    netMode: Netmode;
     type: CoinType;
     bitcore: any; // bitcore lib for bitcore wallets
 }

@@ -1,17 +1,14 @@
-import {IsDefined, IsEnum, IsInt} from 'class-validator';
-import {NetmodeTypeEnum} from './netmode.type.enum';
-import {CoinType} from '../../service/wallet/types/coin.type';
+import {Min, IsInt, IsOptional} from 'class-validator';
+import {CoinTypeReqDTO} from './coin-type-req-dto';
 
-export class HistoryReqDTO {
-
-    @IsEnum(CoinType)
-    @IsDefined()
-    coinType: CoinType;
-
-    @IsEnum(NetmodeTypeEnum)
-    netMode: NetmodeTypeEnum = NetmodeTypeEnum.MAINNET;
-
-
+export class HistoryReqDTO extends CoinTypeReqDTO {
+    @IsOptional()
+    @IsInt()
+    @Min(0)
     page: number = 1;
+
+    @IsOptional()
+    @IsInt()
+    @Min(0)
     pageSize: number = 10;
 }

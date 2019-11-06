@@ -1,6 +1,6 @@
-import {IsString, IsEnum, MinLength, MaxLength, IsNotEmpty, IsDefined} from 'class-validator';
+import {IsString, IsEnum, MinLength, MaxLength, IsNotEmpty, IsDefined, IsOptional} from 'class-validator';
 import {ProtocolTypeEnum} from './protocol.type.enum';
-import {NetmodeTypeEnum} from './netmode.type.enum';
+import {Netmode} from './netmode';
 
 export class ConfigurationReqDTO {
     @IsNotEmpty()
@@ -21,6 +21,7 @@ export class ConfigurationReqDTO {
     @IsDefined()
     version: number;
 
-    @IsEnum(NetmodeTypeEnum)
-    netMode: NetmodeTypeEnum = NetmodeTypeEnum.MAINNET;
+    @IsOptional()
+    @IsEnum(Netmode)
+    netMode: Netmode = Netmode.MAINNET;
 }

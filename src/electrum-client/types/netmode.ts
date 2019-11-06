@@ -1,4 +1,4 @@
-export enum NetmodeTypeEnum {
+export enum Netmode {
     TESTNET = 'testnet',
     MAINNET = 'mainnet'
 }
