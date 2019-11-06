@@ -23,7 +23,7 @@ async function getHistoryHandler(req: any, res: any) {
     const historyReqDTO: HistoryReqDTO = plainToClass(HistoryReqDTO, req.query);
     await validateOrReject(historyReqDTO);
 
-    const options = getHistoryOptions(historyReqDTO);
+    const options : WalletCreateOptionsInterface = getHistoryOptions(historyReqDTO);
     const wallet = getWallet(historyReqDTO.coinType, options);
     const {result, executionTime} = await getHistory(wallet, historyReqDTO.page, historyReqDTO.pageSize, req);
 
@@ -34,14 +34,13 @@ async function getHistoryHandler(req: any, res: any) {
     });
 }
 
-function getHistoryOptions(historyReqDTO: HistoryReqDTO) {
-    const options: WalletCreateOptionsInterface = {
+function getHistoryOptions(historyReqDTO: HistoryReqDTO) : WalletCreateOptionsInterface {
+    return {
         userString: '',
         netMode: historyReqDTO.netMode,
         type: historyReqDTO.coinType,
         bitcore: null,
     };
-    return options;
 }
 
 function getWallet(coinType: string, options: WalletCreateOptionsInterface): WalletLike {
