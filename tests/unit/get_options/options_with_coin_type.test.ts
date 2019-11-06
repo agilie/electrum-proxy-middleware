@@ -26,5 +26,18 @@ describe('getOptions method', function() {
                 }
             });
         });
+
+        describe('with invalid netMode param', function() {
+            it('return warning', async function() {
+                const query = {coinType: 'btc', netMode: 'test'};
+                try {
+                    await electrumClient.getOptions(query);
+                } catch (error) {
+                    const warning = error[0].constraints;
+                    expect(warning).toHaveProperty('isEnum');
+                    expect(warning.isEnum).toEqual(expect.stringContaining('netMode must be a valid enum value'));
+                }
+            });
+        });
     });
 });

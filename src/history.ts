@@ -7,6 +7,9 @@ import {WalletLike} from './service/wallet/common/wallet.interface';
 import {CoinType} from './service/wallet/types/coin.type';
 
 import {AsyncRouter} from 'express-async-router';
+import {HistoryReqDTO} from './electrum-client/types/history-req-dto';
+import {plainToClass} from 'class-transformer';
+import {validateOrReject} from 'class-validator';
 const asyncRouter = AsyncRouter();
 
 asyncRouter.get('/get_history', async (req: any, res: any) => {
@@ -14,21 +17,12 @@ asyncRouter.get('/get_history', async (req: any, res: any) => {
 });
 
 async function getHistoryHandler(req: any, res: any) {
-    const coinType = req.query['coinType'];
-    validateCoinType(coinType, res);
-    const page = req.query['page'] || 1;
-    const pageSize = req.query['pageSize'] || 10;
-    const isProd = req.query['isProd'] || false;
+    const historyReqDTO: HistoryReqDTO = plainToClass(HistoryReqDTO, req.query);
+    await validateOrReject(historyReqDTO);
 
-    const options: WalletCreateOptionsInterface = {
-        userString: '',
-        isProd: isProd,
-        type: CoinType.BTC,
-        bitcore: null,
-    };
-
-    const wallet = getWallet(coinType, options);
-    const {result, executionTime} = await getHistory(wallet, page, pageSize, req);
+    const options : WalletCreateOptionsInterface = getHistoryOptions(historyReqDTO);
+    const wallet = getWallet(historyReqDTO.coinType, options);
+    const {result, executionTime} = await getHistory(wallet, historyReqDTO.page, historyReqDTO.pageSize, req);
 
     return res.json({
         status: 'success',
@@ -37,12 +31,13 @@ async function getHistoryHandler(req: any, res: any) {
     });
 }
 
-async function getHistory(wallet: WalletLike, page: number, pageSize: number, req: any) {
-    const perf = require('execution-time')();
-    perf.start();
-    const result = await wallet.getHistory(page, pageSize, req);
-    const timeResult = perf.stop();
-    return {result, executionTime: timeResult};
+function getHistoryOptions(historyReqDTO: HistoryReqDTO) : WalletCreateOptionsInterface {
+    return {
+        userString: '',
+        netMode: historyReqDTO.netMode,
+        type: historyReqDTO.coinType,
+        bitcore: null,
+    };
 }
 
 function getWallet(coinType: string, options: WalletCreateOptionsInterface): WalletLike {
@@ -68,15 +63,14 @@ function getWallet(coinType: string, options: WalletCreateOptionsInterface): Wal
     return wallet;
 }
 
-function validateCoinType(coinType: CoinType, res: any) {
-    if(!coinType) {
-        return res.json({
-            status: 'error',
-            result: 'Coin type is missing'
-        });
-    }
+async function getHistory(wallet: WalletLike, page: number, pageSize: number, req: any) {
+    const perf = require('execution-time')();
+    perf.start();
+    const result = await wallet.getHistory(page, pageSize, req);
+    const timeResult = perf.stop();
+    return {result, executionTime: timeResult};
 }
 
 const router = asyncRouter;
-export {router, getHistoryHandler}
+export {router, getHistoryHandler};
 
