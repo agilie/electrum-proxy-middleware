@@ -54,7 +54,7 @@ npm test
 * **Success Response:**
   
   * **Code:** 200 <br />
-    **Content:** 
+  *  **Content:** 
     <pre>{
         "status":"success","result":["ElectrumX 1.13.0","1.4"]
     }</pre>
@@ -62,7 +62,7 @@ npm test
 * **Error Response:**
 
   * **Code:** 409 <br />
-    **Content:** 
+  *  **Content:** 
     <pre>{
         "error": [{
             "target": {
@@ -108,7 +108,7 @@ npm test
 * **Success Response:**
   
   * **Code:** 200 <br />
-    **Content:** 
+  *  **Content:** 
     <pre>
     {
       "status": "success",
@@ -129,7 +129,7 @@ npm test
 * **Error Response:**
 
   * **Code:** 409 <br />
-    **Content:** 
+  *  **Content:** 
     <pre>{
         "error": [{
             "target": {
