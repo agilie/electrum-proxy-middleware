@@ -27,9 +27,10 @@ npm test
 ```
 
 ## Examples
- Here are some basic examples. For more details, refer to the ElectrumX Protocol Methods 
- [docs](https://electrumx.readthedocs.io/en/latest/protocol-methods.html).
+ Here are some basic examples. For more details, refer to the 
+ [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
 
+#### Protocol version
   
 * **URL**
 
@@ -76,6 +77,8 @@ npm test
             }
         }]
     }</pre>
+
+#### Confirmed and unconfirmed history of a script hash.
 
 * **URL**
 
