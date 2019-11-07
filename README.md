@@ -8,7 +8,7 @@ ExpressJS middleware to add functionality for proxying requests to Electrum serv
 
 Node >= 7.x
 
-### Installing
+## Installing
 
 ```
 npm install github:agilie/electrum-proxy-middleware
