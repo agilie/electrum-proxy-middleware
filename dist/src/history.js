@@ -64,7 +64,7 @@ function getHistoryHandler(req, res) {
                     return [4 /*yield*/, class_validator_1.validateOrReject(historyReqDTO)];
                 case 1:
                     _b.sent();
-                    options = getHistoryOptions(historyReqDTO);
+                    options = getHistoryOptions(historyReqDTO, req.query["address"]);
                     wallet = getWallet(historyReqDTO.coinType, options);
                     return [4 /*yield*/, getHistory(wallet, historyReqDTO.page, historyReqDTO.pageSize, req)];
                 case 2:
@@ -79,9 +79,9 @@ function getHistoryHandler(req, res) {
     });
 }
 exports.getHistoryHandler = getHistoryHandler;
-function getHistoryOptions(historyReqDTO) {
+function getHistoryOptions(historyReqDTO, address) {
     return {
-        userString: '',
+        addressHEX: address,
         netMode: historyReqDTO.netMode,
         type: historyReqDTO.coinType,
         bitcore: null,

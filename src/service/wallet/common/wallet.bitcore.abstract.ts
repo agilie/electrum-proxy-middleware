@@ -18,16 +18,19 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         this._bitcore = options.bitcore;
         this.type = options.type;
         this.netMode = options.netMode;
-        const privateKey = this._getPrivateKey(options.userString);
-        this.address = privateKey.toAddress().toString();
 
-        const script = this._getScript(privateKey.toAddress());
+        this.address = options.addressHEX;
+
+        const addressObj = Address.fromString(options.addressHEX);
+        const script = this._getScript(addressObj);
         this._scriptHEX = script.toHex();
         this._scriptHash = this._getScriptHash(script);
     }
 
     async getHistory(page: number, pageSize: number, req: any): Promise<TransactionLike[]> {
         let transactions = await req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash);
+        console.log(this._scriptHash);
+        console.log(transactions);
 
         if (page && pageSize && Number(page) && page > 0) {
             transactions = transactions.slice(Number(page - 1) * pageSize, (page * pageSize));
@@ -131,10 +134,10 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         return reversedHash.toString('hex');
     }
 
-    private _getPrivateKey(userString: string): PrivateKey {
+    private _getPrivateKey(addressHEX: string): PrivateKey {
         const bitcore = this._bitcore;
 
-        const buf = Buffer.from(userString);
+        const buf = Buffer.from(addressHEX);
         const hashBuffer = bitcore.crypto.Hash.sha256(buf);
         const bn = bitcore.crypto.BN.fromBuffer(hashBuffer);
 

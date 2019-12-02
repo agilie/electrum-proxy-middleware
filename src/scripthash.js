@@ -24,6 +24,19 @@ router.get('/listunspent', async (req, res) => {
     });
 });
 
+// 'blockchain.scripthash.get_history'
+router.get('/get_history', async (req, res) => {
+    console.log(req.query);
+    const scripthash = req.query['scripthash'];
+    const json = await req.locals.ecl.blockchainScripthash_getHistory(scripthash);
+    await req.locals.ecl.close();
+
+    res.json({
+        status: 'success',
+        result: json
+    });
+});
+
 // 'blockchain.scripthash.get_mempool'
 router.get('/get_mempool', async (req, res) => {
     const scripthash = req.query['scripthash'];

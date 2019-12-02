@@ -78,6 +78,28 @@ router.get('/listunspent', function (req, res) { return __awaiter(_this, void 0,
         }
     });
 }); });
+// 'blockchain.scripthash.get_history'
+router.get('/get_history', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    var scripthash, json;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log(req.query);
+                scripthash = req.query['scripthash'];
+                return [4 /*yield*/, req.locals.ecl.blockchainScripthash_getHistory(scripthash)];
+            case 1:
+                json = _a.sent();
+                return [4 /*yield*/, req.locals.ecl.close()];
+            case 2:
+                _a.sent();
+                res.json({
+                    status: 'success',
+                    result: json
+                });
+                return [2 /*return*/];
+        }
+    });
+}); });
 // 'blockchain.scripthash.get_mempool'
 router.get('/get_mempool', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
     var scripthash, json;
