@@ -3,7 +3,7 @@ const historyHandler = require('../../src/history');
 describe('getHistoryHandler method', function() {
     it('return valid ', async function() {
         const mockReq = {
-            query: {coinType: 'btc'},
+            query: {address: '8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161', coinType: 'btc'},
             locals: {
                 ecl: {
                     blockchainScripthash_getHistory: () => 'test',
@@ -31,28 +31,28 @@ describe('getHistoryHandler method', function() {
             result:
                 [{
                     hash: undefined,
-                    value: '0',
+                    value: '-0.0001',
                     timestamp: 1000,
                     fee: '-0.0001',
                     status: 'incompleted'
                 },
                     {
                         hash: undefined,
-                        value: '0',
+                        value: '-0.0001',
                         timestamp: 1000,
                         fee: '-0.0001',
                         status: 'incompleted'
                     },
                     {
                         hash: undefined,
-                        value: '0',
+                        value: '-0.0001',
                         timestamp: 1000,
                         fee: '-0.0001',
                         status: 'incompleted'
                     },
                     {
                         hash: undefined,
-                        value: '0',
+                        value: '-0.0001',
                         timestamp: 1000,
                         fee: '-0.0001',
                         status: 'incompleted'

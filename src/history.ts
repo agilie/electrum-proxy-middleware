@@ -20,7 +20,7 @@ async function getHistoryHandler(req: any, res: any) {
     const historyReqDTO: HistoryReqDTO = plainToClass(HistoryReqDTO, req.query);
     await validateOrReject(historyReqDTO);
 
-    const options : WalletCreateOptionsInterface = getHistoryOptions(historyReqDTO);
+    const options : WalletCreateOptionsInterface = getHistoryOptions(historyReqDTO, req.query["address"]);
     const wallet = getWallet(historyReqDTO.coinType, options);
     const {result, executionTime} = await getHistory(wallet, historyReqDTO.page, historyReqDTO.pageSize, req);
 
@@ -31,9 +31,9 @@ async function getHistoryHandler(req: any, res: any) {
     });
 }
 
-function getHistoryOptions(historyReqDTO: HistoryReqDTO) : WalletCreateOptionsInterface {
+function getHistoryOptions(historyReqDTO: HistoryReqDTO, address: string) : WalletCreateOptionsInterface {
     return {
-        userString: '',
+        addressHEX: address,
         netMode: historyReqDTO.netMode,
         type: historyReqDTO.coinType,
         bitcore: null,

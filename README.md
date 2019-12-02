@@ -4,6 +4,10 @@
 
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
+# Coin types
+
+BTC, LTC, DASH, ZEC
+
 ## Requirements
 
 Node >= 7.x

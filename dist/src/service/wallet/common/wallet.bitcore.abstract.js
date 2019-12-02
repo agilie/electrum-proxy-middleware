@@ -35,15 +35,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var bitcore_lib_1 = require("bitcore-lib");
 var netmode_1 = require("../../../electrum-client/types/netmode");
 var WalletBitcoreAbstract = /** @class */ (function () {
     function WalletBitcoreAbstract(options) {
         this._bitcore = options.bitcore;
         this.type = options.type;
         this.netMode = options.netMode;
-        var privateKey = this._getPrivateKey(options.userString);
-        this.address = privateKey.toAddress().toString();
-        var script = this._getScript(privateKey.toAddress());
+        this.address = options.addressHEX;
+        var addressObj = bitcore_lib_1.Address.fromString(options.addressHEX);
+        var script = this._getScript(addressObj);
         this._scriptHEX = script.toHex();
         this._scriptHash = this._getScriptHash(script);
     }
@@ -55,6 +56,8 @@ var WalletBitcoreAbstract = /** @class */ (function () {
                     case 0: return [4 /*yield*/, req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash)];
                     case 1:
                         transactions = _a.sent();
+                        console.log(this._scriptHash);
+                        console.log(transactions);
                         if (page && pageSize && Number(page) && page > 0) {
                             transactions = transactions.slice(Number(page - 1) * pageSize, (page * pageSize));
                         }
@@ -164,9 +167,9 @@ var WalletBitcoreAbstract = /** @class */ (function () {
         var reversedHash = Buffer.from(scriptHash.reverse());
         return reversedHash.toString('hex');
     };
-    WalletBitcoreAbstract.prototype._getPrivateKey = function (userString) {
+    WalletBitcoreAbstract.prototype._getPrivateKey = function (addressHEX) {
         var bitcore = this._bitcore;
-        var buf = Buffer.from(userString);
+        var buf = Buffer.from(addressHEX);
         var hashBuffer = bitcore.crypto.Hash.sha256(buf);
         var bn = bitcore.crypto.BN.fromBuffer(hashBuffer);
         return new bitcore.PrivateKey(bn, this._getNetConfig());
