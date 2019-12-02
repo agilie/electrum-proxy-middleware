@@ -70,7 +70,7 @@ describe('History methods', function() {
 
     function options(params = {}) {
         return {
-            address: '8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161',
+            address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL',
             coinType: 'btc',
             ...params
         };
