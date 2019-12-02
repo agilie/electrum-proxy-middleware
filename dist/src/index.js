@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
+var express_async_router_1 = require("express-async-router");
+var defineElectrumClient = require('./electrum-client/define-electrum-client');
+var asyncRouter = express_async_router_1.AsyncRouter();
+asyncRouter.use(defineElectrumClient.defineElectrumClient);
+asyncRouter.use('/server', require('./server'));
+asyncRouter.use('/transaction', require('./transaction'));
+asyncRouter.use('/address', require('./address'));
+asyncRouter.use('/block', require('./block'));
+asyncRouter.use('/blockchain', require('./blockchain'));
+asyncRouter.use('/scripthash', require('./scripthash'));
+asyncRouter.use('/mempool', require('./mempool'));
+asyncRouter.use('/history', require('./history').router);
+exports.router = asyncRouter;
