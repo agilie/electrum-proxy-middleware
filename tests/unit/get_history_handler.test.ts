@@ -1,9 +1,11 @@
+import {CoinType} from '../../src/service/wallet/types/coin.type';
+
 const historyHandler = require('../../src/history');
 
 describe('getHistoryHandler method', function() {
     it('return valid ', async function() {
         const mockReq = {
-            query: {address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: 'btc'},
+            query: {address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: CoinType.BTC},
             locals: {
                 ecl: {
                     blockchainScripthash_getHistory: () => 'test',

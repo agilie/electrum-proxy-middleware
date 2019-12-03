@@ -1,6 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import {router} from '../../src';
+import {CoinType} from '../../src/service/wallet/types/coin.type';
 
 const app: any = express();
 const {ElectrumClient, overrideClient} = require('../../src/electrum-client/electrum_client');
@@ -47,7 +48,7 @@ describe('Mempool methods', function() {
 
     function options(params = {}) {
         return {
-            coinType: 'btc',
+            coinType: CoinType.BTC,
             ...params
         };
     }

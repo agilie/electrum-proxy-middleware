@@ -60,3 +60,4 @@ async function _getElectrumConfig(type: CoinType, netMode: Netmode): ElectrumCon
 
 module.exports.defineElectrumClient = defineElectrumClient;
 module.exports.getOptions = getOptions;
+module.exports._getElectrumConfig = _getElectrumConfig;

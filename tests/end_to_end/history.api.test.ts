@@ -1,6 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import {router} from '../../src';
+import {CoinType} from '../../src/service/wallet/types/coin.type';
 
 const app: any = express();
 const {ElectrumClient, overrideClient} = require('../../src/electrum-client/electrum_client');
@@ -71,7 +72,7 @@ describe('History methods', function() {
     function options(params = {}) {
         return {
             address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL',
-            coinType: 'btc',
+            coinType: CoinType.BTC,
             ...params
         };
     }

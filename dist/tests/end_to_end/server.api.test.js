@@ -52,6 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var express_1 = __importDefault(require("express"));
 var src_1 = require("../../src");
+var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var app = express_1.default();
 var _a = require('../../src/electrum-client/electrum_client'), ElectrumClient = _a.ElectrumClient, overrideClient = _a.overrideClient;
 var originalElectrumClient = ElectrumClient;
@@ -107,7 +108,7 @@ describe('Server methods', function () {
     });
     function options(params) {
         if (params === void 0) { params = {}; }
-        return __assign({ coinType: 'btc' }, params);
+        return __assign({ coinType: coin_type_1.CoinType.BTC }, params);
     }
     it('identify the client to the server and negotiate the protocol version', function () {
         return __awaiter(this, void 0, void 0, function () {

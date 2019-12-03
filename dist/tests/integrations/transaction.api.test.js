@@ -52,6 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var express_1 = __importDefault(require("express"));
 var src_1 = require("../../src");
+var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var app = express_1.default();
 describe('Transaction methods', function () {
     beforeAll(function () {
@@ -59,7 +60,7 @@ describe('Transaction methods', function () {
     });
     function options(params) {
         if (params === void 0) { params = {}; }
-        return __assign({ coinType: 'btc' }, params);
+        return __assign({ coinType: coin_type_1.CoinType.BTC }, params);
     }
     it('return a histogram of the fee rates paid by transactions in the memory pool, weighted by transaction size', function () {
         return __awaiter(this, void 0, void 0, function () {

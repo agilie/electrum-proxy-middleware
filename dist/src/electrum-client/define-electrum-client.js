@@ -131,3 +131,4 @@ function _getElectrumConfig(type, netMode) {
 }
 module.exports.defineElectrumClient = defineElectrumClient;
 module.exports.getOptions = getOptions;
+module.exports._getElectrumConfig = _getElectrumConfig;

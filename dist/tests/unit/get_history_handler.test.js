@@ -34,6 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var historyHandler = require('../../src/history');
 describe('getHistoryHandler method', function () {
     it('return valid ', function () {
@@ -43,7 +45,7 @@ describe('getHistoryHandler method', function () {
                 switch (_a.label) {
                     case 0:
                         mockReq = {
-                            query: { address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: 'btc' },
+                            query: { address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: coin_type_1.CoinType.BTC },
                             locals: {
                                 ecl: {
                                     blockchainScripthash_getHistory: function () { return 'test'; },
