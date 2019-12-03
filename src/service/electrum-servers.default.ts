@@ -83,13 +83,13 @@ export const electrumServersDefaultTestnet: CoinMap<ElectrumConfig[]> = {
             connectionType:  ProtocolTypeEnum.SSL,
             version: 1.4,
         },
-        // {
-        //     // testnet
-        //     host: 'electrumx-test.1209k.com',
-        //     port: 50002,
-        //     connectionType: ProtocolTypeEnum.SSL,
-        //     version: 1.4,
-        // },
+        {
+            // testnet
+            host: 'electrumx-test.1209k.com',
+            port: 50002,
+            connectionType: ProtocolTypeEnum.SSL,
+            version: 1.4,
+        },
     ],
     [CoinType.LTC]: [
         {

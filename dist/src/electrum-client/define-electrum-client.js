@@ -42,6 +42,7 @@ var coin_type_req_dto_1 = require("./types/coin-type-req-dto");
 var class_transformer_1 = require("class-transformer");
 var index_1 = require("./index");
 var netmode_1 = require("./types/netmode");
+var isPortReachable = require('is-port-reachable');
 function defineElectrumClient(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var defaultOptions, port, host, protocol, version, ecl, e_1;
@@ -52,7 +53,6 @@ function defineElectrumClient(req, res) {
                     return [4 /*yield*/, getOptions(req.query)];
                 case 1:
                     defaultOptions = _a.sent();
-                    console.log(defaultOptions);
                     port = defaultOptions.port;
                     host = defaultOptions.host;
                     protocol = defaultOptions.connectionType;
@@ -94,8 +94,40 @@ function getOptions(query) {
     });
 }
 function _getElectrumConfig(type, netMode) {
-    var configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
-    return configs[Math.floor(Math.random() * configs.length)];
+    return __awaiter(this, void 0, void 0, function () {
+        var configs, availableConfig, _i, configs_1, config, hostIsAvailable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
+                    availableConfig = null;
+                    _i = 0, configs_1 = configs;
+                    _a.label = 1;
+                case 1:
+                    if (!(_i < configs_1.length)) return [3 /*break*/, 4];
+                    config = configs_1[_i];
+                    return [4 /*yield*/, isPortReachable(config.port, { host: config.host })];
+                case 2:
+                    hostIsAvailable = _a.sent();
+                    if (hostIsAvailable) {
+                        availableConfig = config;
+                        return [3 /*break*/, 4];
+                    }
+                    _a.label = 3;
+                case 3:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 4:
+                    if (availableConfig) {
+                        return [2 /*return*/, availableConfig];
+                    }
+                    else {
+                        throw 'No available configs';
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
 }
 module.exports.defineElectrumClient = defineElectrumClient;
 module.exports.getOptions = getOptions;

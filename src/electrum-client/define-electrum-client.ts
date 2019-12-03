@@ -8,6 +8,7 @@ import {CoinTypeReqDTO} from './types/coin-type-req-dto';
 import {plainToClass} from 'class-transformer';
 import {ElectrumClient} from './index'
 import {Netmode} from './types/netmode';
+const isPortReachable = require('is-port-reachable');
 
 async function defineElectrumClient(req: any, res: Response) {
     try {
@@ -38,9 +39,23 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
     }
 }
 
-function _getElectrumConfig(type: CoinType, netMode: Netmode): ElectrumConfig {
+async function _getElectrumConfig(type: CoinType, netMode: Netmode): ElectrumConfig {
     const configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
-    return configs[Math.floor(Math.random() * configs.length)];
+
+    let availableConfig: ElectrumConfig = null;
+    for (let config of configs) {
+        const hostIsAvailable = await isPortReachable(config.port, {host: config.host});
+        if (hostIsAvailable) {
+            availableConfig = config;
+            break;
+        }
+    }
+
+    if (availableConfig) {
+        return availableConfig;
+    } else {
+        throw 'No available configs';
+    }
 }
 
 module.exports.defineElectrumClient = defineElectrumClient;

@@ -36,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var bitcore_lib_1 = require("bitcore-lib");
-var netmode_1 = require("../../../electrum-client/types/netmode");
 var WalletBitcoreAbstract = /** @class */ (function () {
     function WalletBitcoreAbstract(options) {
         this._bitcore = options.bitcore;
@@ -166,19 +165,6 @@ var WalletBitcoreAbstract = /** @class */ (function () {
         var scriptHash = bitcore.crypto.Hash.sha256(scriptBuffer);
         var reversedHash = Buffer.from(scriptHash.reverse());
         return reversedHash.toString('hex');
-    };
-    WalletBitcoreAbstract.prototype._getPrivateKey = function (addressHEX) {
-        var bitcore = this._bitcore;
-        var buf = Buffer.from(addressHEX);
-        var hashBuffer = bitcore.crypto.Hash.sha256(buf);
-        var bn = bitcore.crypto.BN.fromBuffer(hashBuffer);
-        return new bitcore.PrivateKey(bn, this._getNetConfig());
-    };
-    WalletBitcoreAbstract.prototype._getNetConfig = function () {
-        if (this.netMode === netmode_1.Netmode.TESTNET) {
-            return this._bitcore.Networks.testnet;
-        }
-        return this._bitcore.Networks.mainnet;
     };
     return WalletBitcoreAbstract;
 }());

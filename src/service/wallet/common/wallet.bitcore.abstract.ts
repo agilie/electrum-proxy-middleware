@@ -2,7 +2,7 @@ import {WalletLike} from './wallet.interface';
 import {CoinType} from '../types/coin.type';
 import {WalletCreateOptionsInterface} from './wallet-create-options.interface';
 import {TransactionLike} from '../types/transaction.type';
-import {Address, PrivateKey, Script} from 'bitcore-lib';
+import {Address, Script} from 'bitcore-lib';
 import {Netmode} from '../../../electrum-client/types/netmode';
 
 export abstract class WalletBitcoreAbstract implements WalletLike {
@@ -134,36 +134,6 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
         return reversedHash.toString('hex');
     }
 
-    private _getPrivateKey(addressHEX: string): PrivateKey {
-        const bitcore = this._bitcore;
-
-        const buf = Buffer.from(addressHEX);
-        const hashBuffer = bitcore.crypto.Hash.sha256(buf);
-        const bn = bitcore.crypto.BN.fromBuffer(hashBuffer);
-
-        return new bitcore.PrivateKey(bn, this._getNetConfig());
-    }
-
-    private _getNetConfig(): BitcoreNetworkLike {
-        if (this.netMode === Netmode.TESTNET) {
-            return this._bitcore.Networks.testnet;
-        }
-        return this._bitcore.Networks.mainnet;
-    }
-
-}
-
-interface BitcoreNetworkLike {
-    name: string;
-    alias: string;
-    pubkeyhash: number;
-    privatekey: number;
-    scripthash: number;
-    xpubkey: number;
-    xprivkey: number;
-    networkMagic: number;
-    port: number;
-    dnsSeeds: string[];
 }
 
 interface ParsedTx {
