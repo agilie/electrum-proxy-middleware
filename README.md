@@ -1,5 +1,7 @@
 # README
 
+[Supported calls](#supported_calls)
+
 # Electrum Proxy Middleware
 
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
@@ -30,6 +32,7 @@ app.use(electrum.router);
 npm test
 ```
 
+<a name="supported_calls"></a> 
 ## Supported calls
 
 All calls are required to have a coinType param or at least host, port, connectionType and version params.
@@ -93,9 +96,9 @@ pageSize |  transactions per page
 
 ### Scripthash methods
 
-Param | Description
------------- | -------------
-scripthash |  The script hash as a hexadecimal string.
+Param | Type | Description
+------------ | ------------- | -------------
+scripthash |hexadecimal string |  script hash 
 
 #### [GET] /scripthash/balance eq. to blockchain.scripthash.get_balance
 #### [GET] /scripthash/listunspent eq. to blockchain.scripthash.listunspent
@@ -135,7 +138,7 @@ Param | Type | Description
 ------------ | ------------- | -------------
 height |  non-negative integer | the main chain block height
 tx_pos | integer | a zero-based index of the transaction in the given block
-merkle | boolean | whether a merkle proof should also be returned, a boolean
+merkle | boolean | whether a merkle proof should also be returned
 
 <br/>
 For more details, refer to the 
