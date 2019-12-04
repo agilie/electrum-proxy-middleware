@@ -34,9 +34,12 @@ npm test
 
 All calls are required to have a coinType param or at least host, port, connectionType and version params.
 
-coinType=btc/lts/dash/zec  
-netMode=testnet or mainnet  
-connectionType=ssl or tcp
+
+Param | Value
+------------ | -------------
+coinType | btc/lts/dash/zec 
+netMode | testnet or mainnet  
+connectionType | ssl or tcp
 
 ### Server methods
 ##### [GET] /server/version eq. to server.version
