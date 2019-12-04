@@ -109,7 +109,7 @@ describe('History methods', function () {
     });
     function options(params) {
         if (params === void 0) { params = {}; }
-        return __assign({ address: '8b01df4e368ea28f8dc0423bcf7a4923e3a12d307c875e47a0cfbf90b5c39161', coinType: 'btc' }, params);
+        return __assign({ address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: 'btc' }, params);
     }
     it('return the confirmed and unconfirmed history of a script hash', function () {
         return __awaiter(this, void 0, void 0, function () {

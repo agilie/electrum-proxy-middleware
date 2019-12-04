@@ -52,7 +52,6 @@ function defineElectrumClient(req, res) {
                     return [4 /*yield*/, getOptions(req.query)];
                 case 1:
                     defaultOptions = _a.sent();
-                    console.log(defaultOptions);
                     port = defaultOptions.port;
                     host = defaultOptions.host;
                     protocol = defaultOptions.connectionType;
