@@ -220,6 +220,36 @@ For more details, refer to the
         }]
     }</pre>
 
+
+Or you can specify electrum server:
+
+  
+* **URL**
+
+  <_/server/version?port=55002&host=tn.not.fyi&connectionType=ssl&version=1.4_>
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+
+   **Required:**
+ 
+   `port=[integer]`
+   
+   `host=[string]`
+   
+   `connectionType=[ssp | tcp]`
+   
+   `version=[server version]`
+
+   **Optional:**
+ 
+   `netMode=[testnet | mainnet]`
+
+
 #### Confirmed and unconfirmed history of a script hash.
 
 * **URL**
