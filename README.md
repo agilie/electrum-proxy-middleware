@@ -42,17 +42,17 @@ netMode | testnet or mainnet
 connectionType | ssl or tcp
 
 ### Server methods
-##### [GET] /server/version eq. to server.version
-##### [GET] /server/features eq. to server.features
-##### [GET] /server/banner eq. to server.banner
-##### [GET] /server/donation-address eq. to server.donation_address
-##### [GET] /server/add_peer eq. to server.add_peer
-##### [GET] /server/get-peers eq. to server.peers.subscribe
-##### [GET] /server/ping eq. to server.ping
+#### [GET] /server/version eq. to server.version
+#### [GET] /server/features eq. to server.features
+#### [GET] /server/banner eq. to server.banner
+#### [GET] /server/donation-address eq. to server.donation_address
+#### [GET] /server/add_peer eq. to server.add_peer
+#### [GET] /server/get-peers eq. to server.peers.subscribe
+#### [GET] /server/ping eq. to server.ping
 **Example:** */server/version?coinType=btc*
 
 ### Blockchain methods
-##### [GET] /block/header eq. to blockchain.block.header
+#### [GET] /block/header eq. to blockchain.block.header
 Additional params:
 
 Param  | Type | Description
@@ -61,21 +61,22 @@ version | Float | server version
 height | non-negative integer | the height of the block
 
 **Example:** */block/header?coinType=btc&height=5*
-##### [GET] /block/headers eq. to blockchain.block.headers
+#### [GET] /block/headers eq. to blockchain.block.headers
 Additional params: start_height - the height of the first header requested, count - the number of headers requested.  
 **Example:** */block/headers?&coinType=btc&start_height=5&count=1*
-##### [GET] /blockchain/estimatefee eq. to blockchain.estimatefee
+#### [GET] /blockchain/estimatefee eq. to blockchain.estimatefee
 Additional params:
 
 Param | Description
 ------------ | -------------
 blocks |  the number of blocks to target for confirmation
+
 **Example:** */blockchain/estimatefee?coinType=btc&blocks=1*
-##### [GET] /blockchain/relayfee eq. to blockchain.relayfee
+#### [GET] /blockchain/relayfee eq. to blockchain.relayfee
 Example: */blockchain/relayfee?coinType=btc*
 
 ### History method
-##### [GET] /history/get_history return the confirmed and unconfirmed history of a script hash 
+#### [GET] /history/get_history return the confirmed and unconfirmed history of a script hash 
 
 Param | Description
 ------------ | -------------
@@ -83,10 +84,11 @@ coinType |  btc/lts/dash/zec value
 address |  donation address
 page |  number of page
 pageSize |  transactions per page
+
 **Example:** */history/get_history?address=1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj&coinType=btc&page=1&pageSize=3*
 
 ### Mempool methods
-##### [GET] /mempool/get_fee_histogram eq. to mempool.get_fee_histogram
+#### [GET] /mempool/get_fee_histogram eq. to mempool.get_fee_histogram
 **Example:** */mempool/get_fee_histogram?coinType=btc*
 
 ### Scripthash methods
@@ -94,29 +96,31 @@ pageSize |  transactions per page
 Param | Description
 ------------ | -------------
 scripthash |  The script hash as a hexadecimal string.
-##### [GET] /scripthash/balance eq. to blockchain.scripthash.get_balance
-##### [GET] /scripthash/listunspent eq. to blockchain.scripthash.listunspent
-##### [GET] /scripthash/get_history eq. to blockchain.scripthash.get_history
-##### [GET] /scripthash/get_mempool eq. to blockchain.scripthash.get_mempool
+
+#### [GET] /scripthash/balance eq. to blockchain.scripthash.get_balance
+#### [GET] /scripthash/listunspent eq. to blockchain.scripthash.listunspent
+#### [GET] /scripthash/get_history eq. to blockchain.scripthash.get_history
+#### [GET] /scripthash/get_mempool eq. to blockchain.scripthash.get_mempool
 **Example:** */scripthash/balance?scripthash=20b360e68b4fe6d1eb460e45434f756fa1582ed687167898f9a716435ecd737f&coinType=btc*
 
 ### Transaction methods
-##### [POST] /transaction/broadcast eq. to blockchain.transaction.broadcast
+#### [POST] /transaction/broadcast eq. to blockchain.transaction.broadcast
 Additional params:
 
 Param | Type | Description
 ------------ | ------------- | -------------
 raw_tx |  hexadecimal string | raw transaction
 
-##### [GET] /transaction/get eq. to blockchain.transaction.get
+#### [GET] /transaction/get eq. to blockchain.transaction.get
 Additional params: 
 
 Param | Type | Description
 ------------ | ------------- | -------------
 tx_hash | hexadecimal string | transaction hash
  verbose | boolean | whether a verbose coin-specific response is required
+ 
 **Example:** */transaction/get?tx_hash=871af2528c83ba90bd7b3fbfeac703cbd20f204f1b800ba4ec748842fcac0c9b&coinType=btc*
-##### [GET] /transaction/get-merkle eq. to blockchain.transaction.get_merkle
+#### [GET] /transaction/get-merkle eq. to blockchain.transaction.get_merkle
 Additional params:
 
 Param | Type | Description
@@ -124,7 +128,7 @@ Param | Type | Description
 tx_hash | hexadecimal string | raw transaction
 height | integer | the height at which it was confirmed
 
-##### [GET] /transaction/id-from-pos eq. to blockchain.transaction.id_from_pos
+#### [GET] /transaction/id-from-pos eq. to blockchain.transaction.id_from_pos
 Additional params:
 
 Param | Type | Description
