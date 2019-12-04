@@ -32,10 +32,11 @@ npm test
 
 ## Supported calls
 
-All calls are required to have a CoinType param or at least host, port, connectionType and version params.
+All calls are required to have a coinType param or at least host, port, connectionType and version params.
 
-For more details, refer to the 
- [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
+coinType=btc/lts/dash/zec  
+netMode=testnet or mainnet  
+connectionType=ssl or tcp
 
 ### Server methods
 ##### [GET] /server/version eq. to server.version
@@ -62,7 +63,7 @@ Example: */blockchain/relayfee?coinType=btc*
 
 ### History method
 ##### [GET] /history/get_history return the confirmed and unconfirmed history of a script hash
-Additional params: address, page, pageSize  
+Additional params: coinType, address, page, pageSize  
 **Example:** */history/get_history?address=1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj&coinType=btc&page=1&pageSize=3*
 
 ### Mempool methods
@@ -89,6 +90,10 @@ Additional params: tx_hash - the transaction hash as a hexadecimal string, heigh
 Additional params: height - the main chain block height, 
 tx_pos - a zero-based index of the transaction in the given block, 
 merkle - whether a merkle proof should also be returned, a boolean.
+
+<br/>
+For more details, refer to the 
+ [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
 
 ## Examples
  Here are some basic examples. 
@@ -118,7 +123,7 @@ merkle - whether a merkle proof should also be returned, a boolean.
   
   * **Code:** 200 <br />
   *  **Content:** 
-    <pre>{
+    <pre>  {
         "status":"success","result":["ElectrumX 1.13.0","1.4"]
     }</pre>
  
