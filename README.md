@@ -21,7 +21,7 @@ ExpressJS middleware to add functionality for proxying requests to Electrum serv
 
 
 <a name="supported_coin_types"></a>
-# Supported coin types
+## Supported coin types
 
 BTC, LTC, DASH, ZEC
 
