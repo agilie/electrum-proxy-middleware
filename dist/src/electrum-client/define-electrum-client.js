@@ -118,13 +118,10 @@ function _getElectrumConfig(type, netMode) {
                     _i++;
                     return [3 /*break*/, 1];
                 case 4:
-                    if (availableConfig) {
-                        return [2 /*return*/, availableConfig];
-                    }
-                    else {
+                    if (!availableConfig) {
                         throw 'No available configs';
                     }
-                    return [2 /*return*/];
+                    return [2 /*return*/, availableConfig];
             }
         });
     });
