@@ -1,19 +1,36 @@
 # README
 
-[Supported calls](#supported_calls)
-
 # Electrum Proxy Middleware
 
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
-# Coin types
+- [Supported coin types](#supported_coin_types)
+- [Requirements](#requirements)
+- [Installing](#installing)
+- [Running the tests](#running_test)
+- [Supported calls](#supported_calls)
+
+    - [Server methods](#server_methods)
+    - [Blockchain methods](#blockchain_methods)
+    - [Getting history](#getting_history)
+    - [Mempool methods](#mempool_methods)
+    - [Scripthash methods](#scripthash_methods)
+    - [Transaction methods](#transaction_methods)
+
+- [Examples](#examples)
+
+
+<a name="supported_coin_types"></a>
+# Supported coin types
 
 BTC, LTC, DASH, ZEC
 
+<a name="requirements"></a>
 ## Requirements
 
 Node >= 7.x
 
+<a name="installing"></a> 
 ## Installing
 
 ```
@@ -26,6 +43,7 @@ const electrum = require('@agilie/electrum-proxy-middleware');
 app.use(electrum.router);
 ```
 
+<a name="running_test"></a> 
 ## Running the tests
 
 ```
@@ -44,6 +62,7 @@ coinType | btc/lts/dash/zec
 netMode | testnet or mainnet  
 connectionType | ssl or tcp
 
+<a name="server_methods"></a> 
 ### Server methods
 #### [GET] /server/version eq. to server.version
 #### [GET] /server/features eq. to server.features
@@ -54,6 +73,7 @@ connectionType | ssl or tcp
 #### [GET] /server/ping eq. to server.ping
 **Example:** */server/version?coinType=btc*
 
+<a name="blockchain_methods"></a> 
 ### Blockchain methods
 #### [GET] /block/header eq. to blockchain.block.header
 Additional params:
@@ -78,7 +98,8 @@ blocks |  the number of blocks to target for confirmation
 #### [GET] /blockchain/relayfee eq. to blockchain.relayfee
 Example: */blockchain/relayfee?coinType=btc*
 
-### History method
+<a name="getting_history"></a> 
+### Getting history
 #### [GET] /history/get_history return the confirmed and unconfirmed history of a script hash 
 
 Param | Description
@@ -90,10 +111,12 @@ pageSize |  transactions per page
 
 **Example:** */history/get_history?address=1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj&coinType=btc&page=1&pageSize=3*
 
+<a name="mempool_methods"></a>
 ### Mempool methods
 #### [GET] /mempool/get_fee_histogram eq. to mempool.get_fee_histogram
 **Example:** */mempool/get_fee_histogram?coinType=btc*
 
+<a name="scripthash_methods"></a>
 ### Scripthash methods
 
 Param | Type | Description
@@ -106,6 +129,7 @@ scripthash |hexadecimal string |  script hash
 #### [GET] /scripthash/get_mempool eq. to blockchain.scripthash.get_mempool
 **Example:** */scripthash/balance?scripthash=20b360e68b4fe6d1eb460e45434f756fa1582ed687167898f9a716435ecd737f&coinType=btc*
 
+<a name="transaction_methods"></a>
 ### Transaction methods
 #### [POST] /transaction/broadcast eq. to blockchain.transaction.broadcast
 Additional params:
@@ -144,6 +168,7 @@ merkle | boolean | whether a merkle proof should also be returned
 For more details, refer to the 
  [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
 
+<a name="examples"></a>
 ## Examples
  Here are some basic examples. 
 
