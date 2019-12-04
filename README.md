@@ -241,7 +241,7 @@ Or you can specify electrum server:
    
    `host=[string]`
    
-   `connectionType=[ssp | tcp]`
+   `connectionType=[ssl | tcp]`
    
    `version=[server version]`
 
