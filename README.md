@@ -15,11 +15,11 @@ Node >= 7.x
 ## Installing
 
 ```
-npm install github:agilie/electrum-proxy-middleware
+npm install @agilie/electrum-proxy-middleware
 ```
 
 ```
-const electrum = require('electrum-proxy-middleware');
+const electrum = require('@agilie/electrum-proxy-middleware');
 
 app.use(electrum.router);
 ```
