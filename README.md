@@ -45,24 +45,24 @@ For more details, refer to the
 ##### [GET] /server/add_peer eq. to server.add_peer
 ##### [GET] /server/get-peers eq. to server.peers.subscribe
 ##### [GET] /server/ping eq. to server.ping
-**Example:** */server/version?coinType=btc&*
+**Example:** */server/version?coinType=btc*
 
 ### Blockchain methods
 ##### [GET] /block/header eq. to blockchain.block.header
-**Additional params:** version, height - the height of the block.
+Additional params: version, height - the height of the block.  
 **Example:** */block/header?coinType=btc&height=5*
 ##### [GET] /block/headers eq. to blockchain.block.headers
-**Additional params:** start_height - the height of the first header requested, count - the number of headers requested.
+Additional params: start_height - the height of the first header requested, count - the number of headers requested.  
 **Example:** */block/headers?&coinType=btc&start_height=5&count=1*
 ##### [GET] /blockchain/estimatefee eq. to blockchain.estimatefee
-**Additional params:** blocks - the number of blocks to target for confirmation.
+Additional params: blocks - the number of blocks to target for confirmation.  
 **Example:** */blockchain/estimatefee?coinType=btc&blocks=1*
 ##### [GET] /blockchain/relayfee eq. to blockchain.relayfee
 Example: */blockchain/relayfee?coinType=btc*
 
 ### History method
 ##### [GET] /history/get_history return the confirmed and unconfirmed history of a script hash
-**Additional params:** address, page, pageSize
+Additional params: address, page, pageSize  
 **Example:** */history/get_history?address=1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj&coinType=btc&page=1&pageSize=3*
 
 ### Mempool methods
@@ -79,14 +79,14 @@ All methods needs the script hash as a hexadecimal string in params.
 
 ### Transaction methods
 ##### [POST] /transaction/broadcast eq. to blockchain.transaction.broadcast
-**Additional params:** raw_tx - the raw transaction as a hexadecimal string.
+Additional params: raw_tx - the raw transaction as a hexadecimal string.
 ##### [GET] /transaction/get eq. to blockchain.transaction.get
-**Additional params:** tx_hash - the transaction hash as a hexadecimal string, verbose - whether a verbose coin-specific response is required.
+Additional params: tx_hash - the transaction hash as a hexadecimal string, verbose - whether a verbose coin-specific response is required.  
 **Example:** */transaction/get?tx_hash=871af2528c83ba90bd7b3fbfeac703cbd20f204f1b800ba4ec748842fcac0c9b&coinType=btc*
 ##### [GET] /transaction/get-merkle eq. to blockchain.transaction.get_merkle
-**Additional params:** tx_hash - the transaction hash as a hexadecimal string, height - the height at which it was confirmed.
+Additional params: tx_hash - the transaction hash as a hexadecimal string, height - the height at which it was confirmed.  
 ##### [GET] /transaction/id-from-pos eq. to blockchain.transaction.id_from_pos
-**Additional params:** height - the main chain block height, 
+Additional params: height - the main chain block height, 
 tx_pos - a zero-based index of the transaction in the given block, 
 merkle - whether a merkle proof should also be returned, a boolean.
 
