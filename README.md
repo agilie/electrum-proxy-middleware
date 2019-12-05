@@ -5,7 +5,7 @@
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
 ## Agenda
-Web and mobile environments can't be connected with electrum servers. This package provide ability to make requests to them.
+Web and mobile applications can't be connected with electrum servers. This package provide ability to make requests to them.
 
 - [Requirements](#requirements)
 - [Getting started](#getting_started)
@@ -171,12 +171,9 @@ merkle | boolean | whether a merkle proof should also be returned
 ### Getting history
  [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/CT-238-NT-add-api-documentation/history.md) docs.
 
-
-
 <br/>
-For more details, refer to the
 
-[ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
+For more details, refer to the [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
 
 <a name="examples"></a>
 ## Examples
