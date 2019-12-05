@@ -4,13 +4,15 @@
 
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
+## Agenda
+Web and mobile environments can't be connected with electrum servers. This package provide ability to make requests to them.
+
 - [Requirements](#requirements)
 - [Getting started](#getting_started)
 - [Running the tests](#running_test)
 - [Supported calls](#supported_calls)
-
     - [Server methods](#server_methods)
-    - [getting history](#getting_history)
+    - [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/CT-238-NT-add-api-documentation/history.md)
     - [Blockchain methods](#blockchain_methods)
     - [Getting history](#getting_history)
     - [Mempool methods](#mempool_methods)
@@ -64,7 +66,7 @@ All calls are required to have a coinType param or at least host, port, connecti
 
 Param | Value
 ------------ | -------------
-**coinType** (required) |   [supported coin types](https://github.com/agilie/electrum-proxy-middleware/blob/master/src/service/wallet/types/coin.type.ts)
+**coinType** (required) | [supported coin types](https://github.com/agilie/electrum-proxy-middleware/blob/master/src/service/wallet/types/coin.type.ts)
 **netMode** | **mainnet**(by default) or **testnet**
 
 or
@@ -87,11 +89,6 @@ Param | Value
 #### [GET] /server/get-peers eq. to server.peers.subscribe
 #### [GET] /server/ping eq. to server.ping
 **Example:** */server/version?coinType=btc*
-
-<a name="getting_history"></a> 
-### Getting history
- [Getting history](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
-
 
 <a name="blockchain_methods"></a> 
 ### Blockchain methods
@@ -171,10 +168,15 @@ height |  non-negative integer | the main chain block height
 tx_pos | integer | a zero-based index of the transaction in the given block
 merkle | boolean | whether a merkle proof should also be returned
 
-<br/>
-For more details, refer to the 
+### Getting history
+ [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/CT-238-NT-add-api-documentation/history.md) docs.
 
- [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
+
+
+<br/>
+For more details, refer to the
+
+[ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
 
 <a name="examples"></a>
 ## Examples
