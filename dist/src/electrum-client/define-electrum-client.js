@@ -119,7 +119,7 @@ function _getElectrumConfig(type, netMode) {
                     return [3 /*break*/, 1];
                 case 4:
                     if (!availableConfig) {
-                        throw 'No available configs';
+                        throw Error('No available configs');
                     }
                     return [2 /*return*/, availableConfig];
             }

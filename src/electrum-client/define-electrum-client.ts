@@ -39,7 +39,7 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
     }
 }
 
-async function _getElectrumConfig(type: CoinType, netMode: Netmode) {
+async function _getElectrumConfig(type: CoinType, netMode: Netmode) : ElectrumConfig {
     const configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
 
     let availableConfig: ElectrumConfig = null;
@@ -52,7 +52,7 @@ async function _getElectrumConfig(type: CoinType, netMode: Netmode) {
     }
 
     if (!availableConfig) {
-        throw 'No available configs';
+        throw Error('No available configs');
     }
 
     return availableConfig;

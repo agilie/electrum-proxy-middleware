@@ -88,7 +88,7 @@ function getHistoryOptions(historyReqDTO, address) {
     };
 }
 function getWallet(coinType, options) {
-    var wallet;
+    var wallet = null;
     switch (coinType) {
         case coin_type_1.CoinType.BTC: {
             wallet = new wallet_btc_1.WalletBtc(options);

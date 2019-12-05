@@ -41,7 +41,7 @@ function getHistoryOptions(historyReqDTO: HistoryReqDTO, address: string) : Wall
 }
 
 function getWallet(coinType: string, options: WalletCreateOptionsInterface): WalletLike {
-    let wallet: WalletLike;
+    let wallet: WalletLike = null;
     switch (coinType) {
         case CoinType.BTC: {
             wallet = new WalletBtc(options);
