@@ -5,14 +5,14 @@
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
 ## Agenda
-Web and mobile applications can't be connected with electrum servers. This package provide ability to make requests to them.
+Web and mobile applications can't communicate with electrum servers. This package provide ability to make requests to them.
 
 - [Requirements](#requirements)
 - [Getting started](#getting_started)
 - [Running the tests](#running_test)
 - [Supported calls](#supported_calls)
     - [Server methods](#server_methods)
-    - [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/CT-238-NT-add-api-documentation/history.md)
+    - [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/master/history.md)
     - [Blockchain methods](#blockchain_methods)
     - [Getting history](#getting_history)
     - [Mempool methods](#mempool_methods)
@@ -169,7 +169,7 @@ tx_pos | integer | a zero-based index of the transaction in the given block
 merkle | boolean | whether a merkle proof should also be returned
 
 ### Getting history
- [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/CT-238-NT-add-api-documentation/history.md) docs.
+ [Getting history](https://github.com/agilie/electrum-proxy-middleware/blob/master/history.md) docs.
 
 <br/>
 
