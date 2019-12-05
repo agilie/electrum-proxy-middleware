@@ -5,7 +5,7 @@
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
 ## Agenda
-Web and mobile applications can't communicate with electrum servers. This package provide ability to make requests to them.
+Web applications can't communicate with electrum servers. This package provide ability to make requests to them.
 
 - [Requirements](#requirements)
 - [Getting started](#getting_started)
