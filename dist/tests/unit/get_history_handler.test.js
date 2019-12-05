@@ -43,7 +43,7 @@ describe('getHistoryHandler method', function () {
                 switch (_a.label) {
                     case 0:
                         mockReq = {
-                            query: { address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: 'btc' },
+                            query: { address: '1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj', coinType: 'btc' },
                             locals: {
                                 ecl: {
                                     blockchainScripthash_getHistory: function () { return 'test'; },

@@ -67,7 +67,7 @@ describe('History methods', function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, supertest_1.default(app)
-                            .get('/history/get_history').query(options({ address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL' }))];
+                            .get('/history/get_history').query(options({ address: '1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj' }))];
                     case 1:
                         result = _a.sent();
                         expect(result.statusCode).toBe(200);

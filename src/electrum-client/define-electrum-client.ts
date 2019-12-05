@@ -27,7 +27,7 @@ async function defineElectrumClient(req: any, res: Response) {
 }
 
 async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<ElectrumConfig> {
-    if ((query as CoinTypeReqDTO).coinType) {
+    if ((query as CoinTypeReqDTO).coinType && !configurationPresent(query)) {
         const coinTypeDTO: CoinTypeReqDTO = plainToClass(CoinTypeReqDTO, query);
         await validateOrReject(coinTypeDTO);
         return _getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode);
@@ -36,6 +36,10 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
         await validateOrReject(configurationDTO);
         return configurationDTO;
     }
+}
+
+function configurationPresent(query: any) {
+    return query.host || query.port || query.connectionType || query.version;
 }
 
 function _getElectrumConfig(type: CoinType, netMode: Netmode): ElectrumConfig {

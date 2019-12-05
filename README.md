@@ -4,13 +4,13 @@
 
 ExpressJS middleware to add functionality for proxying requests to Electrum servers
 
-- [Supported coin types](#supported_coin_types)
 - [Requirements](#requirements)
-- [Installing](#installing)
+- [Getting started](#getting_started)
 - [Running the tests](#running_test)
 - [Supported calls](#supported_calls)
 
     - [Server methods](#server_methods)
+    - [getting history](#getting_history)
     - [Blockchain methods](#blockchain_methods)
     - [Getting history](#getting_history)
     - [Mempool methods](#mempool_methods)
@@ -19,19 +19,13 @@ ExpressJS middleware to add functionality for proxying requests to Electrum serv
 
 - [Examples](#examples)
 
-
-<a name="supported_coin_types"></a>
-## Supported coin types
-
-BTC, LTC, DASH, ZEC
-
 <a name="requirements"></a>
 ## Requirements
 
 Node >= 7.x
 
-<a name="installing"></a> 
-## Installing
+<a name="getting_started"></a> 
+## Getting started
 
 ```
 npm install @agilie/electrum-proxy-middleware
@@ -41,6 +35,18 @@ npm install @agilie/electrum-proxy-middleware
 const electrum = require('@agilie/electrum-proxy-middleware');
 
 app.use(electrum.router);
+
+app.listen(3000)
+```
+
+```
+curl -X GET http://localhost:3000/server/version?coinType=btc
+> {"status":"success","result":["ElectrumX 1.13.0","1.4"]}
+
+or
+
+curl -X GET 'http://localhost:3000/server/version?port=55002&host=tn.not.fyi&connectionType=ssl&version=1.4'
+> {"status":"success","result":["ElectrumX 1.13.0","1.4"]}
 ```
 
 <a name="running_test"></a> 
@@ -58,9 +64,18 @@ All calls are required to have a coinType param or at least host, port, connecti
 
 Param | Value
 ------------ | -------------
-coinType | btc/lts/dash/zec 
-netMode | testnet or mainnet  
-connectionType | ssl or tcp
+**coinType** (required) |   [supported coin types](https://github.com/agilie/electrum-proxy-middleware/blob/master/src/service/wallet/types/coin.type.ts)
+**netMode** | **mainnet**(by default) or **testnet**
+
+or
+
+Param | Value
+------------ | -------------
+**host** (required) | e.g. **tn.not.fyi**
+**port** (required)| e.g. **55002**
+**connectionType** (required) | **ssl** or **tcp**
+**version** (required) | e.g **1.4**
+**netMode** | **mainnet** (by default) or **testnet**
 
 <a name="server_methods"></a> 
 ### Server methods
@@ -72,6 +87,11 @@ connectionType | ssl or tcp
 #### [GET] /server/get-peers eq. to server.peers.subscribe
 #### [GET] /server/ping eq. to server.ping
 **Example:** */server/version?coinType=btc*
+
+<a name="getting_history"></a> 
+### Getting history
+ [Getting history](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
+
 
 <a name="blockchain_methods"></a> 
 ### Blockchain methods
@@ -97,19 +117,6 @@ blocks |  the number of blocks to target for confirmation
 **Example:** */blockchain/estimatefee?coinType=btc&blocks=1*
 #### [GET] /blockchain/relayfee eq. to blockchain.relayfee
 Example: */blockchain/relayfee?coinType=btc*
-
-<a name="getting_history"></a> 
-### Getting history
-#### [GET] /history/get_history return the confirmed and unconfirmed history of a script hash 
-
-Param | Description
------------- | -------------
-coinType |  btc/lts/dash/zec value
-address |  donation address
-page |  number of page
-pageSize |  transactions per page
-
-**Example:** */history/get_history?address=1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj&coinType=btc&page=1&pageSize=3*
 
 <a name="mempool_methods"></a>
 ### Mempool methods
@@ -166,6 +173,7 @@ merkle | boolean | whether a merkle proof should also be returned
 
 <br/>
 For more details, refer to the 
+
  [ElectrumX Protocol Methods](https://electrumx.readthedocs.io/en/latest/protocol-methods.html) docs.
 
 <a name="examples"></a>
