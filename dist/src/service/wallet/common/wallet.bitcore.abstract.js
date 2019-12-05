@@ -56,8 +56,6 @@ var WalletBitcoreAbstract = /** @class */ (function () {
                     case 0: return [4 /*yield*/, req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash)];
                     case 1:
                         transactions = _a.sent();
-                        console.log(this._scriptHash);
-                        console.log(transactions);
                         if (page && pageSize && Number(page) && page > 0) {
                             transactions = transactions.slice(Number(page - 1) * pageSize, (page * pageSize));
                         }

@@ -29,8 +29,6 @@ export abstract class WalletBitcoreAbstract implements WalletLike {
 
     async getHistory(page: number, pageSize: number, req: any): Promise<TransactionLike[]> {
         let transactions = await req.locals.ecl.blockchainScripthash_getHistory(this._scriptHash);
-        console.log(this._scriptHash);
-        console.log(transactions);
 
         if (page && pageSize && Number(page) && page > 0) {
             transactions = transactions.slice(Number(page - 1) * pageSize, (page * pageSize));

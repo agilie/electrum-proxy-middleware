@@ -117,4 +117,22 @@ describe('Scripthash methods', function () {
             });
         });
     });
+    it('return the confirmed and unconfirmed history of a script hash.', function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, supertest_1.default(app)
+                            .get('/scripthash/get_history').query(options())];
+                    case 1:
+                        result = _a.sent();
+                        expect(result.statusCode).toBe(200);
+                        data = result.body;
+                        expect(data.status).toEqual('success');
+                        expect(data.result).not.toBeNull();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    });
 });
