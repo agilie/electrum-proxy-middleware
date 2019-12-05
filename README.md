@@ -261,7 +261,7 @@ Or you can specify electrum server:
 
 * **URL**
 
-  <_/history/get_history?address=1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa&coinType=btc&page=1&pageSize=2_>
+  <_/history/get_history?address=1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj&coinType=btc&page=1&pageSize=2_>
 
 * **Method:**
 
