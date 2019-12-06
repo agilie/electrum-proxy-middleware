@@ -50,4 +50,14 @@ describe('Scripthash methods', function() {
         expect(data.status).toEqual('success');
         expect(data.result).not.toBeNull();
     });
+
+    it('return the confirmed and unconfirmed history of a script hash.', async function() {
+        let result: any = await request(app)
+            .get('/scripthash/get_history').query(options());
+
+        expect(result.statusCode).toBe(200);
+        let data = result.body;
+        expect(data.status).toEqual('success');
+        expect(data.result).not.toBeNull();
+    });
 });

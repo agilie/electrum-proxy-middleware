@@ -20,7 +20,7 @@ describe('History methods', function() {
 
     it('return the confirmed and unconfirmed history of a script hash', async function() {
         let result: any = await request(app)
-            .get('/history/get_history').query(options({address:'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL'}));
+            .get('/history/get_history').query(options({address:'1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj'}));
 
         expect(result.statusCode).toBe(200);
         let data = result.body;

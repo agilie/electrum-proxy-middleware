@@ -35,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var historyHandler = require('../../src/history');
 describe('getHistoryHandler method', function () {
     it('return valid ', function () {
@@ -45,7 +44,7 @@ describe('getHistoryHandler method', function () {
                 switch (_a.label) {
                     case 0:
                         mockReq = {
-                            query: { address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: coin_type_1.CoinType.BTC },
+                            query: { address: '1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj', coinType: 'btc' },
                             locals: {
                                 ecl: {
                                     blockchainScripthash_getHistory: function () { return 'test'; },
@@ -55,7 +54,8 @@ describe('getHistoryHandler method', function () {
                                         '3bff9e996285577a68d48fa94c769bb6df7c021f3e6b012103e4182a36fb4efa245069e1e68d2492d6acd' +
                                         '33c7583eacbde863e91af08d16029ffffffff0200451a00000000001976a9144a7eb59b84666dad56622a8519e' +
                                         '2c22d0ecb824888ac10270000000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac00000000'); },
-                                    close: function () { },
+                                    close: function () {
+                                    },
                                 },
                             }
                         };

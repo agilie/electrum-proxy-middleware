@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -52,7 +41,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var express_1 = __importDefault(require("express"));
 var src_1 = require("../../src");
-var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var app = express_1.default();
 var _a = require('../../src/electrum-client/electrum_client'), ElectrumClient = _a.ElectrumClient, overrideClient = _a.overrideClient;
 var originalElectrumClient = ElectrumClient;
@@ -110,7 +98,10 @@ describe('History methods', function () {
     });
     function options(params) {
         if (params === void 0) { params = {}; }
-        return __assign({ address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL', coinType: coin_type_1.CoinType.BTC }, params);
+        return {
+            address: '1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj',
+            coinType: 'btc',
+        };
     }
     it('return the confirmed and unconfirmed history of a script hash', function () {
         return __awaiter(this, void 0, void 0, function () {

@@ -69,11 +69,10 @@ describe('History methods', function() {
         overrideClient(originalElectrumClient);
     });
 
-    function options(params = {}) {
+    function options() {
         return {
-            address: 'n2xmNu2fQvYkuSFtDtG4XU2f2m6vwEkWSL',
-            coinType: CoinType.BTC,
-            ...params
+            address: '1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj',
+            coinType: 'btc'
         };
     }
 

@@ -77,7 +77,7 @@ function getOptions(query) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!query.coinType) return [3 /*break*/, 2];
+                    if (!(query.coinType && !configurationPresent(query))) return [3 /*break*/, 2];
                     coinTypeDTO = class_transformer_1.plainToClass(coin_type_req_dto_1.CoinTypeReqDTO, query);
                     return [4 /*yield*/, class_validator_1.validateOrReject(coinTypeDTO)];
                 case 1:
@@ -92,6 +92,9 @@ function getOptions(query) {
             }
         });
     });
+}
+function configurationPresent(query) {
+    return query.host || query.port || query.connectionType || query.version;
 }
 function _getElectrumConfig(type, netMode) {
     return __awaiter(this, void 0, void 0, function () {
