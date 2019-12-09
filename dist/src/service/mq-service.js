@@ -34,7 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
+Object.defineProperty(exports, "__esModule", { value: true });
 var amqp = require('amqplib/callback_api');
 var connectionConfig = {
     protocol: 'amqp',
@@ -53,20 +53,24 @@ amqp.connect(connectionConfig, function (err, conn) {
         ch = channel;
     });
 });
-module.exports.checkQueue = function (queueName) { return __awaiter(_this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        if (ch === null || process.env.NODE_ENV === 'test') {
+function checkQueue(queueName) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (ch === null || process.env.NODE_ENV === 'test') {
+                return [2 /*return*/];
+            }
+            ch.assertQueue(queueName, {
+                durable: false
+            });
+            console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queueName);
+            ch.consume("Peers", processMsg, { noAck: false });
+            console.log("Worker is started");
             return [2 /*return*/];
-        }
-        ch.assertQueue(queueName, {
-            durable: false
         });
-        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queueName);
-        ch.consume("Peers", processMsg, { noAck: false });
-        console.log("Worker is started");
-        return [2 /*return*/];
     });
-}); };
+}
+exports.checkQueue = checkQueue;
+;
 function processMsg(msg) {
     work(msg, function (ok) {
         try {

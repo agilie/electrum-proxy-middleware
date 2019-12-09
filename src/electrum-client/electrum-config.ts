@@ -8,7 +8,7 @@ import {electrumServersDefault, electrumServersDefaultTestnet} from '../service/
 const isPortReachable = require('is-port-reachable');
 const fs = require('fs');
 
-async function _getElectrumConfig(type: CoinType, netMode: Netmode, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
+export async function _getElectrumConfig(type: CoinType, netMode: Netmode, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
     await checkQueue('Peers');
 
     let additionalServers = await getElectrumServers(type, connectionType);
@@ -55,5 +55,3 @@ async function getElectrumServers(type: CoinType, connectionType: ProtocolTypeEn
     }
 
 }
-
-module.exports._getElectrumConfig = _getElectrumConfig;

@@ -80,6 +80,7 @@ function _getElectrumConfig(type, netMode, connectionType) {
         });
     });
 }
+exports._getElectrumConfig = _getElectrumConfig;
 function getElectrumServers(type, connectionType) {
     return __awaiter(this, void 0, void 0, function () {
         var electrum_servers_data, servers;
@@ -109,4 +110,3 @@ function getElectrumServers(type, connectionType) {
         });
     });
 }
-module.exports._getElectrumConfig = _getElectrumConfig;
