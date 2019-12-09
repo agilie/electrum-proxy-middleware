@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var coin_type_1 = require("../service/wallet/types/coin.type");
 var netmode_1 = require("./types/netmode");
 var protocol_type_enum_1 = require("./types/protocol.type.enum");
-var MQService_1 = require("../service/MQService");
+var mq_service_1 = require("../service/mq-service");
 var electrum_servers_default_1 = require("../service/electrum-servers.default");
 var isPortReachable = require('is-port-reachable');
 var fs = require('fs');
@@ -47,7 +47,7 @@ function _getElectrumConfig(type, netMode, connectionType) {
         var additionalServers, configs, availableConfig, _i, _a, config, hostIsAvailable;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, MQService_1.checkQueue('Peers')];
+                case 0: return [4 /*yield*/, mq_service_1.checkQueue('Peers')];
                 case 1:
                     _b.sent();
                     return [4 /*yield*/, getServers(type, connectionType)];

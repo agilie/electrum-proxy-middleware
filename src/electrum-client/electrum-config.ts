@@ -2,7 +2,7 @@ import {CoinType} from '../service/wallet/types/coin.type';
 import {Netmode} from './types/netmode';
 import {ProtocolTypeEnum} from './types/protocol.type.enum';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
-import {checkQueue} from '../service/MQService';
+import {checkQueue} from '../service/mq-service';
 import {electrumServersDefault, electrumServersDefaultTestnet} from '../service/electrum-servers.default';
 
 const isPortReachable = require('is-port-reachable');
