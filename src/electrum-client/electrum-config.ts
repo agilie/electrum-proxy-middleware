@@ -9,9 +9,9 @@ const isPortReachable = require('is-port-reachable');
 const fs = require('fs');
 
 async function _getElectrumConfig(type: CoinType, netMode: Netmode, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
-
     await checkQueue('Peers');
-    let additionalServers = await getServers(type, connectionType);
+
+    let additionalServers = await getElectrumServers(type, connectionType);
     let configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
 
     let availableConfig: ElectrumConfig = null;
@@ -30,12 +30,12 @@ async function _getElectrumConfig(type: CoinType, netMode: Netmode, connectionTy
     return availableConfig;
 }
 
-async function getServers(type: CoinType, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
-    if (process.env.NODE_ENV === 'test') {return;}
+async function getElectrumServers(type: CoinType, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
+    if (process.env.NODE_ENV === 'test') { return; }
 
-    const data = fs.readFileSync('electrum_servers.json', 'utf8');
+    const electrum_servers_data = fs.readFileSync('electrum_servers.json', 'utf8');
 
-    let servers = JSON.parse(data).filter(server => Object.keys(CoinType).includes(server.currency) &&
+    let servers = JSON.parse(electrum_servers_data).filter((server: any) => Object.keys(CoinType).includes(server.currency) &&
         server.peers &&
         server.currency == type.toUpperCase());
 
