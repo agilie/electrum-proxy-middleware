@@ -34,9 +34,11 @@ async function getServers(type: CoinType, connectionType: ProtocolTypeEnum): Pro
     if (process.env.NODE_ENV === 'test') {return;}
 
     const data = fs.readFileSync('electrum_servers.json', 'utf8');
-    let servers = JSON.parse(data).filter(server => Object.keys(CoinType).includes(server.currency) && server &&
+
+    let servers = JSON.parse(data).filter(server => Object.keys(CoinType).includes(server.currency) &&
         server.peers &&
         server.currency == type.toUpperCase());
+
     if (servers.length > 0) {
         servers = servers[0].peers.map(function(server: any) {
             return {

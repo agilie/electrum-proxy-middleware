@@ -88,7 +88,7 @@ function getServers(type, connectionType) {
                 return [2 /*return*/];
             }
             data = fs.readFileSync('electrum_servers.json', 'utf8');
-            servers = JSON.parse(data).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) && server &&
+            servers = JSON.parse(data).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
                 server.peers &&
                 server.currency == type.toUpperCase(); });
             if (servers.length > 0) {
