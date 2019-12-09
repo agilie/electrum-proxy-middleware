@@ -76,13 +76,13 @@ exports.electrumServersDefault = (_a = {},
     _a);
 exports.electrumServersDefaultTestnet = (_b = {},
     _b[coin_type_1.CoinType.BTC] = [
-        // {
-        //     // testnet
-        //     host: 'tn.not.fyi',
-        //     port: 55002,
-        //     connectionType:  ProtocolTypeEnum.SSL,
-        //     version: 1.4,
-        // },
+        {
+            // testnet
+            host: 'tn.not.fyi',
+            port: 55002,
+            connectionType: protocol_type_enum_1.ProtocolTypeEnum.SSL,
+            version: 1.4,
+        },
         {
             // testnet
             host: 'electrumx-test.1209k.com',
@@ -94,8 +94,8 @@ exports.electrumServersDefaultTestnet = (_b = {},
     _b[coin_type_1.CoinType.LTC] = [
         {
             // testnet
-            host: 'electrumx-test.1209k.com',
-            port: 50002,
+            host: 'electrum.ltc.xurious.com',
+            port: 51002,
             connectionType: protocol_type_enum_1.ProtocolTypeEnum.SSL,
             version: 1.4,
         },
