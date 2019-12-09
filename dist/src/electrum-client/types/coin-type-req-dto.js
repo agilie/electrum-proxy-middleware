@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var class_validator_1 = require("class-validator");
 var coin_type_1 = require("../../service/wallet/types/coin.type");
 var netmode_1 = require("./netmode");
+var protocol_type_enum_1 = require("./protocol.type.enum");
 var CoinTypeReqDTO = /** @class */ (function () {
     function CoinTypeReqDTO() {
         this.netMode = netmode_1.Netmode.MAINNET;
@@ -20,6 +21,10 @@ var CoinTypeReqDTO = /** @class */ (function () {
         class_validator_1.IsOptional(),
         class_validator_1.IsEnum(netmode_1.Netmode)
     ], CoinTypeReqDTO.prototype, "netMode", void 0);
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsEnum(protocol_type_enum_1.ProtocolTypeEnum)
+    ], CoinTypeReqDTO.prototype, "connectionType", void 0);
     return CoinTypeReqDTO;
 }());
 exports.CoinTypeReqDTO = CoinTypeReqDTO;

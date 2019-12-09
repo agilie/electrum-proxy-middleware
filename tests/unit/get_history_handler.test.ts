@@ -1,5 +1,3 @@
-import {CoinType} from '../../src/service/wallet/types/coin.type';
-
 const historyHandler = require('../../src/history');
 
 describe('getHistoryHandler method', function() {

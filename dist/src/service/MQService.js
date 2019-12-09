@@ -34,26 +34,70 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var netmode_1 = require("../../src/electrum-client/types/netmode");
-var coin_type_1 = require("../../src/service/wallet/types/coin.type");
-var electrum_config_1 = require("../../src/electrum-client/electrum-config");
-describe('_getElectrumConfig method', function () {
-    it('return valid ElectrumConfig data', function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var options;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, electrum_config_1._getElectrumConfig(coin_type_1.CoinType.BTC, netmode_1.Netmode.MAINNET)];
-                    case 1:
-                        options = _a.sent();
-                        expect(options).toHaveProperty('host');
-                        expect(options).toHaveProperty('port');
-                        expect(options).toHaveProperty('connectionType');
-                        expect(options).toHaveProperty('version');
-                        return [2 /*return*/];
-                }
-            });
-        });
+var _this = this;
+var amqp = require('amqplib/callback_api');
+var connectionConfig = {
+    protocol: 'amqp',
+    hostname: '',
+    port: 5672,
+    username: 'dev',
+    password: '',
+    locale: 'en_US',
+    frameMax: 0,
+    heartbeat: 0,
+    vhost: '/',
+};
+var ch = null;
+amqp.connect(connectionConfig, function (err, conn) {
+    conn.createChannel(function (err, channel) {
+        ch = channel;
     });
+});
+module.exports.checkQueue = function (queueName) { return __awaiter(_this, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        if (ch === null || process.env.NODE_ENV === 'test') {
+            return [2 /*return*/];
+        }
+        ch.assertQueue(queueName, {
+            durable: false
+        });
+        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queueName);
+        ch.consume("Peers", processMsg, { noAck: false });
+        console.log("Worker is started");
+        return [2 /*return*/];
+    });
+}); };
+function processMsg(msg) {
+    work(msg, function (ok) {
+        try {
+            if (ok)
+                ch.ack(msg);
+            else
+                ch.reject(msg, true);
+        }
+        catch (e) {
+            closeOnErr(e);
+        }
+    });
+}
+function work(msg, cb) {
+    var fs = require('fs');
+    fs.writeFile('electrum_servers.json', msg.content.toString(), function (err) {
+        if (err)
+            throw err;
+        console.log('Saved!');
+    });
+    console.log("Electrum servers ", msg.content.toString());
+    cb(true);
+}
+function closeOnErr(err) {
+    if (!err)
+        return false;
+    console.error("[AMQP] error", err);
+    ch.close();
+    return true;
+}
+process.on('exit', function (code) {
+    ch.close();
+    console.log("Closing rabbitmq channel");
 });

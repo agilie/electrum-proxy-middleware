@@ -1,10 +1,10 @@
 import {Netmode} from '../../src/electrum-client/types/netmode';
 import {CoinType} from '../../src/service/wallet/types/coin.type';
-const electrumClient = require('../../src/electrum-client/define-electrum-client');
+import {_getElectrumConfig} from  '../../src/electrum-client/electrum-config';
 
 describe('_getElectrumConfig method', function() {
     it('return valid ElectrumConfig data', async function() {
-        const options = await electrumClient._getElectrumConfig(CoinType.BTC, Netmode.TESTNET);
+        const options = await _getElectrumConfig(CoinType.BTC, Netmode.MAINNET);
 
         expect(options).toHaveProperty('host');
         expect(options).toHaveProperty('port');

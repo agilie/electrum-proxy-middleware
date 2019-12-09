@@ -76,13 +76,13 @@ export const electrumServersDefault: CoinMap<ElectrumConfig[]> = {
 
 export const electrumServersDefaultTestnet: CoinMap<ElectrumConfig[]> = {
     [CoinType.BTC]: [
-        {
-            // testnet
-            host: 'tn.not.fyi',
-            port: 55002,
-            connectionType:  ProtocolTypeEnum.SSL,
-            version: 1.4,
-        },
+        // {
+        //     // testnet
+        //     host: 'tn.not.fyi',
+        //     port: 55002,
+        //     connectionType:  ProtocolTypeEnum.SSL,
+        //     version: 1.4,
+        // },
         {
             // testnet
             host: 'electrumx-test.1209k.com',
@@ -94,8 +94,8 @@ export const electrumServersDefaultTestnet: CoinMap<ElectrumConfig[]> = {
     [CoinType.LTC]: [
         {
             // testnet
-            host: 'electrum.ltc.xurious.com',
-            port: 51002,
+            host: 'electrumx-test.1209k.com',
+            port: 50002,
             connectionType: ProtocolTypeEnum.SSL,
             version: 1.4,
         },

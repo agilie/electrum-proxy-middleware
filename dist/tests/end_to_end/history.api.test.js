@@ -96,11 +96,10 @@ describe('History methods', function () {
     afterAll(function () {
         overrideClient(originalElectrumClient);
     });
-    function options(params) {
-        if (params === void 0) { params = {}; }
+    function options() {
         return {
             address: '1BWwXJH3q6PRsizBkSGm2Uw4Sz1urZ5sCj',
-            coinType: 'btc',
+            coinType: 'btc'
         };
     }
     it('return the confirmed and unconfirmed history of a script hash', function () {

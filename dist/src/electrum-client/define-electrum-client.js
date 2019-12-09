@@ -35,14 +35,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var electrum_servers_default_1 = require("../service/electrum-servers.default");
 var class_validator_1 = require("class-validator");
 var configuration_req_dto_1 = require("./types/configuration-req-dto");
 var coin_type_req_dto_1 = require("./types/coin-type-req-dto");
 var class_transformer_1 = require("class-transformer");
 var index_1 = require("./index");
-var netmode_1 = require("./types/netmode");
-var isPortReachable = require('is-port-reachable');
+var electrum_config_1 = require("./electrum-config");
 function defineElectrumClient(req, res) {
     return __awaiter(this, void 0, void 0, function () {
         var defaultOptions, port, host, protocol, version, ecl, e_1;
@@ -57,6 +55,7 @@ function defineElectrumClient(req, res) {
                     host = defaultOptions.host;
                     protocol = defaultOptions.connectionType;
                     version = defaultOptions.version;
+                    console.log(defaultOptions);
                     ecl = new index_1.ElectrumClient(port, host, protocol, version);
                     req.locals = req.locals || {};
                     req.locals.ecl = ecl;
@@ -82,7 +81,7 @@ function getOptions(query) {
                     return [4 /*yield*/, class_validator_1.validateOrReject(coinTypeDTO)];
                 case 1:
                     _a.sent();
-                    return [2 /*return*/, _getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode)];
+                    return [2 /*return*/, electrum_config_1._getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode, coinTypeDTO.connectionType)];
                 case 2:
                     configurationDTO = class_transformer_1.plainToClass(configuration_req_dto_1.ConfigurationReqDTO, query);
                     return [4 /*yield*/, class_validator_1.validateOrReject(configurationDTO)];
@@ -96,39 +95,5 @@ function getOptions(query) {
 function configurationPresent(query) {
     return query.host || query.port || query.connectionType || query.version;
 }
-function _getElectrumConfig(type, netMode) {
-    return __awaiter(this, void 0, void 0, function () {
-        var configs, availableConfig, _i, configs_1, config, hostIsAvailable;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
-                    availableConfig = null;
-                    _i = 0, configs_1 = configs;
-                    _a.label = 1;
-                case 1:
-                    if (!(_i < configs_1.length)) return [3 /*break*/, 4];
-                    config = configs_1[_i];
-                    return [4 /*yield*/, isPortReachable(config.port, { host: config.host })];
-                case 2:
-                    hostIsAvailable = _a.sent();
-                    if (hostIsAvailable) {
-                        availableConfig = config;
-                        return [3 /*break*/, 4];
-                    }
-                    _a.label = 3;
-                case 3:
-                    _i++;
-                    return [3 /*break*/, 1];
-                case 4:
-                    if (!availableConfig) {
-                        throw Error('No available configs');
-                    }
-                    return [2 /*return*/, availableConfig];
-            }
-        });
-    });
-}
 module.exports.defineElectrumClient = defineElectrumClient;
 module.exports.getOptions = getOptions;
-module.exports._getElectrumConfig = _getElectrumConfig;
