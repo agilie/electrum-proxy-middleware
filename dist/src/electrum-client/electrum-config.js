@@ -50,7 +50,7 @@ function _getElectrumConfig(type, netMode, connectionType) {
                 case 0: return [4 /*yield*/, mq_service_1.checkQueue('Peers')];
                 case 1:
                     _b.sent();
-                    return [4 /*yield*/, getServers(type, connectionType)];
+                    return [4 /*yield*/, getElectrumServers(type, connectionType)];
                 case 2:
                     additionalServers = _b.sent();
                     configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
@@ -80,15 +80,15 @@ function _getElectrumConfig(type, netMode, connectionType) {
         });
     });
 }
-function getServers(type, connectionType) {
+function getElectrumServers(type, connectionType) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, servers;
+        var electrum_servers_data, servers;
         return __generator(this, function (_a) {
             if (process.env.NODE_ENV === 'test') {
                 return [2 /*return*/];
             }
-            data = fs.readFileSync('electrum_servers.json', 'utf8');
-            servers = JSON.parse(data).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
+            electrum_servers_data = fs.readFileSync('electrum_servers.json', 'utf8');
+            servers = JSON.parse(electrum_servers_data).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
                 server.peers &&
                 server.currency == type.toUpperCase(); });
             if (servers.length > 0) {
