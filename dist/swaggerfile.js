@@ -1,4 +1,3 @@
-"use strict";
 module.exports = {
     info: {
         title: 'Electrum proxy middleware',
