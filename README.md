@@ -327,3 +327,5 @@ Or you can specify electrum server:
         }]
     }</pre>
 
+## License
+The MIT License (MIT). Full license text is available in [LICENSE]().
