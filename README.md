@@ -21,6 +21,8 @@ Web applications can't communicate with electrum servers. This package provide a
 
 - [Examples](#examples)
 
+- [License](#license)
+
 <a name="requirements"></a>
 ## Requirements
 
@@ -327,5 +329,6 @@ Or you can specify electrum server:
         }]
     }</pre>
 
+<a name="license"></a>
 ## License
 The MIT License (MIT). Full license text is available in [LICENSE](https://github.com/agilie/electrum-proxy-middleware/blob/master/LICENSE.md).
