@@ -328,4 +328,4 @@ Or you can specify electrum server:
     }</pre>
 
 ## License
-The MIT License (MIT). Full license text is available in [LICENSE]().
+The MIT License (MIT). Full license text is available in [LICENSE](https://github.com/agilie/electrum-proxy-middleware/blob/master/LICENSE.md).
