@@ -15,14 +15,13 @@ const connectionConfig = {
 let ch : any = null;
 let response : string = '';
 amqp.connect(connectionConfig, function (err: any, conn: any) {
-    if(ch === null || process.env.NODE_ENV === 'test') {return;}
     conn.createChannel(function (err: any, channel: any) {
         ch = channel;
     });
 });
 
-export async function checkQueue(queueName: string) {
-    if(ch === null || process.env.NODE_ENV === 'test') {return;}
+export async function getDataFromQueue(queueName: string) {
+    if(ch === null || process.env.NODE_ENV === 'test') { return; }
     ch.assertQueue(queueName, {
         durable: false
     });

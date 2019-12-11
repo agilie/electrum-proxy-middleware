@@ -50,14 +50,11 @@ var connectionConfig = {
 var ch = null;
 var response = '';
 amqp.connect(connectionConfig, function (err, conn) {
-    if (ch === null || process.env.NODE_ENV === 'test') {
-        return;
-    }
     conn.createChannel(function (err, channel) {
         ch = channel;
     });
 });
-function checkQueue(queueName) {
+function getDataFromQueue(queueName) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             if (ch === null || process.env.NODE_ENV === 'test') {
@@ -72,7 +69,7 @@ function checkQueue(queueName) {
         });
     });
 }
-exports.checkQueue = checkQueue;
+exports.getDataFromQueue = getDataFromQueue;
 function processMsg(msg) {
     work(msg, function (ok) {
         try {

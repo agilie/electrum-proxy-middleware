@@ -2,7 +2,7 @@ import {CoinType} from '../service/wallet/types/coin.type';
 import {Netmode} from './types/netmode';
 import {ProtocolTypeEnum} from './types/protocol.type.enum';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
-import {checkQueue} from '../service/mq-service';
+import {getDataFromQueue} from '../service/mq-service';
 import {electrumServersDefault, electrumServersDefaultTestnet} from '../service/electrum-servers.default';
 import {RequestedServer} from '../service/wallet/types/requested-server';
 const isPortReachable = require('is-port-reachable');
@@ -10,7 +10,7 @@ const isPortReachable = require('is-port-reachable');
 let servers_json : string  = '';
 
 export async function _getElectrumConfig(type: CoinType, netMode: Netmode, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
-    servers_json = await checkQueue('Peers');
+    servers_json = await getDataFromQueue('Peers');
 
     let additionalServers = await getElectrumServers(type, connectionType);
     let configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];

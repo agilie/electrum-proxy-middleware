@@ -47,7 +47,7 @@ function _getElectrumConfig(type, netMode, connectionType) {
         var additionalServers, configs, availableConfig, _i, _a, config, hostIsAvailable;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, mq_service_1.checkQueue('Peers')];
+                case 0: return [4 /*yield*/, mq_service_1.getDataFromQueue('Peers')];
                 case 1:
                     servers_json = _b.sent();
                     return [4 /*yield*/, getElectrumServers(type, connectionType)];
