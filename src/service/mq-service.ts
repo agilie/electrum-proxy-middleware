@@ -13,6 +13,7 @@ const connectionConfig = {
 };
 
 let ch : any = null;
+let response : string = '';
 amqp.connect(connectionConfig, function (err: any, conn: any) {
     conn.createChannel(function (err: any, channel: any) {
         ch = channel;
@@ -28,7 +29,7 @@ export async function checkQueue(queueName: string) {
     console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queueName);
 
     ch.consume("Peers", processMsg, {noAck: false});
-    console.log("Worker is started");
+    return response;
 };
 
 function processMsg(msg: string) {
@@ -45,12 +46,7 @@ function processMsg(msg: string) {
 }
 
 function work(msg: any, cb: any) {
-    var fs = require('fs');
-
-    fs.writeFile('electrum_servers.json', msg.content.toString(), function (err: any) {
-        if (err) throw err;
-        console.log('Saved!');
-    });
+    response = msg.content.toString();
     console.log("Electrum servers ", msg.content.toString());
     cb(true);
 }

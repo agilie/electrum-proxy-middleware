@@ -1,7 +1,7 @@
-'use strict'
+'use strict';
 const net = require('net');
 
-const TIMEOUT = 10000
+const TIMEOUT = 10000;
 
 const getSocket = (protocol, options) => {
     switch(protocol){
@@ -18,7 +18,7 @@ const getSocket = (protocol, options) => {
         return new tls.TLSSocket(options);
     }
     throw new Error('unknown protocol')
-}
+};
 
 const initSocket = (self, protocol, options) => {
     const conn = getSocket(protocol, options);
@@ -29,28 +29,28 @@ const initSocket = (self, protocol, options) => {
     conn.on('connect', () => {
         conn.setTimeout(0)
         self.onConnect()
-    })
+    });
     conn.on('close', (e) => {
         self.onClose(e)
-    })
+    });
     conn.on('timeout', () => {
         const e = new Error('ETIMEDOUT')
         e.errorno = 'ETIMEDOUT'
         e.code = 'ETIMEDOUT'
         e.connect = false
         conn.emit('error', e)
-    })
+    });
     conn.on('data', (chunk) => {
         conn.setTimeout(0)
         self.onRecv(chunk)
-    })
+    });
     conn.on('end', (e) => {
         conn.setTimeout(0)
         self.onEnd(e)
-    })
+    });
     conn.on('error', (e) => {
         self.onError(e)
-    })
+    });
     return conn
 }
 

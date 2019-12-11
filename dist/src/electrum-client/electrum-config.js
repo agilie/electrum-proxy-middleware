@@ -41,7 +41,7 @@ var protocol_type_enum_1 = require("./types/protocol.type.enum");
 var mq_service_1 = require("../service/mq-service");
 var electrum_servers_default_1 = require("../service/electrum-servers.default");
 var isPortReachable = require('is-port-reachable');
-var fs = require('fs');
+var servers_json = '';
 function _getElectrumConfig(type, netMode, connectionType) {
     return __awaiter(this, void 0, void 0, function () {
         var additionalServers, configs, availableConfig, _i, _a, config, hostIsAvailable;
@@ -49,7 +49,7 @@ function _getElectrumConfig(type, netMode, connectionType) {
             switch (_b.label) {
                 case 0: return [4 /*yield*/, mq_service_1.checkQueue('Peers')];
                 case 1:
-                    _b.sent();
+                    servers_json = _b.sent();
                     return [4 /*yield*/, getElectrumServers(type, connectionType)];
                 case 2:
                     additionalServers = _b.sent();
@@ -83,17 +83,20 @@ function _getElectrumConfig(type, netMode, connectionType) {
 exports._getElectrumConfig = _getElectrumConfig;
 function getElectrumServers(type, connectionType) {
     return __awaiter(this, void 0, void 0, function () {
-        var electrum_servers_data, servers;
+        var full_config_servers, servers;
         return __generator(this, function (_a) {
             if (process.env.NODE_ENV === 'test') {
                 return [2 /*return*/];
             }
-            electrum_servers_data = fs.readFileSync('electrum_servers.json', 'utf8');
-            servers = JSON.parse(electrum_servers_data).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
+            if (!servers_json) {
+                return [2 /*return*/, []];
+            }
+            full_config_servers = JSON.parse(servers_json).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
                 server.peers &&
                 server.currency == type.toUpperCase(); });
-            if (servers.length > 0) {
-                servers = servers[0].peers.map(function (server) {
+            servers = [];
+            if (full_config_servers.length > 0) {
+                servers = full_config_servers[0].peers.map(function (server) {
                     return {
                         host: server.host,
                         port: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? server.tcpPort : server.sslPort,

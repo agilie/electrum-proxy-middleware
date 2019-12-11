@@ -59,6 +59,10 @@ function getWallet(coinType: string, options: WalletCreateOptionsInterface): Wal
             wallet = new WalletZec(options);
             break;
         }
+        default: {
+            throw Error(' Unsupported coin type');
+        }
+        // error
     }
     return wallet;
 }

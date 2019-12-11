@@ -1,8 +1,8 @@
-'use strict'
-const EventEmitter = require('events').EventEmitter
-const util = require('./util')
-const initSocket = require('./init_socket')
-const connectSocket = require('./connect_socket')
+'use strict';
+const EventEmitter = require('events').EventEmitter;
+const util = require('./util');
+const initSocket = require('./init_socket');
+const connectSocket = require('./connect_socket');
 
 class Client{
     constructor(port, host, protocol = 'tcp', version, options = void 0){
@@ -63,7 +63,7 @@ class Client{
     }
 
     onMessage(body, n){
-        const msg = JSON.parse(body)
+        const msg = JSON.parse(body);
         if(msg instanceof Array){
             ; // don't support batch request
         } else {
@@ -80,7 +80,7 @@ class Client{
 
     onClose(){
         Object.keys(this.callback_message_queue).forEach((key) => {
-            this.callback_message_queue[key](new Error('close connect'))
+            this.callback_message_queue[key](new Error('close connect'));
             delete this.callback_message_queue[key]
         })
     }
@@ -97,4 +97,4 @@ class Client{
 
 }
 
-module.exports = Client
+module.exports = Client;

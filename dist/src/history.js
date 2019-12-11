@@ -106,6 +106,10 @@ function getWallet(coinType, options) {
             wallet = new wallet_zec_1.WalletZec(options);
             break;
         }
+        default: {
+            throw Error(' Unsupported coin type');
+        }
+        // error
     }
     return wallet;
 }

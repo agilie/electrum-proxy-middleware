@@ -4,12 +4,13 @@ import {ProtocolTypeEnum} from './types/protocol.type.enum';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
 import {checkQueue} from '../service/mq-service';
 import {electrumServersDefault, electrumServersDefaultTestnet} from '../service/electrum-servers.default';
-
+import {RequestedServer} from '../service/wallet/types/requested-server';
 const isPortReachable = require('is-port-reachable');
-const fs = require('fs');
+
+let servers_json : string  = '';
 
 export async function _getElectrumConfig(type: CoinType, netMode: Netmode, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
-    await checkQueue('Peers');
+    servers_json = await checkQueue('Peers');
 
     let additionalServers = await getElectrumServers(type, connectionType);
     let configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
@@ -26,21 +27,20 @@ export async function _getElectrumConfig(type: CoinType, netMode: Netmode, conne
     if (!availableConfig) {
         throw Error('No available configs');
     }
-
     return availableConfig;
 }
 
-async function getElectrumServers(type: CoinType, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig> {
+async function getElectrumServers(type: CoinType, connectionType: ProtocolTypeEnum): Promise<ElectrumConfig[]> {
     if (process.env.NODE_ENV === 'test') { return; }
+    if(!servers_json){ return []; }
 
-    const electrum_servers_data = fs.readFileSync('electrum_servers.json', 'utf8');
-
-    let servers = JSON.parse(electrum_servers_data).filter((server: any) => Object.keys(CoinType).includes(server.currency) &&
+    let full_config_servers: RequestedServer[] = JSON.parse(servers_json).filter((server: any) => Object.keys(CoinType).includes(server.currency) &&
         server.peers &&
         server.currency == type.toUpperCase());
 
-    if (servers.length > 0) {
-        servers = servers[0].peers.map(function(server: any) {
+    let servers: ElectrumConfig[] = [];
+    if (full_config_servers.length > 0) {
+        servers = full_config_servers[0].peers.map(function(server: any) {
             return {
                 host: server.host,
                 port: connectionType == ProtocolTypeEnum.TCP ? server.tcpPort : server.sslPort,

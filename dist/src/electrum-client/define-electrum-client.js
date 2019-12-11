@@ -55,7 +55,6 @@ function defineElectrumClient(req, res) {
                     host = defaultOptions.host;
                     protocol = defaultOptions.connectionType;
                     version = defaultOptions.version;
-                    console.log(defaultOptions);
                     ecl = new index_1.ElectrumClient(port, host, protocol, version);
                     req.locals = req.locals || {};
                     req.locals.ecl = ecl;

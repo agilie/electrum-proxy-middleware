@@ -48,6 +48,7 @@ var connectionConfig = {
     vhost: '/',
 };
 var ch = null;
+var response = '';
 amqp.connect(connectionConfig, function (err, conn) {
     conn.createChannel(function (err, channel) {
         ch = channel;
@@ -64,8 +65,7 @@ function checkQueue(queueName) {
             });
             console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queueName);
             ch.consume("Peers", processMsg, { noAck: false });
-            console.log("Worker is started");
-            return [2 /*return*/];
+            return [2 /*return*/, response];
         });
     });
 }
@@ -85,12 +85,7 @@ function processMsg(msg) {
     });
 }
 function work(msg, cb) {
-    var fs = require('fs');
-    fs.writeFile('electrum_servers.json', msg.content.toString(), function (err) {
-        if (err)
-            throw err;
-        console.log('Saved!');
-    });
+    response = msg.content.toString();
     console.log("Electrum servers ", msg.content.toString());
     cb(true);
 }

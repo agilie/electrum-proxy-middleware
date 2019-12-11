@@ -15,7 +15,6 @@ async function defineElectrumClient(req: any, res: Response) {
         const protocol = defaultOptions.connectionType;
         const version = defaultOptions.version;
 
-        console.log(defaultOptions);
         const ecl = new ElectrumClient(port, host, protocol, version);
         req.locals = req.locals || {};
         req.locals.ecl = ecl;
