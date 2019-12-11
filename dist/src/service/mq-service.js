@@ -50,6 +50,9 @@ var connectionConfig = {
 var ch = null;
 var response = '';
 amqp.connect(connectionConfig, function (err, conn) {
+    if (ch === null || process.env.NODE_ENV === 'test') {
+        return;
+    }
     conn.createChannel(function (err, channel) {
         ch = channel;
     });

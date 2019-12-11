@@ -1,4 +1,3 @@
-"use strict";
 // 'blockchain.block.get_chunk'
 // 'express-async-router'
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
