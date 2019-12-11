@@ -83,7 +83,6 @@ router.get('/get_history', function (req, res) { return __awaiter(_this, void 0,
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                console.log(req.query);
                 scripthash = req.query['scripthash'];
                 return [4 /*yield*/, req.locals.ecl.blockchainScripthash_getHistory(scripthash)];
             case 1:

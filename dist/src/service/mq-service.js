@@ -73,7 +73,6 @@ function checkQueue(queueName) {
     });
 }
 exports.checkQueue = checkQueue;
-;
 function processMsg(msg) {
     work(msg, function (ok) {
         try {

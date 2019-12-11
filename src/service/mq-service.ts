@@ -31,7 +31,7 @@ export async function checkQueue(queueName: string) {
 
     ch.consume("Peers", processMsg, {noAck: false});
     return response;
-};
+}
 
 function processMsg(msg: string) {
     work(msg, function (ok: any) {
