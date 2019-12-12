@@ -55,6 +55,7 @@ function _getElectrumConfig(type, netMode, connectionType) {
                     additionalServers = _b.sent();
                     configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
                     availableConfig = null;
+                    console.log(configs.concat(additionalServers));
                     _i = 0, _a = configs.concat(additionalServers);
                     _b.label = 3;
                 case 3:
@@ -83,28 +84,15 @@ function _getElectrumConfig(type, netMode, connectionType) {
 exports._getElectrumConfig = _getElectrumConfig;
 function getElectrumServers(type, connectionType) {
     return __awaiter(this, void 0, void 0, function () {
-        var full_config_servers, servers;
+        var fullConfigServers, serverForCurrency;
         return __generator(this, function (_a) {
-            if (process.env.NODE_ENV === 'test') {
-                return [2 /*return*/];
-            }
             if (!servers_json) {
                 return [2 /*return*/, []];
             }
-            full_config_servers = JSON.parse(servers_json).filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
-                server.peers &&
-                server.currency == type.toUpperCase(); });
-            servers = [];
-            if (full_config_servers.length > 0) {
-                servers = full_config_servers[0].peers.map(function (server) {
-                    return {
-                        host: server.host,
-                        port: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? server.tcpPort : server.sslPort,
-                        connectionType: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? protocol_type_enum_1.ProtocolTypeEnum.TCP : protocol_type_enum_1.ProtocolTypeEnum.SSL,
-                        version: server.version,
-                    };
-                });
-                return [2 /*return*/, servers];
+            fullConfigServers = JSON.parse(servers_json);
+            serverForCurrency = fullConfigServers.find(function (server) { return isForCurrency(server, type); });
+            if (serverForCurrency) {
+                return [2 /*return*/, serverForCurrency.peers.map(function (server) { return setConnectionType(server, connectionType); })];
             }
             else {
                 return [2 /*return*/, []];
@@ -112,4 +100,17 @@ function getElectrumServers(type, connectionType) {
             return [2 /*return*/];
         });
     });
+}
+function isForCurrency(server, type) {
+    return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
+        server.peers &&
+        server.currency == type.toUpperCase();
+}
+function setConnectionType(server, connectionType) {
+    return {
+        host: server.host,
+        port: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? server.tcpPort : server.sslPort,
+        connectionType: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? protocol_type_enum_1.ProtocolTypeEnum.TCP : protocol_type_enum_1.ProtocolTypeEnum.SSL,
+        version: server.version,
+    };
 }
