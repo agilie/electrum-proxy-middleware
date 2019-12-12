@@ -17,7 +17,7 @@ export async function _getElectrumConfig(type: CoinType, netMode: Netmode, conne
     let configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
 
     let availableConfig: ElectrumConfig = null;
-    console.log(configs.concat(additionalServers));
+
     for (let config of configs.concat(additionalServers)) {
         const hostIsAvailable = await isPortReachable(config.port, {host: config.host});
         if (hostIsAvailable) {

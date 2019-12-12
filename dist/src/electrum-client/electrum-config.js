@@ -55,7 +55,6 @@ function _getElectrumConfig(type, netMode, connectionType) {
                     additionalServers = _b.sent();
                     configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
                     availableConfig = null;
-                    console.log(configs.concat(additionalServers));
                     _i = 0, _a = configs.concat(additionalServers);
                     _b.label = 3;
                 case 3:
