@@ -65,9 +65,7 @@ async function work(msg: any, cb: any) {
 }
 
 function _modifyToElectrumServers(serversJson: string): void {
-    if (!serversJson) {
-        return;
-    }
+    if (!serversJson) { return; }
 
     let supportedServers: RequestedServer[] = JSON.parse(serversJson)
         .filter((server: any) => Object.keys(CoinType).includes(server.currency) && server.peers);
@@ -80,21 +78,21 @@ function _collectSupportedServers(fullConfigServers: RequestedServer[]): void {
 
     fullConfigServers.forEach(function(fullConfigServer: RequestedServer) {
         fullConfigServer.peers.forEach(function(server: RequestedElectrumConfig): void {
-            collectedElectrumServers.push({
-                host: server.host,
-                port: server.tcpPort,
-                connectionType: ProtocolTypeEnum.TCP,
-                version: server.version
-            });
-            collectedElectrumServers.push({
-                host: server.host,
-                port: server.sslPort,
-                connectionType: ProtocolTypeEnum.SSL,
-                version: server.version
-            });
+            _addElectrumServer(collectedElectrumServers, server,  ProtocolTypeEnum.TCP);
+            _addElectrumServer(collectedElectrumServers, server,  ProtocolTypeEnum.SSL);
         });
 
-        electrumConfigs[fullConfigServer.currency.toLowerCase()] = collectedElectrumServers;
+        let currency : string = fullConfigServer.currency.toLowerCase();
+        electrumConfigs[currency] = collectedElectrumServers;
+    });
+}
+
+function _addElectrumServer(collectedElectrumServers, server: RequestedElectrumConfig, protocol : ProtocolTypeEnum){
+    collectedElectrumServers.push({
+        host: server.host,
+        port: protocol === ProtocolTypeEnum.SSL ? server.sslPort : server.tcpPort,
+        connectionType: protocol,
+        version: server.version
     });
 }
 

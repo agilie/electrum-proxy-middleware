@@ -113,20 +113,19 @@ function _collectSupportedServers(fullConfigServers) {
     var collectedElectrumServers = [];
     fullConfigServers.forEach(function (fullConfigServer) {
         fullConfigServer.peers.forEach(function (server) {
-            collectedElectrumServers.push({
-                host: server.host,
-                port: server.tcpPort,
-                connectionType: protocol_type_enum_1.ProtocolTypeEnum.TCP,
-                version: server.version
-            });
-            collectedElectrumServers.push({
-                host: server.host,
-                port: server.sslPort,
-                connectionType: protocol_type_enum_1.ProtocolTypeEnum.SSL,
-                version: server.version
-            });
+            _addElectrumServer(collectedElectrumServers, server, protocol_type_enum_1.ProtocolTypeEnum.TCP);
+            _addElectrumServer(collectedElectrumServers, server, protocol_type_enum_1.ProtocolTypeEnum.SSL);
         });
-        electrumConfigs[fullConfigServer.currency.toLowerCase()] = collectedElectrumServers;
+        var currency = fullConfigServer.currency.toLowerCase();
+        electrumConfigs[currency] = collectedElectrumServers;
+    });
+}
+function _addElectrumServer(collectedElectrumServers, server, protocol) {
+    collectedElectrumServers.push({
+        host: server.host,
+        port: protocol === protocol_type_enum_1.ProtocolTypeEnum.SSL ? server.sslPort : server.tcpPort,
+        connectionType: protocol,
+        version: server.version
     });
 }
 function closeOnErr(err) {
