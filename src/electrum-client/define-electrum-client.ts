@@ -5,7 +5,7 @@ import {Response} from 'express';
 import {CoinTypeReqDTO} from './types/coin-type-req-dto';
 import {plainToClass} from 'class-transformer';
 import {ElectrumClient} from './index';
-import {_getElectrumConfig} from './electrum-config';
+import {getElectrumConfig} from './electrum-config';
 
 async function defineElectrumClient(req: any, res: Response) {
     try {
@@ -28,7 +28,7 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
     if ((query as CoinTypeReqDTO).coinType && !configurationPresent(query)) {
         const coinTypeDTO: CoinTypeReqDTO = plainToClass(CoinTypeReqDTO, query);
         await validateOrReject(coinTypeDTO);
-        return _getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode, coinTypeDTO.connectionType);
+        return getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode);
     } else {
         const configurationDTO: ConfigurationReqDTO = plainToClass(ConfigurationReqDTO, query);
         await validateOrReject(configurationDTO);

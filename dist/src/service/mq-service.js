@@ -34,7 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
+var coin_type_1 = require("./wallet/types/coin.type");
+var protocol_type_enum_1 = require("../electrum-client/types/protocol.type.enum");
 var amqp = require('amqplib/callback_api');
 var connectionConfig = {
     protocol: 'amqp',
@@ -48,7 +51,12 @@ var connectionConfig = {
     vhost: '/',
 };
 var ch = null;
-var response = '';
+var electrumConfigs = (_a = {},
+    _a[coin_type_1.CoinType.BTC] = [],
+    _a[coin_type_1.CoinType.LTC] = [],
+    _a[coin_type_1.CoinType.ZEC] = [],
+    _a[coin_type_1.CoinType.DASH] = [],
+    _a);
 amqp.connect(connectionConfig, function (err, conn) {
     conn.createChannel(function (err, channel) {
         ch = channel;
@@ -60,12 +68,10 @@ function getDataFromQueue(queueName) {
             if (ch === null || process.env.NODE_ENV === 'test') {
                 return [2 /*return*/];
             }
-            ch.assertQueue(queueName, {
-                durable: false
-            });
-            console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queueName);
-            ch.consume("Peers", processMsg, { noAck: false });
-            return [2 /*return*/, response];
+            ch.assertQueue(queueName, { durable: false });
+            console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
+            ch.consume('Peers', processMsg, { noAck: false });
+            return [2 /*return*/, electrumConfigs];
         });
     });
 }
@@ -73,10 +79,12 @@ exports.getDataFromQueue = getDataFromQueue;
 function processMsg(msg) {
     work(msg, function (ok) {
         try {
-            if (ok)
+            if (ok) {
                 ch.ack(msg);
-            else
+            }
+            else {
                 ch.reject(msg, true);
+            }
         }
         catch (e) {
             closeOnErr(e);
@@ -84,14 +92,48 @@ function processMsg(msg) {
     });
 }
 function work(msg, cb) {
-    response = msg.content.toString();
-    console.log("Electrum servers ", msg.content.toString());
-    cb(true);
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            _modifyToElectrumServers(msg.content.toString());
+            console.log('Electrum servers ', msg.content.toString());
+            cb(true);
+            return [2 /*return*/];
+        });
+    });
+}
+function _modifyToElectrumServers(serversJson) {
+    if (!serversJson) {
+        return;
+    }
+    var supportedServers = JSON.parse(serversJson)
+        .filter(function (server) { return Object.keys(coin_type_1.CoinType).includes(server.currency) && server.peers; });
+    _collectSupportedServers(supportedServers);
+}
+function _collectSupportedServers(fullConfigServers) {
+    var collectedElectrumServers = [];
+    fullConfigServers.forEach(function (fullConfigServer) {
+        fullConfigServer.peers.forEach(function (server) {
+            collectedElectrumServers.push({
+                host: server.host,
+                port: server.tcpPort,
+                connectionType: protocol_type_enum_1.ProtocolTypeEnum.TCP,
+                version: server.version
+            });
+            collectedElectrumServers.push({
+                host: server.host,
+                port: server.sslPort,
+                connectionType: protocol_type_enum_1.ProtocolTypeEnum.SSL,
+                version: server.version
+            });
+        });
+        electrumConfigs[fullConfigServer.currency.toLowerCase()] = collectedElectrumServers;
+    });
 }
 function closeOnErr(err) {
-    if (!err)
+    if (!err) {
         return false;
-    console.error("[AMQP] error", err);
+    }
+    console.error('[AMQP] error', err);
     ch.close();
     return true;
 }

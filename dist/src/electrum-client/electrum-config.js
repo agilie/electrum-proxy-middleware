@@ -35,43 +35,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var coin_type_1 = require("../service/wallet/types/coin.type");
 var netmode_1 = require("./types/netmode");
-var protocol_type_enum_1 = require("./types/protocol.type.enum");
 var mq_service_1 = require("../service/mq-service");
 var electrum_servers_default_1 = require("../service/electrum-servers.default");
 var isPortReachable = require('is-port-reachable');
-var servers_json = '';
-function _getElectrumConfig(type, netMode, connectionType) {
+var additionalElectrumServers;
+function getElectrumConfig(type, netMode) {
     return __awaiter(this, void 0, void 0, function () {
-        var additionalServers, configs, availableConfig, _i, _a, config, hostIsAvailable;
+        var additionalConfigs, configs, availableConfig, _i, _a, config, hostIsAvailable;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0: return [4 /*yield*/, mq_service_1.getDataFromQueue('Peers')];
                 case 1:
-                    servers_json = _b.sent();
-                    return [4 /*yield*/, getElectrumServers(type, connectionType)];
-                case 2:
-                    additionalServers = _b.sent();
+                    additionalElectrumServers = _b.sent();
+                    additionalConfigs = (additionalElectrumServers) ? additionalElectrumServers[type] : [];
                     configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
                     availableConfig = null;
-                    _i = 0, _a = configs.concat(additionalServers);
-                    _b.label = 3;
-                case 3:
-                    if (!(_i < _a.length)) return [3 /*break*/, 6];
+                    _i = 0, _a = configs.concat(additionalConfigs);
+                    _b.label = 2;
+                case 2:
+                    if (!(_i < _a.length)) return [3 /*break*/, 5];
                     config = _a[_i];
                     return [4 /*yield*/, isPortReachable(config.port, { host: config.host })];
-                case 4:
+                case 3:
                     hostIsAvailable = _b.sent();
                     if (hostIsAvailable) {
                         availableConfig = config;
-                        return [3 /*break*/, 6];
+                        return [3 /*break*/, 5];
                     }
-                    _b.label = 5;
-                case 5:
+                    _b.label = 4;
+                case 4:
                     _i++;
-                    return [3 /*break*/, 3];
-                case 6:
+                    return [3 /*break*/, 2];
+                case 5:
                     if (!availableConfig) {
                         throw Error('No available configs');
                     }
@@ -80,36 +76,4 @@ function _getElectrumConfig(type, netMode, connectionType) {
         });
     });
 }
-exports._getElectrumConfig = _getElectrumConfig;
-function getElectrumServers(type, connectionType) {
-    return __awaiter(this, void 0, void 0, function () {
-        var fullConfigServers, serverForCurrency;
-        return __generator(this, function (_a) {
-            if (!servers_json) {
-                return [2 /*return*/, []];
-            }
-            fullConfigServers = JSON.parse(servers_json);
-            serverForCurrency = fullConfigServers.find(function (server) { return isForCurrency(server, type); });
-            if (serverForCurrency) {
-                return [2 /*return*/, serverForCurrency.peers.map(function (server) { return setConnectionType(server, connectionType); })];
-            }
-            else {
-                return [2 /*return*/, []];
-            }
-            return [2 /*return*/];
-        });
-    });
-}
-function isForCurrency(server, type) {
-    return Object.keys(coin_type_1.CoinType).includes(server.currency) &&
-        server.peers &&
-        server.currency == type.toUpperCase();
-}
-function setConnectionType(server, connectionType) {
-    return {
-        host: server.host,
-        port: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? server.tcpPort : server.sslPort,
-        connectionType: connectionType == protocol_type_enum_1.ProtocolTypeEnum.TCP ? protocol_type_enum_1.ProtocolTypeEnum.TCP : protocol_type_enum_1.ProtocolTypeEnum.SSL,
-        version: server.version,
-    };
-}
+exports.getElectrumConfig = getElectrumConfig;

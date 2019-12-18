@@ -80,7 +80,7 @@ function getOptions(query) {
                     return [4 /*yield*/, class_validator_1.validateOrReject(coinTypeDTO)];
                 case 1:
                     _a.sent();
-                    return [2 /*return*/, electrum_config_1._getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode, coinTypeDTO.connectionType)];
+                    return [2 /*return*/, electrum_config_1.getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode)];
                 case 2:
                     configurationDTO = class_transformer_1.plainToClass(configuration_req_dto_1.ConfigurationReqDTO, query);
                     return [4 /*yield*/, class_validator_1.validateOrReject(configurationDTO)];

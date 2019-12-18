@@ -38,14 +38,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var netmode_1 = require("../../src/electrum-client/types/netmode");
 var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var electrum_config_1 = require("../../src/electrum-client/electrum-config");
-var protocol_type_enum_1 = require("../../src/electrum-client/types/protocol.type.enum");
-describe('_getElectrumConfig method', function () {
+describe('getElectrumConfig method', function () {
     it('return valid ElectrumConfig data', function () {
         return __awaiter(this, void 0, void 0, function () {
             var options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, electrum_config_1._getElectrumConfig(coin_type_1.CoinType.BTC, netmode_1.Netmode.MAINNET, protocol_type_enum_1.ProtocolTypeEnum.SSL)];
+                    case 0: return [4 /*yield*/, electrum_config_1.getElectrumConfig(coin_type_1.CoinType.BTC, netmode_1.Netmode.MAINNET)];
                     case 1:
                         options = _a.sent();
                         expect(options).toHaveProperty('host');
