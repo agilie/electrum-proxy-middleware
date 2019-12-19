@@ -52,14 +52,16 @@ var connectionConfig = {
     vhost: '/',
 };
 var ch = null;
-var netMode = netmode_1.Netmode.MAINNET;
 var electrumConfigs;
 amqp.connect(connectionConfig, function (err, conn) {
     conn.createChannel(function (err, channel) {
         ch = channel;
     });
 });
-function getElectrumConfigs() {
+function getElectrumConfigs(netMode) {
+    if (!electrumConfigs) {
+        electrumConfigs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet : electrum_servers_default_1.electrumServersDefault;
+    }
     return electrumConfigs;
 }
 exports.getElectrumConfigs = getElectrumConfigs;
@@ -123,10 +125,7 @@ function closeOnErr(err) {
     ch.close();
     return true;
 }
-function initMQService(queueName) {
-    if (!electrumConfigs) {
-        electrumConfigs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet : electrum_servers_default_1.electrumServersDefault;
-    }
+function initElectrumConfigMQService(queueName) {
     if (ch === null || process.env.NODE_ENV === 'test') {
         return;
     }
@@ -134,7 +133,7 @@ function initMQService(queueName) {
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
     ch.consume('Peers', processMsg, { noAck: false });
 }
-exports.initMQService = initMQService;
+exports.initElectrumConfigMQService = initElectrumConfigMQService;
 process.on('exit', function (code) {
     ch.close();
     console.log("Closing rabbitmq channel");

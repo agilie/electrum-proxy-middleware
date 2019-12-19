@@ -21,7 +21,6 @@ const connectionConfig = {
 };
 
 let ch: any = null;
-let netMode: Netmode = Netmode.MAINNET;
 let electrumConfigs: CoinMap<ElectrumConfig[]>;
 
 amqp.connect(connectionConfig, function(err: any, conn: any) {
@@ -30,7 +29,11 @@ amqp.connect(connectionConfig, function(err: any, conn: any) {
     });
 });
 
-export function getElectrumConfigs() : CoinMap<ElectrumConfig[]> {
+export function getElectrumConfigs(netMode: Netmode) : CoinMap<ElectrumConfig[]> {
+    if(!electrumConfigs) {
+        electrumConfigs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet : electrumServersDefault;
+    }
+
     return electrumConfigs;
 }
 
@@ -93,11 +96,7 @@ function closeOnErr(err: any) {
     return true;
 }
 
-export function initMQService(queueName: string){
-    if(!electrumConfigs) {
-        electrumConfigs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet : electrumServersDefault;
-    }
-
+export function initElectrumConfigMQService(queueName: string){
     if (ch === null || process.env.NODE_ENV === 'test') { return; }
     ch.assertQueue(queueName, {durable: false});
 

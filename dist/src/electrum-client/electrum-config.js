@@ -42,10 +42,10 @@ function getElectrumConfig(type, netMode) {
         var configs, availableConfig, _i, _a, config, hostIsAvailable;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, mq_service_1.initMQService('Peers')];
+                case 0: return [4 /*yield*/, mq_service_1.initElectrumConfigMQService('Peers')];
                 case 1:
                     _b.sent();
-                    configs = mq_service_1.getElectrumConfigs();
+                    configs = mq_service_1.getElectrumConfigs(netMode);
                     availableConfig = null;
                     _i = 0, _a = configs[type];
                     _b.label = 2;

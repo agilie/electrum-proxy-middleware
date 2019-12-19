@@ -1,14 +1,15 @@
 import {CoinMap, CoinType} from '../service/wallet/types/coin.type';
 import {Netmode} from './types/netmode';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
-import {initMQService, getElectrumConfigs} from '../service/mq-service';
+import {initElectrumConfigMQService, getElectrumConfigs} from '../service/mq-service';
 const isPortReachable = require('is-port-reachable');
 
 
 export async function getElectrumConfig(type: CoinType, netMode: Netmode): Promise<ElectrumConfig> {
-    await initMQService('Peers');
+    await initElectrumConfigMQService('Peers');
 
-    let configs : CoinMap<ElectrumConfig[]> = getElectrumConfigs();
+    let configs : CoinMap<ElectrumConfig[]> = getElectrumConfigs(netMode);
+
     let availableConfig: ElectrumConfig = null;
 
     for (let config of configs[type]) {
