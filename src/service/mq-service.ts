@@ -1,5 +1,5 @@
 import {RequestedServer} from './wallet/types/requested-server';
-import {CoinMap, CoinType} from './wallet/types/coin.type';
+import {CoinType} from './wallet/types/coin.type';
 import {ElectrumConfig} from './wallet/types/electrum.config';
 import {RequestedElectrumConfig} from './wallet/types/requested-electrum.config';
 import {ProtocolTypeEnum} from '../electrum-client/types/protocol.type.enum';
@@ -21,20 +21,20 @@ const connectionConfig = {
 };
 
 let ch: any = null;
-let electrumConfigs: CoinMap<ElectrumConfig[]>;
+let electrumConfigs = {
+    testnet: electrumServersDefaultTestnet,
+    mainnet: electrumServersDefault
+};
 
 amqp.connect(connectionConfig, function(err: any, conn: any) {
     conn.createChannel(function(err: any, channel: any) {
         ch = channel;
+        initMQService('Peers');
     });
 });
 
-export function getElectrumConfigs(netMode: Netmode) : CoinMap<ElectrumConfig[]> {
-    if(!electrumConfigs) {
-        electrumConfigs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet : electrumServersDefault;
-    }
-
-    return electrumConfigs;
+export function getElectrumConfigs(netMode: Netmode = Netmode.MAINNET, type: CoinType) : ElectrumConfig[] {
+    return electrumConfigs[netMode][type];
 }
 
 function processMsg(msg: string) {
@@ -76,7 +76,7 @@ function _collectSupportedServers(fullConfigServers: RequestedServer[]): void {
         });
 
         let currency : string = fullConfigServer.currency.toLowerCase();
-        electrumConfigs[currency] = electrumConfigs[currency].concat(collectedElectrumServers);
+        electrumConfigs[Netmode.MAINNET][currency] = electrumConfigs[Netmode.MAINNET][currency].concat(collectedElectrumServers);
     });
 }
 
@@ -96,8 +96,8 @@ function closeOnErr(err: any) {
     return true;
 }
 
-export function initMQService(queueName: string){
-    if (ch === null || process.env.NODE_ENV === 'test') { return; }
+function initMQService(queueName: string){
+   if (ch === null || process.env.NODE_ENV === 'test') { return; }
     ch.assertQueue(queueName, {durable: false});
 
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);

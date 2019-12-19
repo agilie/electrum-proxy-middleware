@@ -52,17 +52,19 @@ var connectionConfig = {
     vhost: '/',
 };
 var ch = null;
-var electrumConfigs;
+var electrumConfigs = {
+    testnet: electrum_servers_default_1.electrumServersDefaultTestnet,
+    mainnet: electrum_servers_default_1.electrumServersDefault
+};
 amqp.connect(connectionConfig, function (err, conn) {
     conn.createChannel(function (err, channel) {
         ch = channel;
+        initMQService('Peers');
     });
 });
-function getElectrumConfigs(netMode) {
-    if (!electrumConfigs) {
-        electrumConfigs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet : electrum_servers_default_1.electrumServersDefault;
-    }
-    return electrumConfigs;
+function getElectrumConfigs(netMode, type) {
+    if (netMode === void 0) { netMode = netmode_1.Netmode.MAINNET; }
+    return electrumConfigs[netMode][type];
 }
 exports.getElectrumConfigs = getElectrumConfigs;
 function processMsg(msg) {
@@ -106,7 +108,7 @@ function _collectSupportedServers(fullConfigServers) {
             _addElectrumServer(collectedElectrumServers, server, protocol_type_enum_1.ProtocolTypeEnum.SSL);
         });
         var currency = fullConfigServer.currency.toLowerCase();
-        electrumConfigs[currency] = electrumConfigs[currency].concat(collectedElectrumServers);
+        electrumConfigs[netmode_1.Netmode.MAINNET][currency] = electrumConfigs[netmode_1.Netmode.MAINNET][currency].concat(collectedElectrumServers);
     });
 }
 function _addElectrumServer(collectedElectrumServers, server, protocol) {
@@ -133,7 +135,6 @@ function initMQService(queueName) {
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
     ch.consume('Peers', processMsg, { noAck: false });
 }
-exports.initMQService = initMQService;
 process.on('exit', function (code) {
     ch.close();
     console.log("Closing rabbitmq channel");

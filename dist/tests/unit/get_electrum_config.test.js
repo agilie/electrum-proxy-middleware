@@ -44,7 +44,7 @@ describe('getElectrumConfig method', function () {
             var options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, electrum_config_1.getElectrumConfig(coin_type_1.CoinType.BTC, netmode_1.Netmode.MAINNET)];
+                    case 0: return [4 /*yield*/, electrum_config_1.getAvailableServer(coin_type_1.CoinType.BTC, netmode_1.Netmode.MAINNET)];
                     case 1:
                         options = _a.sent();
                         expect(options).toHaveProperty('host');

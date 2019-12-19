@@ -37,33 +37,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var mq_service_1 = require("../service/mq-service");
 var isPortReachable = require('is-port-reachable');
-function getElectrumConfig(type, netMode) {
+function getAvailableServer(type, netMode) {
     return __awaiter(this, void 0, void 0, function () {
-        var configs, availableConfig, _i, _a, config, hostIsAvailable;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0: return [4 /*yield*/, mq_service_1.initMQService('Peers')];
-                case 1:
-                    _b.sent();
-                    configs = mq_service_1.getElectrumConfigs(netMode);
+        var configs, availableConfig, _i, configs_1, config, hostIsAvailable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    configs = mq_service_1.getElectrumConfigs(netMode, type);
                     availableConfig = null;
-                    _i = 0, _a = configs[type];
-                    _b.label = 2;
-                case 2:
-                    if (!(_i < _a.length)) return [3 /*break*/, 5];
-                    config = _a[_i];
+                    _i = 0, configs_1 = configs;
+                    _a.label = 1;
+                case 1:
+                    if (!(_i < configs_1.length)) return [3 /*break*/, 4];
+                    config = configs_1[_i];
                     return [4 /*yield*/, isPortReachable(config.port, { host: config.host })];
-                case 3:
-                    hostIsAvailable = _b.sent();
+                case 2:
+                    hostIsAvailable = _a.sent();
                     if (hostIsAvailable) {
                         availableConfig = config;
-                        return [3 /*break*/, 5];
+                        return [3 /*break*/, 4];
                     }
-                    _b.label = 4;
-                case 4:
+                    _a.label = 3;
+                case 3:
                     _i++;
-                    return [3 /*break*/, 2];
-                case 5:
+                    return [3 /*break*/, 1];
+                case 4:
                     if (!availableConfig) {
                         throw Error('No available configs');
                     }
@@ -72,4 +70,4 @@ function getElectrumConfig(type, netMode) {
         });
     });
 }
-exports.getElectrumConfig = getElectrumConfig;
+exports.getAvailableServer = getAvailableServer;
