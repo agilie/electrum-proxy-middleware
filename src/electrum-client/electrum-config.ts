@@ -6,7 +6,7 @@ const isPortReachable = require('is-port-reachable');
 
 
 export async function getAvailableServer(type: CoinType, netMode: Netmode): Promise<ElectrumConfig> {
-    let configs : ElectrumConfig [] = getElectrumConfigs(netMode, type);
+    const configs : ElectrumConfig [] = getElectrumConfigs(netMode, type);
     let availableConfig: ElectrumConfig = null;
 
     for (let config of configs) {
