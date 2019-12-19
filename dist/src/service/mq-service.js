@@ -125,7 +125,7 @@ function closeOnErr(err) {
     ch.close();
     return true;
 }
-function initElectrumConfigMQService(queueName) {
+function initMQService(queueName) {
     if (ch === null || process.env.NODE_ENV === 'test') {
         return;
     }
@@ -133,7 +133,7 @@ function initElectrumConfigMQService(queueName) {
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
     ch.consume('Peers', processMsg, { noAck: false });
 }
-exports.initElectrumConfigMQService = initElectrumConfigMQService;
+exports.initMQService = initMQService;
 process.on('exit', function (code) {
     ch.close();
     console.log("Closing rabbitmq channel");

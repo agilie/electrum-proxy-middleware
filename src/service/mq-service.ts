@@ -96,7 +96,7 @@ function closeOnErr(err: any) {
     return true;
 }
 
-export function initElectrumConfigMQService(queueName: string){
+export function initMQService(queueName: string){
     if (ch === null || process.env.NODE_ENV === 'test') { return; }
     ch.assertQueue(queueName, {durable: false});
 
