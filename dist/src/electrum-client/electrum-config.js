@@ -35,23 +35,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var netmode_1 = require("./types/netmode");
 var mq_service_1 = require("../service/mq-service");
-var electrum_servers_default_1 = require("../service/electrum-servers.default");
 var isPortReachable = require('is-port-reachable');
-var additionalElectrumServers;
 function getElectrumConfig(type, netMode) {
     return __awaiter(this, void 0, void 0, function () {
-        var additionalConfigs, configs, availableConfig, _i, _a, config, hostIsAvailable;
+        var configs, availableConfig, _i, _a, config, hostIsAvailable;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0: return [4 /*yield*/, mq_service_1.getDataFromQueue('Peers')];
+                case 0: return [4 /*yield*/, mq_service_1.initMQService('Peers')];
                 case 1:
-                    additionalElectrumServers = _b.sent();
-                    additionalConfigs = (additionalElectrumServers) ? additionalElectrumServers[type] : [];
-                    configs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet[type] : electrum_servers_default_1.electrumServersDefault[type];
+                    _b.sent();
+                    configs = mq_service_1.getElectrumConfigs();
                     availableConfig = null;
-                    _i = 0, _a = configs.concat(additionalConfigs);
+                    _i = 0, _a = configs[type];
                     _b.label = 2;
                 case 2:
                     if (!(_i < _a.length)) return [3 /*break*/, 5];

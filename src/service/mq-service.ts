@@ -3,6 +3,8 @@ import {CoinMap, CoinType} from './wallet/types/coin.type';
 import {ElectrumConfig} from './wallet/types/electrum.config';
 import {RequestedElectrumConfig} from './wallet/types/requested-electrum.config';
 import {ProtocolTypeEnum} from '../electrum-client/types/protocol.type.enum';
+import {Netmode} from '../electrum-client/types/netmode';
+import {electrumServersDefault, electrumServersDefaultTestnet} from './electrum-servers.default';
 
 const amqp = require('amqplib/callback_api');
 
@@ -19,13 +21,8 @@ const connectionConfig = {
 };
 
 let ch: any = null;
-
-let electrumConfigs: CoinMap<ElectrumConfig[]> = {
-    [CoinType.BTC]: [],
-    [CoinType.LTC]: [],
-    [CoinType.ZEC]: [],
-    [CoinType.DASH]: []
-};
+let netMode: Netmode = Netmode.MAINNET;
+let electrumConfigs: CoinMap<ElectrumConfig[]>;
 
 amqp.connect(connectionConfig, function(err: any, conn: any) {
     conn.createChannel(function(err: any, channel: any) {
@@ -33,14 +30,7 @@ amqp.connect(connectionConfig, function(err: any, conn: any) {
     });
 });
 
-export async function getDataFromQueue(queueName: string) {
-    if (ch === null || process.env.NODE_ENV === 'test') { return; }
-    ch.assertQueue(queueName, {durable: false});
-
-    console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
-
-    ch.consume('Peers', processMsg, {noAck: false});
-
+export function getElectrumConfigs() : CoinMap<ElectrumConfig[]> {
     return electrumConfigs;
 }
 
@@ -83,7 +73,7 @@ function _collectSupportedServers(fullConfigServers: RequestedServer[]): void {
         });
 
         let currency : string = fullConfigServer.currency.toLowerCase();
-        electrumConfigs[currency] = collectedElectrumServers;
+        electrumConfigs[currency] = electrumConfigs[currency].concat(collectedElectrumServers);
     });
 }
 
@@ -101,6 +91,19 @@ function closeOnErr(err: any) {
     console.error('[AMQP] error', err);
     ch.close();
     return true;
+}
+
+export function initMQService(queueName: string){
+    if(!electrumConfigs) {
+        electrumConfigs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet : electrumServersDefault;
+    }
+
+    if (ch === null || process.env.NODE_ENV === 'test') { return; }
+    ch.assertQueue(queueName, {durable: false});
+
+    console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
+
+    ch.consume('Peers', processMsg, {noAck: false});
 }
 
 process.on('exit', (code) => {

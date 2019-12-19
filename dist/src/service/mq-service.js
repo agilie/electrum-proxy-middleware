@@ -34,10 +34,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 var coin_type_1 = require("./wallet/types/coin.type");
 var protocol_type_enum_1 = require("../electrum-client/types/protocol.type.enum");
+var netmode_1 = require("../electrum-client/types/netmode");
+var electrum_servers_default_1 = require("./electrum-servers.default");
 var amqp = require('amqplib/callback_api');
 var connectionConfig = {
     protocol: 'amqp',
@@ -51,31 +52,17 @@ var connectionConfig = {
     vhost: '/',
 };
 var ch = null;
-var electrumConfigs = (_a = {},
-    _a[coin_type_1.CoinType.BTC] = [],
-    _a[coin_type_1.CoinType.LTC] = [],
-    _a[coin_type_1.CoinType.ZEC] = [],
-    _a[coin_type_1.CoinType.DASH] = [],
-    _a);
+var netMode = netmode_1.Netmode.MAINNET;
+var electrumConfigs;
 amqp.connect(connectionConfig, function (err, conn) {
     conn.createChannel(function (err, channel) {
         ch = channel;
     });
 });
-function getDataFromQueue(queueName) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            if (ch === null || process.env.NODE_ENV === 'test') {
-                return [2 /*return*/];
-            }
-            ch.assertQueue(queueName, { durable: false });
-            console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
-            ch.consume('Peers', processMsg, { noAck: false });
-            return [2 /*return*/, electrumConfigs];
-        });
-    });
+function getElectrumConfigs() {
+    return electrumConfigs;
 }
-exports.getDataFromQueue = getDataFromQueue;
+exports.getElectrumConfigs = getElectrumConfigs;
 function processMsg(msg) {
     work(msg, function (ok) {
         try {
@@ -117,7 +104,7 @@ function _collectSupportedServers(fullConfigServers) {
             _addElectrumServer(collectedElectrumServers, server, protocol_type_enum_1.ProtocolTypeEnum.SSL);
         });
         var currency = fullConfigServer.currency.toLowerCase();
-        electrumConfigs[currency] = collectedElectrumServers;
+        electrumConfigs[currency] = electrumConfigs[currency].concat(collectedElectrumServers);
     });
 }
 function _addElectrumServer(collectedElectrumServers, server, protocol) {
@@ -136,6 +123,18 @@ function closeOnErr(err) {
     ch.close();
     return true;
 }
+function initMQService(queueName) {
+    if (!electrumConfigs) {
+        electrumConfigs = netMode == netmode_1.Netmode.TESTNET ? electrum_servers_default_1.electrumServersDefaultTestnet : electrum_servers_default_1.electrumServersDefault;
+    }
+    if (ch === null || process.env.NODE_ENV === 'test') {
+        return;
+    }
+    ch.assertQueue(queueName, { durable: false });
+    console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queueName);
+    ch.consume('Peers', processMsg, { noAck: false });
+}
+exports.initMQService = initMQService;
 process.on('exit', function (code) {
     ch.close();
     console.log("Closing rabbitmq channel");

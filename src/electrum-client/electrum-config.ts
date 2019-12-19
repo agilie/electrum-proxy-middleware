@@ -1,20 +1,17 @@
 import {CoinMap, CoinType} from '../service/wallet/types/coin.type';
 import {Netmode} from './types/netmode';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
-import {getDataFromQueue} from '../service/mq-service';
-import {electrumServersDefault, electrumServersDefaultTestnet} from '../service/electrum-servers.default';
+import {initMQService, getElectrumConfigs} from '../service/mq-service';
 const isPortReachable = require('is-port-reachable');
 
-let additionalElectrumServers: CoinMap<ElectrumConfig[]>;
 
 export async function getElectrumConfig(type: CoinType, netMode: Netmode): Promise<ElectrumConfig> {
-    additionalElectrumServers = await getDataFromQueue('Peers');
+    await initMQService('Peers');
 
-    let additionalConfigs = (additionalElectrumServers) ? additionalElectrumServers[type] : [];
-    let configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
+    let configs : CoinMap<ElectrumConfig[]> = getElectrumConfigs();
     let availableConfig: ElectrumConfig = null;
 
-    for (let config of configs.concat(additionalConfigs)) {
+    for (let config of configs[type]) {
         const hostIsAvailable = await isPortReachable(config.port, {host: config.host});
         if (hostIsAvailable) {
             availableConfig = config;
