@@ -76,7 +76,7 @@ function _collectSupportedServers(fullConfigServers: RequestedServer[]): void {
         });
 
         let currency : string = fullConfigServer.currency.toLowerCase();
-        electrumConfigs[Netmode.MAINNET][currency] = electrumConfigs[Netmode.MAINNET][currency].concat(collectedElectrumServers);
+        electrumConfigs[Netmode.MAINNET][currency] = collectedElectrumServers;
     });
 }
 

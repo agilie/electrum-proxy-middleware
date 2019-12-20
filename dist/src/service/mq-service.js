@@ -108,7 +108,7 @@ function _collectSupportedServers(fullConfigServers) {
             _addElectrumServer(collectedElectrumServers, server, protocol_type_enum_1.ProtocolTypeEnum.SSL);
         });
         var currency = fullConfigServer.currency.toLowerCase();
-        electrumConfigs[netmode_1.Netmode.MAINNET][currency] = electrumConfigs[netmode_1.Netmode.MAINNET][currency].concat(collectedElectrumServers);
+        electrumConfigs[netmode_1.Netmode.MAINNET][currency] = collectedElectrumServers;
     });
 }
 function _addElectrumServer(collectedElectrumServers, server, protocol) {
