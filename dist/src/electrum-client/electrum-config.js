@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -33,50 +34,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
-var router = require('express-async-router').AsyncRouter();
-// blockchain.block.header
-router.get('/header', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var height, protocolVersion, json;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                height = req.query['height'];
-                protocolVersion = req.locals.ecl['version'];
-                return [4 /*yield*/, req.locals.ecl.blockchainBlock_getHeader(height, protocolVersion)];
-            case 1:
-                json = _a.sent();
-                return [4 /*yield*/, req.locals.ecl.close()];
-            case 2:
-                _a.sent();
-                res.json({
-                    status: 'success',
-                    result: json
-                });
-                return [2 /*return*/];
-        }
+Object.defineProperty(exports, "__esModule", { value: true });
+var mq_service_1 = require("../service/mq-service");
+var isPortReachable = require('is-port-reachable');
+function getAvailableServer(type, netMode) {
+    return __awaiter(this, void 0, void 0, function () {
+        var configs, availableConfig, _i, configs_1, config, hostIsAvailable;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    configs = mq_service_1.getElectrumConfigs(netMode, type);
+                    availableConfig = null;
+                    _i = 0, configs_1 = configs;
+                    _a.label = 1;
+                case 1:
+                    if (!(_i < configs_1.length)) return [3 /*break*/, 4];
+                    config = configs_1[_i];
+                    return [4 /*yield*/, isPortReachable(config.port, { host: config.host })];
+                case 2:
+                    hostIsAvailable = _a.sent();
+                    if (hostIsAvailable) {
+                        availableConfig = config;
+                        return [3 /*break*/, 4];
+                    }
+                    _a.label = 3;
+                case 3:
+                    _i++;
+                    return [3 /*break*/, 1];
+                case 4:
+                    if (!availableConfig) {
+                        throw Error('No available configs');
+                    }
+                    return [2 /*return*/, availableConfig];
+            }
+        });
     });
-}); });
-// blockchain.block.headers
-router.get('/headers', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var start_height, count, json;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                start_height = req.query['start_height'];
-                count = req.query['count'];
-                return [4 /*yield*/, req.locals.ecl.blockchainBlock_headers(start_height, count)];
-            case 1:
-                json = _a.sent();
-                return [4 /*yield*/, req.locals.ecl.close()];
-            case 2:
-                _a.sent();
-                res.json({
-                    status: 'success',
-                    result: json
-                });
-                return [2 /*return*/];
-        }
-    });
-}); });
-module.exports = router;
+}
+exports.getAvailableServer = getAvailableServer;

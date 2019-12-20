@@ -1,10 +1,12 @@
+import {CoinType} from '../../../src/service/wallet/types/coin.type';
+
 const electrumClient = require('../../../src/electrum-client/define-electrum-client');
 
 describe('getOptions method', function() {
     describe('with CoinType param', function() {
         describe('with valid CoinType param', function() {
             it('return valid ElectrumConfig data', async function() {
-                const query = {coinType: 'btc'};
+                const query = {coinType: CoinType.BTC};
                 const options = await electrumClient.getOptions(query);
 
                 expect(options).toHaveProperty('host');
@@ -29,7 +31,7 @@ describe('getOptions method', function() {
 
         describe('with invalid netMode param', function() {
             it('return warning', async function() {
-                const query = {coinType: 'btc', netMode: 'test'};
+                const query = {coinType: CoinType.BTC, netMode: 'test'};
                 try {
                     await electrumClient.getOptions(query);
                 } catch (error) {

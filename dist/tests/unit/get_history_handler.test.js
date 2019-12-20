@@ -1,9 +1,8 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -53,7 +52,8 @@ describe('getHistoryHandler method', function () {
                                         '3bff9e996285577a68d48fa94c769bb6df7c021f3e6b012103e4182a36fb4efa245069e1e68d2492d6acd' +
                                         '33c7583eacbde863e91af08d16029ffffffff0200451a00000000001976a9144a7eb59b84666dad56622a8519e' +
                                         '2c22d0ecb824888ac10270000000000001976a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac00000000'); },
-                                    close: function () { },
+                                    close: function () {
+                                    },
                                 },
                             }
                         };

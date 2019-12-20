@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -33,50 +34,26 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
-var router = require('express-async-router').AsyncRouter();
-// blockchain.block.header
-router.get('/header', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var height, protocolVersion, json;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                height = req.query['height'];
-                protocolVersion = req.locals.ecl['version'];
-                return [4 /*yield*/, req.locals.ecl.blockchainBlock_getHeader(height, protocolVersion)];
-            case 1:
-                json = _a.sent();
-                return [4 /*yield*/, req.locals.ecl.close()];
-            case 2:
-                _a.sent();
-                res.json({
-                    status: 'success',
-                    result: json
-                });
-                return [2 /*return*/];
-        }
+Object.defineProperty(exports, "__esModule", { value: true });
+var netmode_1 = require("../../src/electrum-client/types/netmode");
+var coin_type_1 = require("../../src/service/wallet/types/coin.type");
+var electrum_config_1 = require("../../src/electrum-client/electrum-config");
+describe('getElectrumConfig method', function () {
+    it('return valid ElectrumConfig data', function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var options;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, electrum_config_1.getAvailableServer(coin_type_1.CoinType.BTC, netmode_1.Netmode.MAINNET)];
+                    case 1:
+                        options = _a.sent();
+                        expect(options).toHaveProperty('host');
+                        expect(options).toHaveProperty('port');
+                        expect(options).toHaveProperty('connectionType');
+                        expect(options).toHaveProperty('version');
+                        return [2 /*return*/];
+                }
+            });
+        });
     });
-}); });
-// blockchain.block.headers
-router.get('/headers', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var start_height, count, json;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                start_height = req.query['start_height'];
-                count = req.query['count'];
-                return [4 /*yield*/, req.locals.ecl.blockchainBlock_headers(start_height, count)];
-            case 1:
-                json = _a.sent();
-                return [4 /*yield*/, req.locals.ecl.close()];
-            case 2:
-                _a.sent();
-                res.json({
-                    status: 'success',
-                    result: json
-                });
-                return [2 /*return*/];
-        }
-    });
-}); });
-module.exports = router;
+});

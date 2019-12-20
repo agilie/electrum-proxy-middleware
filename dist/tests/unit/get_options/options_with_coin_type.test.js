@@ -1,9 +1,9 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -34,6 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+var coin_type_1 = require("../../../src/service/wallet/types/coin.type");
 var electrumClient = require('../../../src/electrum-client/define-electrum-client');
 describe('getOptions method', function () {
     describe('with CoinType param', function () {
@@ -44,7 +46,7 @@ describe('getOptions method', function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                query = { coinType: 'btc' };
+                                query = { coinType: coin_type_1.CoinType.BTC };
                                 return [4 /*yield*/, electrumClient.getOptions(query)];
                             case 1:
                                 options = _a.sent();
@@ -92,7 +94,7 @@ describe('getOptions method', function () {
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                query = { coinType: 'btc', netMode: 'test' };
+                                query = { coinType: coin_type_1.CoinType.BTC, netMode: 'test' };
                                 _a.label = 1;
                             case 1:
                                 _a.trys.push([1, 3, , 4]);

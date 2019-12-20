@@ -41,7 +41,7 @@ function getHistoryOptions(historyReqDTO: HistoryReqDTO, address: string) : Wall
 }
 
 function getWallet(coinType: string, options: WalletCreateOptionsInterface): WalletLike {
-    let wallet: WalletLike;
+    let wallet: WalletLike = null;
     switch (coinType) {
         case CoinType.BTC: {
             wallet = new WalletBtc(options);
@@ -59,6 +59,10 @@ function getWallet(coinType: string, options: WalletCreateOptionsInterface): Wal
             wallet = new WalletZec(options);
             break;
         }
+        default: {
+            throw Error(' Unsupported coin type');
+        }
+        // error
     }
     return wallet;
 }

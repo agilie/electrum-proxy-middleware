@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const makeRequest = exports.makeRequest = (method, params, id) => {
     return JSON.stringify({
@@ -7,11 +7,11 @@ const makeRequest = exports.makeRequest = (method, params, id) => {
         params : params,
         id : id,
     })
-}
+};
 
 const createRecuesiveParser = exports.createRecuesiveParser = (max_depth, delimiter) => {
-    const MAX_DEPTH = max_depth 
-    const DELIMITER = delimiter
+    const MAX_DEPTH = max_depth;
+    const DELIMITER = delimiter;
     const recursiveParser = (n, buffer, callback) => {
         if(buffer.length === 0) {
             return {code:0, buffer:buffer}
@@ -19,7 +19,7 @@ const createRecuesiveParser = exports.createRecuesiveParser = (max_depth, delimi
         if(n > MAX_DEPTH) {
             return {code:1, buffer:buffer}
         }
-        const xs = buffer.split(DELIMITER)
+        const xs = buffer.split(DELIMITER);
         if(xs.length === 1){
             return {code:0, buffer:buffer}
         }
@@ -32,27 +32,27 @@ const createRecuesiveParser = exports.createRecuesiveParser = (max_depth, delimi
 
 const createPromiseResult = exports.createPromiseResult = (resolve, reject) => {
     return (err, result) => {
-        if(err) reject(err)
+        if(err) reject(err);
         else resolve(result)
     }
-}
+};
 
 class MessageParser{
     constructor(callback){
-        this.buffer = ''
-        this.callback = callback
+        this.buffer = '';
+        this.callback = callback;
         this.recursiveParser = createRecuesiveParser(20, '\n')
     }
     run(chunk){
-        this.buffer += chunk
+        this.buffer += chunk;
         while(true){
-            const res = this.recursiveParser(0, this.buffer, this.callback)
-            this.buffer = res.buffer
+            const res = this.recursiveParser(0, this.buffer, this.callback);
+            this.buffer = res.buffer;
             if(res.code === 0){
                 break;
             }
         }
     }
 }
-exports.MessageParser = MessageParser
+exports.MessageParser = MessageParser;
 

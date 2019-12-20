@@ -1,13 +1,11 @@
-import {electrumServersDefault, electrumServersDefaultTestnet} from '../service/electrum-servers.default';
 import {ElectrumConfig} from '../service/wallet/types/electrum.config';
-import {CoinType} from '../service/wallet/types/coin.type';
 import {validateOrReject} from 'class-validator';
 import {ConfigurationReqDTO} from './types/configuration-req-dto';
 import {Response} from 'express';
 import {CoinTypeReqDTO} from './types/coin-type-req-dto';
 import {plainToClass} from 'class-transformer';
-import {ElectrumClient} from './index'
-import {Netmode} from './types/netmode';
+import {ElectrumClient} from './index';
+import {getAvailableServer} from './electrum-config';
 
 async function defineElectrumClient(req: any, res: Response) {
     try {
@@ -30,7 +28,7 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
     if ((query as CoinTypeReqDTO).coinType && !configurationPresent(query)) {
         const coinTypeDTO: CoinTypeReqDTO = plainToClass(CoinTypeReqDTO, query);
         await validateOrReject(coinTypeDTO);
-        return _getElectrumConfig(coinTypeDTO.coinType, coinTypeDTO.netMode);
+        return getAvailableServer(coinTypeDTO.coinType, coinTypeDTO.netMode);
     } else {
         const configurationDTO: ConfigurationReqDTO = plainToClass(ConfigurationReqDTO, query);
         await validateOrReject(configurationDTO);
@@ -40,11 +38,6 @@ async function getOptions(query: ConfigurationReqDTO | CoinTypeReqDTO): Promise<
 
 function configurationPresent(query: any) {
     return query.host || query.port || query.connectionType || query.version;
-}
-
-function _getElectrumConfig(type: CoinType, netMode: Netmode): ElectrumConfig {
-    const configs = netMode == Netmode.TESTNET ? electrumServersDefaultTestnet[type] : electrumServersDefault[type];
-    return configs[Math.floor(Math.random() * configs.length)];
 }
 
 module.exports.defineElectrumClient = defineElectrumClient;

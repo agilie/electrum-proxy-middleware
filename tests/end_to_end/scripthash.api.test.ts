@@ -1,6 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import {router} from '../../src';
+import {CoinType} from '../../src/service/wallet/types/coin.type';
 
 const app: any = express();
 const {ElectrumClient, overrideClient} = require('../../src/electrum-client/electrum_client');
@@ -67,7 +68,7 @@ describe('Scripthash methods', function() {
 
     function options(params = {}) {
         return {
-            coinType: 'btc',
+            coinType: CoinType.BTC,
             scripthash: '20b360e68b4fe6d1eb460e45434f756fa1582ed687167898f9a716435ecd737f',
             ...params
         };

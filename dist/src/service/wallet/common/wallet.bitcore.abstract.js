@@ -1,10 +1,9 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -37,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var bitcore_lib_1 = require("bitcore-lib");
-var netmode_1 = require("../../../electrum-client/types/netmode");
 var WalletBitcoreAbstract = /** @class */ (function () {
     function WalletBitcoreAbstract(options) {
         this._bitcore = options.bitcore;
@@ -165,19 +163,6 @@ var WalletBitcoreAbstract = /** @class */ (function () {
         var scriptHash = bitcore.crypto.Hash.sha256(scriptBuffer);
         var reversedHash = Buffer.from(scriptHash.reverse());
         return reversedHash.toString('hex');
-    };
-    WalletBitcoreAbstract.prototype._getPrivateKey = function (addressHEX) {
-        var bitcore = this._bitcore;
-        var buf = Buffer.from(addressHEX);
-        var hashBuffer = bitcore.crypto.Hash.sha256(buf);
-        var bn = bitcore.crypto.BN.fromBuffer(hashBuffer);
-        return new bitcore.PrivateKey(bn, this._getNetConfig());
-    };
-    WalletBitcoreAbstract.prototype._getNetConfig = function () {
-        if (this.netMode === netmode_1.Netmode.TESTNET) {
-            return this._bitcore.Networks.testnet;
-        }
-        return this._bitcore.Networks.mainnet;
     };
     return WalletBitcoreAbstract;
 }());

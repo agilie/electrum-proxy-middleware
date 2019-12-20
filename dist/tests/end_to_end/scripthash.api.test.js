@@ -11,11 +11,10 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -53,6 +52,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var express_1 = __importDefault(require("express"));
 var src_1 = require("../../src");
+var coin_type_1 = require("../../src/service/wallet/types/coin.type");
 var app = express_1.default();
 var _a = require('../../src/electrum-client/electrum_client'), ElectrumClient = _a.ElectrumClient, overrideClient = _a.overrideClient;
 var originalElectrumClient = ElectrumClient;
@@ -110,7 +110,7 @@ describe('Scripthash methods', function () {
     });
     function options(params) {
         if (params === void 0) { params = {}; }
-        return __assign({ coinType: 'btc', scripthash: '20b360e68b4fe6d1eb460e45434f756fa1582ed687167898f9a716435ecd737f' }, params);
+        return __assign({ coinType: coin_type_1.CoinType.BTC, scripthash: '20b360e68b4fe6d1eb460e45434f756fa1582ed687167898f9a716435ecd737f' }, params);
     }
     it('return the confirmed and unconfirmed balances of a script hash', function () {
         return __awaiter(this, void 0, void 0, function () {

@@ -83,6 +83,13 @@ exports.electrumServersDefaultTestnet = (_b = {},
             connectionType: protocol_type_enum_1.ProtocolTypeEnum.SSL,
             version: 1.4,
         },
+        {
+            // testnet
+            host: 'electrumx-test.1209k.com',
+            port: 50002,
+            connectionType: protocol_type_enum_1.ProtocolTypeEnum.SSL,
+            version: 1.4,
+        },
     ],
     _b[coin_type_1.CoinType.LTC] = [
         {
