@@ -27,6 +27,7 @@ let electrumConfigs = {
 };
 
 amqp.connect(connectionConfig, function(err: any, conn: any) {
+    if (conn === undefined) { return; }
     conn.createChannel(function(err: any, channel: any) {
         ch = channel;
         initMQService('Peers');

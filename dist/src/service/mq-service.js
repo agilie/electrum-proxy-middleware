@@ -57,6 +57,9 @@ var electrumConfigs = {
     mainnet: electrum_servers_default_1.electrumServersDefault
 };
 amqp.connect(connectionConfig, function (err, conn) {
+    if (conn === undefined) {
+        return;
+    }
     conn.createChannel(function (err, channel) {
         ch = channel;
         initMQService('Peers');
